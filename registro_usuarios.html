@@ -11,6 +11,31 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+          aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          <img src="sauce/Logo AXIOS.png" width="50" height="50" class="d-inline-block align-top" alt="">
+        </a>
+    
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Inicio<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Hola <h7 id="hola"></h7> </a>
+            </li>
+          </ul>
+          
+            <button class="btn" type="submit" onclick="cerrar()">Cerrar Sesión</button>
+         
+        </div>
+      </nav>
+
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
@@ -68,6 +93,33 @@
   </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+
+<script>
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
+        document.getElementById('hola').innerHTML = user.email;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function cerrar(){
+      firebase.auth().signOut()
+      .then(function(){
+        console.log("Salir");
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    }
   </script>
 
   <script>
