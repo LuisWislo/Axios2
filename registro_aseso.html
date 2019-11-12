@@ -8,6 +8,7 @@
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1,
     shrink-to-fit=no">
+    
 </head>
 
 <body>
@@ -56,9 +57,9 @@
             </div>
             <div class="col-sm-4">
               <label for="input-tipo">Tipo de Asesoría</label>
-              <input type="input-tipo" class="form-control" placeholder="tipo">
+              <select id="tipoAsesoria" class="form-control"></select>
               <label for="input-motivo">Motivo de Asesoría</label>
-              <input type="input-motivo" class="form-control" placeholder="motivo" disabled>
+              <select id="motivoAsesoria" class="form-control"></select>
             </div>
             <div class="col-sm-2"></div>
           </div>
@@ -75,7 +76,7 @@
     </div>
   </div>
 
-
+  <script src="sauce/asesorias.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
