@@ -26,12 +26,14 @@
                     //2 - nombres
                     $('#myTable tbody:last-child').append("<tr><td>"+data[0]+"</td><td>"+data[1]+"</td><td>"+data[2]+"</td></tr>");
                 }
+                
                 console.log(excelJsonObj);
+
                 $.ajax({
-                    method: "POST",
+                    method: "PUT",
                     url: "/bs/Conn.php",
                     dataType: "json",
-                    data: excelJsonObj,
+                    data: JSON.stringify(excelJsonObj),
                     success : function() { 
                         console.log("Sent to server!");
                     }

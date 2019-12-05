@@ -24,13 +24,14 @@ if ($conn->connect_error) {
 }
 
 $json = file_get_contents('php://input');
+//$json = '[["23","Miguel","Angel"],["27","Hold","On!"]]'; //this works
 $data = json_decode($json,true);
 
-$idAlumno = $data[0][0];
-$apellido = $data[0][1];
-$nombre = $data[0][2];
+$idAlumno = $data[10][0];
+$apellido = $data[10][1];
+$nombre = $data[10][2];
 
-$assql = "INSERT INTO Alumno (idAlumno, nombre, apellido, idGrupo)
+$assql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
 VALUES ('$idAlumno','$apellido','$nombre','1')";
 
 if ($conn->query($assql) === TRUE) {
@@ -46,4 +47,11 @@ $conn->close();
     echo "DID IT!";
     $result->close();
 }*/
+
+function console_log( $data ){
+    echo '<p>';
+    echo 'into the unknown';
+    echo '</p>';
+  }
+
 ?>
