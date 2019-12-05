@@ -15,18 +15,25 @@
                 var fileData = reader.result;
                 var workbook = XLSX.read(fileData, {type: 'binary'});
                 workbook.SheetNames.forEach(function(sheetName){
-                    var rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+                    var rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName],{header:1});
                     excelJsonObj = rowObject;
                 });
 
                 for(var i = 0; i < excelJsonObj.length; i++){
                     var data = excelJsonObj[i];
-
-                    $('#myTable tbody:last-child').append("<tr><td>"+data.ID+"</td><td>"+data.FULL_NAME+"</td></tr>");
+                    //0 - no. de lista
+                    //1 - apellidos
+                    //2 - nombres
+                    $('#myTable tbody:last-child').append("<tr><td>"+data[0]+"</td><td>"+data[1]+"</td><td>"+data[2]+"</td></tr>");
                 }
+
+                console.log(excelJsonObj);
             };
 
             reader.readAsBinaryString(input.files[0]);
         };
     }
-})();
+   
+}
+
+)();
