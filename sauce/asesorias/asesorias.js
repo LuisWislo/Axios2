@@ -120,6 +120,28 @@ function removeOptions(){
     }
 }
 
+var student
+
+const inputAlumno = document.querySelector('#inputAlumno');
+inputAlumno.addEventListener('input', function(str) {
+    if (str == "") {
+        return;
+    } else {
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if (this.readystate = 4 && this.status == 200) {
+                // autocomplete
+            }
+        }
+    }
+    xmlhttp.open("GET", "getuser.php?q="+str);
+    xmlhttp.send();
+
+});
+
 
 
 

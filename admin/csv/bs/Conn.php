@@ -27,12 +27,12 @@ $json = file_get_contents('php://input');
 //$json = '[["23","Miguel","Angel"],["27","Hold","On!"]]'; //this works
 $data = json_decode($json,true);
 
-$idAlumno = $data[10][0];
+$noLista = $data[10][0];
 $apellido = $data[10][1];
 $nombre = $data[10][2];
 
 $assql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
-VALUES ('$idAlumno','$apellido','$nombre','1')";
+VALUES ($noLista,'$nombre','$apellido','1')";
 
 if ($conn->query($assql) === TRUE) {
     echo "New record created successfully";
