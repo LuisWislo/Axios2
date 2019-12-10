@@ -3,11 +3,14 @@
     app.controller('MyController', ['$scope', myController]);
 
     var excelJsonObj = [];
-
+    
+    
     function myController($scope){
-        //alert('working...');
-
         $scope.uploadCSV = function(){
+            var idGrupo = document.getElementById("idGrupo").value;
+            console.log("Value to add: " + idGrupo);
+            excelJsonObj.push(idGrupo);
+
             var myFile = document.getElementById('file');
             var input = myFile;
             var reader = new FileReader();
@@ -16,7 +19,9 @@
                 var workbook = XLSX.read(fileData, {type: 'binary'});
                 workbook.SheetNames.forEach(function(sheetName){
                     var rowObject = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName],{header:1});
-                    excelJsonObj = rowObject;
+                    for(var i=0; i<rowObject.length; i++){
+                        excelJsonObj.push(rowObject[i]);
+                    }
                 });
 
                 for(var i = 0; i < excelJsonObj.length; i++){
@@ -30,7 +35,7 @@
                 console.log(excelJsonObj);
 
                 $.ajax({
-                    method: "PUT",
+                    method: "POST",
                     url: "/bs/Conn.php",
                     dataType: "json",
                     data: JSON.stringify(excelJsonObj),

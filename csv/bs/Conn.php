@@ -24,20 +24,37 @@ if ($conn->connect_error) {
 }
 
 $json = file_get_contents('php://input');
-//$json = '[["23","Miguel","Angel"],["27","Hold","On!"]]'; //this works
 $data = json_decode($json,true);
 
-$idAlumno = $data[10][0];
-$apellido = $data[10][1];
-$nombre = $data[10][2];
+//$idGrupo = parseInt($data[0],10);
+/*$noLista = $data[1][0];
+$apellido = $data[1][1];
+$nombre = $data[1][2];
 
 $assql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
-VALUES ('$idAlumno','$apellido','$nombre','1')";
+        VALUES ('$noLista','$nombre','$apellido','3')";
 
-if ($conn->query($assql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    if ($conn->query($assql) === TRUE) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+*/
+$idGrupo = $data[0];
+
+for ($i = 1; $i <count($data); $i++) {
+    $noLista = $data[$i][0];
+    $apellido = $data[$i][1];
+    $nombre = $data[$i][2];
+
+    $assql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
+        VALUES ('$noLista','$nombre','$apellido','$idGrupo')";
+
+    if ($conn->query($assql) === TRUE) {
+        echo "New record created successfully";
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
 }
 
 $conn->close();
