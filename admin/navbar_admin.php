@@ -1,6 +1,6 @@
 <head>
   <meta charset="utf-8">
-  <title>Registro</title>
+  <title>ADMIN AXIOS</title>
   <link rel="stylesheet" href="../sauce/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
@@ -28,7 +28,13 @@
         <a class="nav-link" href="admin_dashboard.php">Inicio<span class="sr-only">(current)</span></a>
       </li>
       <li>
-        <a class="nav-link" href="registro_usuarios.php">Administrar Facilitadores</a>
+        <a class="nav-link" href="admin_sedes.php">Administrar Sedes</a>
+      </li>
+      <li>
+        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores</a>
+      </li>
+      <li>
+        <a class="nav-link" href="admin_sedes.php">Administrar Escuelas</a>
       </li>
     </ul>
 
