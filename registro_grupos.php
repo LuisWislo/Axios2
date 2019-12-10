@@ -13,6 +13,8 @@
 
 <body>
 
+  <script src="sauce/grupos.js"></script>
+
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
@@ -85,7 +87,6 @@
     </div>
   </div>
 
-  <script src="sauce/asesorias.js"></script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
