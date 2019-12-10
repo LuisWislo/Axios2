@@ -23,10 +23,8 @@ if ($conn->connect_error) {
 }
 
 
-if ($result = $mysqli->query("SELECT * FROM Alumno")) {
+if ($result = $mysqli->query("SELECT * FROM `Alumno`")) {
     printf("Select returned %d rows.\n", $result->num_rows);
-
-    /* free result set */
     $result->close();
 }
 ?>

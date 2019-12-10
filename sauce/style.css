@@ -119,6 +119,41 @@
     color: white;
     background-color: #3b5998;
   }
+
+  .peach-gradient {
+    background: linear-gradient(40deg, #ffd86f, #fc6262) !important;
+  }
+
+  .purple-gradient {
+    background: linear-gradient(40deg, #ff6ec4, #7873f5) !important;
+  }
+
+  .blue-gradient {
+    background: linear-gradient(40deg, #45cafc, #303f9f) !important;
+  }
+
+  .aqua-gradient {
+    background: linear-gradient(40deg, #2096ff, #05ffa3) !important;
+  }
+
+  .btn-b {
+    color: #fff;
+    margin: .375rem !important;
+    text-transform: uppercase !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    cursor: pointer;
+    border: 0 !important;
+    border-radius: .125rem !important;
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12) !important;
+    -webkit-transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out;
+    transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,-webkit-box-shadow 0.15s ease-in-out;
+    padding: .84rem 2.14rem !important;
+    font-size: .81rem !important;
+  }
   
   /* Fallback for Edge
   -------------------------------------------------- */

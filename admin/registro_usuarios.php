@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="sauce/style.css">
+  <title>Registro</title>
+  <link rel="stylesheet" href="../sauce/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -11,14 +11,17 @@
 </head>
 
 <body>
+
+<?php include 'navbar_admin.php'; ?>
+
   <div class="container">
     <div class="row">
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body text-center">
-            <img src="sauce/Logo AXIOS.png" class="img-responsive" style="width:100px;" /><br>
-            <h5 class="card-title text-center">Control de Asesorías</h5>
-            <form class="form-signin" id="form-signin">
+            <img src="../sauce/Logo AXIOS.png" class="img-responsive" style="width:100px;" /><br>
+            <h5 class="card-title text-center">Registro de Asesores</h5>
+            <form class="form-signup" id="form-signup">
               <div class="form-label-group">
                 <input type="email" id="inputEmail" class="form-control" placeholder="Correo Electrónico" required
                   autofocus>
@@ -30,8 +33,7 @@
                 <label for="inputPassword">Contraseña</label>
               </div>
 
-
-              <button role="button" class="btn btn-lg btn-primary btn-block text-uppercase">Ingresar</button>
+              <button role="button" class="btn btn-lg btn-primary btn-block text-uppercase">Registrar</button>
               <hr class="my-4">
             </form>
           </div>
@@ -60,21 +62,6 @@
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
-
-
-    function enviar() {
-      var email = document.getElementById('inputEmail').value;
-      var password = document.getElementById('inputPassword').value;
-
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-
-
-    }
   </script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -87,41 +74,49 @@
   </script>
 
 <script>
-    const signInForm = document.querySelector('#form-signin');
-    signInForm.addEventListener('submit', (e) => {
+    firebase.auth().onAuthStateChanged(function (user) {
+      if (user) {
+        var displayName = user.displayName;
+        var email = user.email;
+        var emailVerified = user.emailVerified;
+        var photoURL = user.photoURL;
+        var isAnonymous = user.isAnonymous;
+        var uid = user.uid;
+        var providerData = user.providerData;
+        document.getElementById('hola').innerHTML = user.email;
+      } else {
+        window.location.href = "login.html";
+      }
+    });
+
+    function cerrar(){
+      firebase.auth().signOut()
+      .then(function(){
+        console.log("Salir");
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    }
+  </script>
+
+  <script>
+    const signUpForm = document.querySelector('#form-signup');
+    signUpForm.addEventListener('submit', (e) => {
       e.preventDefault();
 
       // Obtener info
-      const email = signInForm['inputEmail'].value;
-      const password = signInForm['inputPassword'].value;
+      const email = signUpForm['inputEmail'].value;
+      const password = signUpForm['inputPassword'].value;
 
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function (error) {
+      console.log(email + " " + password);
+
+      firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        alert(errorMessage);
+        alert(errorMessage + " " + errorCode);
       });
     })
-
-
-  firebase.auth().onAuthStateChanged(function(user) {
-  if (user) {
-    var displayName = user.displayName;
-    var email = user.email;
-    var emailVerified = user.emailVerified;
-    var photoURL = user.photoURL;
-    var isAnonymous = user.isAnonymous;
-    var uid = user.uid;
-    var providerData = user.providerData;
-    if(email == "admin@axios.com"){
-      window.location.href = "registro_usuarios.html";
-    } else{
-      window.location.href = "registro_aseso.html";
-    }
-  } else {
-    // User is signed out.
-    // ...
-  }
-});
   </script>
 </body>
