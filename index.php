@@ -116,7 +116,7 @@
     if(email == "admin@axios.com"){
       window.location.href = "admin/admin_dashboard.php";
     } else{
-      window.location.href = "registro_aseso.html";
+      window.location.href = "asesor_dashboard.php";
     }
   } else {
     // User is signed out.

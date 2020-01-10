@@ -1,51 +1,5 @@
-<?php include 'asesor_navbar.php'; ?>
-
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <h1>Asesorias</h1>
-        <label for="inputEmail">Escriba nombre de alumno</label>
-        <!--<div class="form-label-group">-->
-        <form onsubmit="return validateForm()">
-          <input type="text" id="name_input" class="form-control" placeholder="Nombre" list="huge_list" required autofocus>
-          <datalist id="huge_list">
-          </datalist>
-          <br/>
-          <input type="submit">
-
-          <div class="row my-4">
-            <div class="col-sm-2"></div>
-            <div class="col-sm-4">
-              <label for="input-escuela">Escuela</label>
-              <input type="input-escuela" class="form-control" placeholder="escuela" disabled>
-              <label for="input-grado">Grado</label>
-              <input type="input-grado" class="form-control" placeholder="grado" disabled>
-              <label for="input-grupo">Grupo</label>
-              <input type="input-grupo" class="form-control" placeholder="grupo" disabled>
-            </div>
-            <div class="col-sm-4">
-              <label for="input-tipo">Tipo de Asesoría</label>
-              <select id="tipoAsesoria" class="form-control"></select>
-              <label for="input-motivo">Motivo de Asesoría</label>
-              <select id="motivoAsesoria" class="form-control"></select>
-            </div>
-            <div class="col-sm-2"></div>
-          </div>
-        </form>
-        <!--</div>-->
-        <div class="row my-4 justify-content-center">
-          <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
-          </div>
-          <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase">Cancelar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-<?php include 'asesor_check.php'; ?>
 <script src="sauce/asesorias.js"></script>
+<script type="text/javascript" src="autofill/index.js"></script>    
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
@@ -96,11 +50,9 @@
       firebase.auth().signOut()
       .then(function(){
         console.log("Salir");
-        window.location.href = "index.php";
       })
       .catch(function(error){
         console.log(error);
       })
     }
   </script>
-</body>
