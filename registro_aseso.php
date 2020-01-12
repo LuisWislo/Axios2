@@ -48,8 +48,7 @@
 
 <script src="sauce/asesorias.js"></script>
 <script type="text/javascript" src="autofill/index.js"></script>    
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
-<!--
+
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
@@ -69,7 +68,6 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
-  -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
   </script>
@@ -83,7 +81,6 @@
 <script src="js/bootstrap-table-pagination.js"></script>
 <script src="paginacion/pagination.js"></script>
 
-<!--
   <script>
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -111,5 +108,4 @@
       })
     }
   </script>
--->
 </body>
