@@ -1,3 +1,12 @@
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td:hover {
+        background-color: #33a652;
+    }
+</style> 
+
 <?php
 include 'navbar_admin.php';
 
@@ -94,10 +103,10 @@ if(isset($_POST['filtrar'])){
                     <th scope="col">Motivo</th>
                     <th scope="col">Observaciones</th>
                 </thead>
-                <tbody>
+                <tbody id="pagination">
                     <?php
                     include 'conexion_admin.php';
-                    $query = "SELECT Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
+                    $query = "SELECT Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
@@ -118,7 +127,7 @@ if(isset($_POST['filtrar'])){
                         ?>
                         <tr>
                             <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-                            <td class="align-middle"><?php echo $fila['Alumno']; ?></td>
+                            <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                             <td class="align-middle"><?php echo $fila['nombre']; ?></td>
                             <td class="align-middle"><?php echo $fila['fecha']; ?></td>
                             <td class="align-middle"><?php echo $fila['motivo']; ?></td>
@@ -132,10 +141,27 @@ if(isset($_POST['filtrar'])){
                 </tbody>
             </table>
         </div>
+
+        <div class="col-md-12 text-center">
+        <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
+        </div>
+
         <div class="row">
-            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">BACK</button><br>
+            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">Regresar</button><br>
         </div>
     </div>
 </div>
     <?php include 'admin_check.php'; ?>
+
+    <script src="../paginacion/bootstrap-table-pagination.js"></script>
+    <script src="../paginacion/pagination.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $(document.body).on("click", "td[data-href]", function () {
+                window.location.href = this.dataset.href + "?id="+ this.dataset.id;
+            });
+        });
+    </script>
+
     </body>

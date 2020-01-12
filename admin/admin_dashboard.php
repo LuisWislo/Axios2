@@ -40,7 +40,7 @@ include 'navbar_admin.php';
                     ) AS Asesores
                     INNER JOIN Alumno
                     ON Asesores.idAlumno = Alumno.idAlumno  
-                    ORDER BY Asesores.fecha DESC
+                    ORDER BY Asesores.idAsesoria DESC
                     LIMIT 5";
 
           $resultado = $conn->query($query);
