@@ -1,12 +1,12 @@
 <?php include 'asesor_navbar.php';
     $where = "";
-    $mail = $_GET['inputMail'];
+    $idAsesor = (int)$_GET['id'];
     include 'Conn.php';
-    $queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
+    $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
     $resultadoId->data_seek(0);
     $filaId = $resultadoId->fetch_assoc();
-    $idAsesor = (int)$filaId['idAsesor'];
+    $mail = $filaId['correo'];
     echo $mail;
     echo $idAsesor;
     echo gettype($idAsesor);
@@ -71,7 +71,7 @@
       <!--</div>-->
       <div class="row my-4 justify-content-center">
         <div class="col-sm-3">
-          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">Cancelar</button>
         </div>
       </div>
     </div>
