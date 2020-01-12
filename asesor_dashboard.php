@@ -16,7 +16,7 @@
       <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='registro_aseso.php'">Registrar Asesoría</button>
     </div>
     <div class="col-md-6">
-      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php'">Historial</button><br>
+      <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Historial</button><br>
     </div>
   </div>
 </div>
@@ -74,7 +74,7 @@
               </tbody>
           </table>
       </div>
-      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php'">VER TODAS</button>
+      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">VER TODAS</button>
     
   </div>
   <?php include 'asesor_check.php'; ?>

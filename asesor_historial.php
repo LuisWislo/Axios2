@@ -10,20 +10,26 @@
 <?php
 include 'asesor_navbar.php';
 
+$idAsesor = (int)$_GET['id'];
+include 'Conn.php';
+$queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
+$resultadoId = $conn->query($queryId);
+$resultadoId->data_seek(0);
+$filaId = $resultadoId->fetch_assoc();
+$mail = $filaId['correo'];
+$conn->close();
 
-$where = "";
+$where = "WHERE Asesores.idAsesor = $idAsesor";
 $asesor = $_POST['asesor'];
 $mes = $_POST['mes'];
 
 if(isset($_POST['filtrar'])){
     if(!empty($_POST['mes'])){
-        
-         $where = "WHERE MONTH(Asesores.fecha) = " . $mes . "";
-        
-        
+         $where = "WHERE Asesores.idAsesor = $idAsesor AND MONTH(Asesores.fecha) = " . $mes . "";
+    }else{
+        $where = "WHERE Asesores.idAsesor = $idAsesor";
     }
 }
-
 
 ?>
 
@@ -89,7 +95,9 @@ if(isset($_POST['filtrar'])){
                     $where
                     ORDER BY Asesores.fecha DESC";
                     $resultado = $conn->query($query);
-
+                    if(!$resultado->fetch_array()){
+                        echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
+                    }else{
                     $resultado->data_seek(0);
                     while ($fila = $resultado->fetch_assoc()) {
                         ?>
@@ -102,6 +110,7 @@ if(isset($_POST['filtrar'])){
                         </tr>
                     <?php
                     }
+                }
                     $conn->close();
 
                     ?>
@@ -114,7 +123,7 @@ if(isset($_POST['filtrar'])){
         </div>
 
         <div class="row">
-            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_dashboard.php'">BACK</button><br>
+            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">BACK</button><br>
         </div>
     </div>
 </div>
