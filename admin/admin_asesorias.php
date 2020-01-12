@@ -2,7 +2,7 @@
     td[data-href] {
         cursor: pointer;  
     }
-    td:hover {
+    td[data-href]:hover {
         background-color: #33a652;
     }
 </style> 

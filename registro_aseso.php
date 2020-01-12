@@ -1,3 +1,12 @@
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style>  
+
 <?php include 'asesor_navbar.php';
     $where = "";
     $idAsesor = (int)$_GET['id'];
@@ -7,9 +16,6 @@
     $resultadoId->data_seek(0);
     $filaId = $resultadoId->fetch_assoc();
     $mail = $filaId['correo'];
-    echo $mail;
-    echo $idAsesor;
-    echo gettype($idAsesor);
     $conn->close();
 ?>
 
@@ -17,15 +23,11 @@
   <div class="row justify-content-center">
     <div class="col-md-10">
       <h1>Asesorias</h1>
-      <label for="inputEmail">Escriba nombre de alumno</label>
-      <!--<div class="form-label-group">-->
-      <b>Search the table for Course, Fees or Type:  
-          <input id="search" type="text" placeholder="Search here"> 
-        </b> 
+      <b>Escriba nombre de alumno</b>
+      <input id="search" type="text" placeholder="Escriba aquí"> 
         <br> 
         <br> 
-        <!--<table class="table table-striped table-dark table-sm table-bordered"> -->
-        <table>
+        <table id="houdini" class="table table-striped table-dark table-sm table-bordered">
           <thead>
             <th scope="col">Alumno</th>
             <th scope="col">Escuela</th>
@@ -48,7 +50,8 @@
             LEFT JOIN Asesor as ase
             ON t.idAsesor = ase.idAsesor
             WHERE ase.idAsesor = $idAsesor
-            ORDER BY Alumno ASC";
+            ORDER BY Alumno ASC
+            LIMIT 15";
             $resultado = $conn->query($query);
 
             $resultado->data_seek(0);
@@ -80,14 +83,14 @@
 <?php include 'asesor_check.php'; ?>
   
 <script> 
-  document.getElementById("filter").style.visibility = "hidden";
+  document.getElementById("houdini").style.visibility = "hidden";
   $(document).ready(function() { 
       $("#search").on("keyup", function() {
          var value = $(this).val();
          if(value === "") {
-          document.getElementById("filter").style.visibility = "hidden";
+          document.getElementById("houdini").style.visibility = "hidden";
          } else {
-          document.getElementById("filter").style.visibility = "visible";
+          document.getElementById("houdini").style.visibility = "visible";
           $("#filter tr").filter(function() { 
               $(this).toggle($(this).text().indexOf(value) > -1) 
           }); 
@@ -96,6 +99,13 @@
   }); 
 </script>
 
+<script>
+    $(document).ready(function () {
+        $(document.body).on("click", "td[data-href]", function () {
+            window.location.href = this.dataset.href + "?id="+ this.dataset.id;
+        });
+    });
+</script>
   <!-- The core Firebase JS SDK is always required and must be listed first -->
 <!--
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>

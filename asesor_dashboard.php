@@ -1,3 +1,12 @@
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style> 
+
 <?php include 'asesor_navbar.php';
     $where = "";
     $mail = $_GET['inputMail'];

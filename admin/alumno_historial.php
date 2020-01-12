@@ -1,3 +1,12 @@
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style> 
+
 <?php
 include 'navbar_admin.php';
 
@@ -87,7 +96,7 @@ if(isset($_POST['filtrar'])){
             ?>
             <tr>
               <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td class="align-middle"><?php echo $fila['Alumno']; ?></td>
+              <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
               <td class="align-middle"><?php echo $fila['nombre']; ?></td>
               <td class="align-middle"><?php echo $fila['fecha']; ?></td>
               <td class="align-middle"><?php echo $fila['motivo']; ?></td>
