@@ -1,4 +1,17 @@
-<?php include 'asesor_navbar.php'; ?>
+<?php include 'asesor_navbar.php';
+    $where = "";
+    $mail = $_GET['inputMail'];
+    include 'Conn.php';
+    $queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
+    $resultadoId = $conn->query($queryId);
+    $resultadoId->data_seek(0);
+    $filaId = $resultadoId->fetch_assoc();
+    $idAsesor = (int)$filaId['idAsesor'];
+    echo $mail;
+    echo $idAsesor;
+    echo gettype($idAsesor);
+    $conn->close();
+?>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -6,31 +19,85 @@
       <h1>Asesorias</h1>
       <label for="inputEmail">Escriba nombre de alumno</label>
       <!--<div class="form-label-group">-->
-      <form onsubmit="return validateForm()">
-      <input type="text" id="name_input" class="form-control" placeholder="Nombre" list="huge_list" required autofocus>
-      <datalist id="huge_list">
-      </datalist>
-      <br/>
-      <input type="submit">
-      <div class="col-sm-2"></div>
-      </div>
-      </form>
+      <b>Search the table for Course, Fees or Type:  
+          <input id="search" type="text" placeholder="Search here"> 
+        </b> 
+        <br> 
+        <br> 
+        <!--<table class="table table-striped table-dark table-sm table-bordered"> -->
+        <table>
+          <thead>
+            <th scope="col">Alumno</th>
+            <th scope="col">Escuela</th>
+            <th scope="col">Grado</th>
+            <th scope="col">Grupo</th>
+          </thead>
+          <tbody id="filter"> 
+            <?php
+            include 'Conn.php';
+            $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
+            e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
+            FROM Alumno as a JOIN Grupo as gu
+            ON a.idGrupo = gu.idGrupo
+            JOIN Grado as ga
+            ON gu.idGrado = ga.idGrado
+            JOIN Turno as t
+            ON ga.idTurno = t.idTurno
+            JOIN Escuela as e
+            ON t.idEscuela = e.idEscuela
+            LEFT JOIN Asesor as ase
+            ON t.idAsesor = ase.idAsesor
+            WHERE ase.idAsesor = $idAsesor
+            ORDER BY Alumno ASC";
+            $resultado = $conn->query($query);
+
+            $resultado->data_seek(0);
+            while ($fila = $resultado->fetch_assoc()) {
+                ?>
+                <tr>
+                    <td data-href="datos_alumno.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Escuela']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Grado']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Grupo']; ?></td>
+                </tr>
+            <?php
+            }
+            $conn->close();
+
+            ?>
+          </tbody> 
+        </table> 
+      
       <!--</div>-->
       <div class="row my-4 justify-content-center">
-      <div class="col-sm-3">
-        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
-      </div>
-      <div class="col-sm-3">
-        <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+        <div class="col-sm-3">
+          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <?php include 'asesor_check.php'; ?>
+  
+<script> 
+  document.getElementById("filter").style.visibility = "hidden";
+  $(document).ready(function() { 
+      $("#search").on("keyup", function() {
+         var value = $(this).val();
+         if(value === "") {
+          document.getElementById("filter").style.visibility = "hidden";
+         } else {
+          document.getElementById("filter").style.visibility = "visible";
+          $("#filter tr").filter(function() { 
+              $(this).toggle($(this).text().indexOf(value) > -1) 
+          }); 
+        }
+      }); 
+  }); 
+</script>
 
-<script src="sauce/asesorias.js"></script>
-<script type="text/javascript" src="autofill/index.js"></script>    
-
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<!--
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
@@ -50,6 +117,7 @@
     firebase.initializeApp(firebaseConfig);
     firebase.analytics();
   </script>
+  -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
   </script>
@@ -60,9 +128,7 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
 
-<script src="js/bootstrap-table-pagination.js"></script>
-<script src="paginacion/pagination.js"></script>
-
+<!--
   <script>
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
@@ -90,4 +156,5 @@
       })
     }
   </script>
+-->
 </body>
