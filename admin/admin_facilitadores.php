@@ -34,8 +34,8 @@
                             <td class="align-middle"><?php echo $fila['idAsesor']; ?></td>
                             <td class="align-middle"><?php echo $fila['nombre']; ?></td>
                             <td class="align-middle"><?php echo $fila['correo']; ?></td>
-                            <td class="align-middle"><a role="button" href="asesorias_facilitador.php?id=<?php echo $idAsesor; ?>" class=" btn btn-primary">EDITAR</a></td>
-                            <td class="align-middle"><a role="button" href="editar_facilitador.php?id=<?php echo $idAsesor; ?>" class=" btn btn-danger">ELIMINAR</a></td>
+                            <td class="align-middle"><a role="button" href="asesorias_facilitador.php?id=<?php echo $idAsesor; ?>" class=" btn btn-primary">Historial</a></td>
+                            <td class="align-middle"><a role="button" href="editar_facilitador.php?id=<?php echo $idAsesor; ?>" class=" btn btn-danger">Editar</a></td>
                         </tr>
                     <?php
                     }
