@@ -13,7 +13,7 @@
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
-      <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='registro_aseso.php'">Registrar Asesoría</button>
+      <button class="btn-b peach-gradient btn-block p-3" onclick="window.location.href='registro_aseso.php?id=<?php echo $idAsesor; ?>'">Registrar Asesoría</button>
     </div>
     <div class="col-md-6">
       <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Historial</button><br>
