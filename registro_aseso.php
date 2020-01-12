@@ -1,4 +1,17 @@
-<?php include 'asesor_navbar.php'; ?>
+<?php include 'asesor_navbar.php';
+    $where = "";
+    $mail = $_GET['inputMail'];
+    include 'Conn.php';
+    $queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
+    $resultadoId = $conn->query($queryId);
+    $resultadoId->data_seek(0);
+    $filaId = $resultadoId->fetch_assoc();
+    $idAsesor = (int)$filaId['idAsesor'];
+    echo $mail;
+    echo $idAsesor;
+    echo gettype($idAsesor);
+    $conn->close();
+?>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -11,7 +24,8 @@
         </b> 
         <br> 
         <br> 
-        <table class="table table-striped table-dark table-sm table-bordered"> 
+        <!--<table class="table table-striped table-dark table-sm table-bordered"> -->
+        <table>
           <thead>
             <th scope="col">Alumno</th>
             <th scope="col">Escuela</th>
@@ -21,23 +35,20 @@
           <tbody id="filter"> 
             <?php
             include 'Conn.php';
-            $query = "SELECT Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
-            Escuela.nombre AS Escuela, Grado.numero AS Grado, Grupo.grupo AS Grupo, Asesor.nombre AS Asesor
-            FROM Alumno NATURAL JOIN (
-              SELECT * FROM Grupo NATURAL JOIN (
-                SELECT * FROM Grado NATURAL JOIN (
-                  SELECT * FROM Turno NATURAL JOIN Escuela
-                  ON Turno.idEscuela = Escuela.idEscuela
-                  NATURAL JOIN Asesor
-                  ON Turno.idAsesor = Asesor.idAsesor
-                )
-                ON Grado.idTurno = Turno.idTurno
-              )
-              ON Grupo.idGrado = Grado.idGrado
-            )
-            ON Alumno.idGrupo = Grupo.idGrupo
-            WHERE Asesor = Viri
-            ORDER BY Alumno DESC";
+            $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
+            e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
+            FROM Alumno as a JOIN Grupo as gu
+            ON a.idGrupo = gu.idGrupo
+            JOIN Grado as ga
+            ON gu.idGrado = ga.idGrado
+            JOIN Turno as t
+            ON ga.idTurno = t.idTurno
+            JOIN Escuela as e
+            ON t.idEscuela = e.idEscuela
+            LEFT JOIN Asesor as ase
+            ON t.idAsesor = ase.idAsesor
+            WHERE ase.idAsesor = $idAsesor
+            ORDER BY Alumno ASC";
             $resultado = $conn->query($query);
 
             $resultado->data_seek(0);
