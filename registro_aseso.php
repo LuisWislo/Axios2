@@ -11,35 +11,50 @@
         </b> 
         <br> 
         <br> 
-        <table> 
-            <tr> 
-                <th>Course</th> 
-                <th>Duration</th> 
-                <th>Type</th> 
-            </tr> 
-            <tbody id="filter"> 
-                <tr> 
-                    <td>C++ STL</td> 
-                    <td>1499</td> 
-                    <td>Online Classes 
-                    </td> 
-                </tr> 
-                <tr> 
-                    <td>DSA Foundation</td> 
-                    <td>7999</td> 
-                    <td>Regular Classes</td> 
-                </tr> 
-                <tr> 
-                    <td>Geeks Classes</td> 
-                    <td>10799</td> 
-                    <td>Weekend Classes</td> 
-                </tr> 
-                <tr> 
-                    <td>Placement 100</td> 
-                    <td>9999</td> 
-                    <td>Online Classes</td> 
-                </tr> 
-            </tbody> 
+        <table class="table table-striped table-dark table-sm table-bordered"> 
+          <thead>
+            <th scope="col">Alumno</th>
+            <th scope="col">Escuela</th>
+            <th scope="col">Grado</th>
+            <th scope="col">Grupo</th>
+          </thead>
+          <tbody id="filter"> 
+            <?php
+            include 'Conn.php';
+            $query = "SELECT Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
+            Escuela.nombre AS Escuela, Grado.numero AS Grado, Grupo.grupo AS Grupo, Asesor.nombre AS Asesor
+            FROM Alumno NATURAL JOIN (
+              SELECT * FROM Grupo NATURAL JOIN (
+                SELECT * FROM Grado NATURAL JOIN (
+                  SELECT * FROM Turno NATURAL JOIN Escuela
+                  ON Turno.idEscuela = Escuela.idEscuela
+                  NATURAL JOIN Asesor
+                  ON Turno.idAsesor = Asesor.idAsesor
+                )
+                ON Grado.idTurno = Turno.idTurno
+              )
+              ON Grupo.idGrado = Grado.idGrado
+            )
+            ON Alumno.idGrupo = Grupo.idGrupo
+            WHERE Asesor = Viri
+            ORDER BY Alumno DESC";
+            $resultado = $conn->query($query);
+
+            $resultado->data_seek(0);
+            while ($fila = $resultado->fetch_assoc()) {
+                ?>
+                <tr>
+                    <td data-href="datos_alumno.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Escuela']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Grado']; ?></td>
+                    <td class="align-middle"><?php echo $fila['Grupo']; ?></td>
+                </tr>
+            <?php
+            }
+            $conn->close();
+
+            ?>
+          </tbody> 
         </table> 
       
       <!--</div>-->
