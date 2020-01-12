@@ -6,30 +6,70 @@
       <h1>Asesorias</h1>
       <label for="inputEmail">Escriba nombre de alumno</label>
       <!--<div class="form-label-group">-->
-      <form onsubmit="return validateForm()">
-      <input type="text" id="name_input" class="form-control" placeholder="Nombre" list="huge_list" required autofocus>
-      <datalist id="huge_list">
-      </datalist>
-      <br/>
-      <input type="submit">
-      <div class="col-sm-2"></div>
-      </div>
-      </form>
+      <b>Search the table for Course, Fees or Type:  
+          <input id="search" type="text" placeholder="Search here"> 
+        </b> 
+        <br> 
+        <br> 
+        <table> 
+            <tr> 
+                <th>Course</th> 
+                <th>Duration</th> 
+                <th>Type</th> 
+            </tr> 
+            <tbody id="filter"> 
+                <tr> 
+                    <td>C++ STL</td> 
+                    <td>1499</td> 
+                    <td>Online Classes 
+                    </td> 
+                </tr> 
+                <tr> 
+                    <td>DSA Foundation</td> 
+                    <td>7999</td> 
+                    <td>Regular Classes</td> 
+                </tr> 
+                <tr> 
+                    <td>Geeks Classes</td> 
+                    <td>10799</td> 
+                    <td>Weekend Classes</td> 
+                </tr> 
+                <tr> 
+                    <td>Placement 100</td> 
+                    <td>9999</td> 
+                    <td>Online Classes</td> 
+                </tr> 
+            </tbody> 
+        </table> 
+      
       <!--</div>-->
       <div class="row my-4 justify-content-center">
-      <div class="col-sm-3">
-        <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
-      </div>
-      <div class="col-sm-3">
-        <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+        <div class="col-sm-3">
+          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 <?php include 'asesor_check.php'; ?>
+  
+<script> 
+  document.getElementById("filter").style.visibility = "hidden";
+  $(document).ready(function() { 
+      $("#search").on("keyup", function() {
+         var value = $(this).val();
+         if(value === "") {
+          document.getElementById("filter").style.visibility = "hidden";
+         } else {
+          document.getElementById("filter").style.visibility = "visible";
+          $("#filter tr").filter(function() { 
+              $(this).toggle($(this).text().indexOf(value) > -1) 
+          }); 
+        }
+      }); 
+  }); 
+</script>
 
-<script src="sauce/asesorias.js"></script>
-<script type="text/javascript" src="autofill/index.js"></script>    
   <!-- The core Firebase JS SDK is always required and must be listed first -->
 <!--
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
@@ -61,9 +101,6 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
   </script>
-
-<script src="js/bootstrap-table-pagination.js"></script>
-<script src="paginacion/pagination.js"></script>
 
 <!--
   <script>
