@@ -22,7 +22,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10">
-      <h1>Asesorias</h1>
+      <h1>Registro de nueva asesoria</h1>
       <b>Escriba nombre de alumno</b>
       <input id="search" type="text" placeholder="Escriba aquí"> 
         <br> 
@@ -102,7 +102,7 @@
 <script>
     $(document).ready(function () {
         $(document.body).on("click", "td[data-href]", function () {
-            window.location.href = this.dataset.href + "?id="+ this.dataset.id;
+            window.location.href = this.dataset.href + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno=" + this.dataset.id;
         });
     });
 </script>

@@ -39,20 +39,31 @@
           <h2><?php echo $fila['Alumno']; ?></h2>
           <br>
           <form onsubmit="return validateForm()">
-
+        <?php
+        $conn->close();
+        ?>
           <div class="row my-4">
             <div class="col-sm-2"></div>
-              <div class="col-sm-8">
-                <label for="input-escuela">Escuela</label>
-                <input type="input-escuela" class="form-control" placeholder="<?php echo $fila['Escuela']; ?>" disabled>
-                <label for="input-grado">Grado</label>
-                <input type="input-grado" class="form-control" placeholder="<?php echo $fila['Grado']; ?>" disabled>
-                <label for="input-grupo">Grupo</label>
-                <input type="input-grupo" class="form-control" placeholder="<?php echo $fila['Grupo']; ?>" disabled>
+              <div class="col-sm-4">
+                <label for="input-tipo">Tipo de Asesoría</label>
+                <select id="tipoAsesoria" class="form-control">
+                <?php
+                include 'Conn.php';
+                $query = "SELECT t.idTipoAsesoria AS id, t.tipoAsesoria AS tipo
+                FROM TipoAsesoria as t";
+                $resultado = $conn->query($query);
+
+                $resultado->data_seek(0);
+                while ($fila = $resultado->fetch_assoc()) {
+                  ?>
+                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['tipo']; ?></option>
+                <?php } ?>
+                
+                </select>
+                <?php
+                $conn->close();
+                ?>
               </div>
-              <?php
-              $conn->close();
-              ?>
               <div class="col-sm-2"></div>
             </div>
           </form>
@@ -60,7 +71,7 @@
         
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button data-href="tipo_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
+            <button data-href="motivo_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
@@ -76,7 +87,8 @@
         $(document.body).on("click", "button[data-href]", function () {
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>;
+                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+                                 + "&idTipoAsesoria=" + document.getElementById('tipoAsesoria').value;
         });
     });
 </script>

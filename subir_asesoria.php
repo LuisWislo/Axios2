@@ -2,6 +2,8 @@
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
+    $idTipoAsesoria = (int)$_GET['idTipoAsesoria'];
+    $idMotivoAsesoria = (int)$_GET['idMotivoAsesoria'];
     include 'Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
@@ -39,30 +41,34 @@
           <h2><?php echo $fila['Alumno']; ?></h2>
           <br>
           <form onsubmit="return validateForm()">
-
+   
+        <?php
+        $conn->close();
+        ?>
           <div class="row my-4">
             <div class="col-sm-2"></div>
               <div class="col-sm-8">
-                <label for="input-escuela">Escuela</label>
-                <input type="input-escuela" class="form-control" placeholder="<?php echo $fila['Escuela']; ?>" disabled>
-                <label for="input-grado">Grado</label>
-                <input type="input-grado" class="form-control" placeholder="<?php echo $fila['Grado']; ?>" disabled>
-                <label for="input-grupo">Grupo</label>
-                <input type="input-grupo" class="form-control" placeholder="<?php echo $fila['Grupo']; ?>" disabled>
+                <h3 for="input-tipo">Fecha de asesoria</h3>
+                
+                <input id="fecha" type="date">
+                <br>
+                <br>
+                <h3 for="input-tipo">Observaciones</h3>
+                
+                <input id="observaciones" type="text" placeholder="Escriba aquí"> 
               </div>
-              <?php
-              $conn->close();
-              ?>
               <div class="col-sm-2"></div>
             </div>
           </form>
         
-        
+        <br>
         <div class="row my-4 justify-content-center">
-          <div class="col-sm-3">
-            <button data-href="tipo_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
+          <div class="col-sm-8">
+            <button data-href="subir_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Subir asesoria</button>
           </div>
-          <div class="col-sm-3">
+        </div>
+        <div class="row my-4 justify-content-center">
+          <div class="col-sm-5">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
           </div>
         </div>
@@ -76,7 +82,9 @@
         $(document.body).on("click", "button[data-href]", function () {
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>;
+                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+                                 + "&idTipoAsesoria=" + <?php echo(json_encode($idTipoAsesoria)); ?>
+                                 + "&idMotivoAsesoria=" + document.getElementById('motivoAsesoria');
         });
     });
 </script>
