@@ -1,6 +1,7 @@
 <?php include 'asesor_navbar.php';
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
+    $idAlumno = (int)$_GET['idAlumno'];
     include 'Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);

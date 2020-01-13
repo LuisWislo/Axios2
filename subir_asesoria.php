@@ -16,7 +16,7 @@ $conn->close();
 <?php
 if (isset($_POST['subir'])) {
   include 'Conn.php';
-  $fecha = $_POST['fecha'];
+  $fecha = date('Y-m-d', strtotime($_POST['fecha']));
   $observaciones = $_POST['observaciones'];
   echo $fecha;
   echo $observaciones;
@@ -102,11 +102,13 @@ if (isset($_POST['subir'])) {
 </div>
 
 <script>
-  $(document).ready(function() {
-    $(document.body).on("click", "button[data-href]", function() {
-      window.location.href = this.dataset.href;
+    $(document).ready(function () {
+        $(document.body).on("click", "button[data-href]", function () {
+            window.location.href = this.dataset.href
+                                 + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
+                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+        });
     });
-  });
 </script>
 
 </body>
