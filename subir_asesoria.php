@@ -88,7 +88,7 @@
         </div>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-5">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">Cancelar</button>
           </div>
         </div>
       </div>

@@ -95,7 +95,7 @@ if(isset($_POST['filtrar'])){
         </div>
 
         <div class="row">
-            <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php'">Regresar</button><br>
+            <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?inputMail=<?php echo $usuario; ?>'">Regresar</button><br>
         </div>
     </div>
 </div>
