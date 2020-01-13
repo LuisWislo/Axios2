@@ -48,6 +48,5 @@
     </div>
 </div>
 
-
-<?php include 'admin_check.php'; ?>
 </body>
+</html>

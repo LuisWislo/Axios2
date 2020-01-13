@@ -68,5 +68,5 @@ include 'navbar_admin.php';
         <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
       </div>
   </div>
-  <?php include 'admin_check.php'; ?>
   </body>
+  </html>

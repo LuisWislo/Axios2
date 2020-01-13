@@ -120,9 +120,9 @@ if(isset($_POST['filtrar'])){
         </div>
     </div>
 </div>
-<?php include 'admin_check.php'; ?>
 
 <script src="../paginacion/bootstrap-table-pagination.js"></script>
 <script src="../paginacion/pagination.js"></script>
 
 </body>
+</html>

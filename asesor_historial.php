@@ -1,12 +1,3 @@
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style>    
-
 <?php
 include 'asesor_navbar.php';
 
@@ -32,6 +23,14 @@ if(isset($_POST['filtrar'])){
 }
 
 ?>
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style>    
 
 <div class="container">
     <div class="row">
@@ -127,8 +126,6 @@ if(isset($_POST['filtrar'])){
         </div>
     </div>
 </div>
-<?php include 'asesor_check.php'; ?>
-
 <script src="paginacion/bootstrap-table-pagination.js"></script>
 <script src="paginacion/pagination.js"></script>
 
@@ -141,3 +138,4 @@ if(isset($_POST['filtrar'])){
 </script>
 
 </body>
+</html>

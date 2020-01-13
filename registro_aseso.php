@@ -80,7 +80,6 @@
     </div>
   </div>
 </div>
-<?php include 'asesor_check.php'; ?>
   
 <script> 
   document.getElementById("houdini").style.visibility = "hidden";

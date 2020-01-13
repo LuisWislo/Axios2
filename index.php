@@ -10,7 +10,7 @@ if(isset($_SESSION['user'])){
   if(isset($_SESSION['admin'])){
     header('location: admin/admin_dashboard.php');
   }else{
-    header('location: asesor_dashboard.php');
+    header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
   }
 }
 
@@ -30,15 +30,21 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
       $_SESSION['admin'] = true;
       header('location: admin/admin_dashboard.php');
     }else{
-      $_SESSION['admin'] = false;
-      header('location: asesor_dashboard.php');
+      header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
     }
+  }else{
+    ?>
+    <script>
+      alert("Usuario y/o contraseña incorrecto(s)");
+    </script>
+    <?php
   }
 
 }
 
 ?>
-
+<!DOCTYPE html>
+<html>
 <head>
   <meta charset="utf-8">
   <title>Login</title>
@@ -80,89 +86,5 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
     </div>
   </div>
 
-
-  <!--
-
-  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
-  
-  <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-      apiKey: "AIzaSyCOnEvFwCfDfM7gpX2DiKZTxtXSNljU_Jw",
-      authDomain: "axios-c524e.firebaseapp.com",
-      databaseURL: "https://axios-c524e.firebaseio.com",
-      projectId: "axios-c524e",
-      storageBucket: "axios-c524e.appspot.com",
-      messagingSenderId: "1038331624441",
-      appId: "1:1038331624441:web:17d779f7c09e12d9b61b28",
-      measurementId: "G-RC4MZLVKQT"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
-
-
-    function enviar() {
-      var email = document.getElementById('inputEmail').value;
-      var password = document.getElementById('inputPassword').value;
-
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        // ...
-      });
-
-
-    }
-  </script>
-  
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-  </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
-
-  <script>
-    const signInForm = document.querySelector('#form-signin');
-    signInForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      // Obtener info
-      const email = signInForm['inputEmail'].value;
-      const password = signInForm['inputPassword'].value;
-
-      firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
-        // Handle Errors here.
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        alert(errorMessage);
-      });
-    })
-
-
-    firebase.auth().onAuthStateChanged(function(user) {
-      if (user) {
-        var displayName = user.displayName;
-        var email = user.email;
-        var emailVerified = user.emailVerified;
-        var photoURL = user.photoURL;
-        var isAnonymous = user.isAnonymous;
-        var uid = user.uid;
-        var providerData = user.providerData;
-        if (email == "admin@axios.com") {
-          window.location.href = "admin/admin_dashboard.php";
-        } else {
-          window.location.href = "asesor_dashboard.php?inputMail=" + email;
-        }
-      } else {
-        // User is signed out.
-        // ...
-      }
-    });
-  </script>
-  -->
 </body>
+</html>

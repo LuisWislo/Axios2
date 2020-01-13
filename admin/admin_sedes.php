@@ -57,8 +57,6 @@
     </div>
 </div>
 
-
-<?php include 'admin_check.php'; ?>
 </body>
 <script>
     function showSede() {
@@ -66,3 +64,4 @@
 
     }
 </script>
+</html>

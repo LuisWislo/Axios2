@@ -27,8 +27,6 @@
       </div>
     </div>
   </div>
-
-  <?php include 'admin_check.php'; ?>
   
   <script>
     const signUpForm = document.querySelector('#form-signup');
@@ -50,3 +48,4 @@
     })
   </script>
 </body>
+</html>
