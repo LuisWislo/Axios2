@@ -1,12 +1,3 @@
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style>  
-
 <?php include 'asesor_navbar.php';
     $where = "";
     $idAsesor = (int)$_GET['id'];
@@ -18,6 +9,14 @@
     $mail = $filaId['correo'];
     $conn->close();
 ?>
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style>  
 
 <div class="container">
   <div class="row justify-content-center">
@@ -80,7 +79,6 @@
     </div>
   </div>
 </div>
-<?php include 'asesor_check.php'; ?>
   
 <script> 
   document.getElementById("houdini").style.visibility = "hidden";

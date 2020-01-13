@@ -1,12 +1,3 @@
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style> 
-
 <?php include 'asesor_navbar.php';
     $where = "";
     $mail = $_GET['inputMail'];
@@ -18,7 +9,14 @@
     $idAsesor = $filaId['idAsesor'];
     $conn->close();
 ?>
-
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style> 
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
@@ -86,5 +84,5 @@
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">VER TODAS</button>
     
   </div>
-  <?php include 'asesor_check.php'; ?>
   </body>
+  </html>

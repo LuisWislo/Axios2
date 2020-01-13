@@ -1,3 +1,12 @@
+<?php include 'admin_check.php'; ?>
+
+<!DOCTYPE html>
+<html>
+<script>
+function cerrar() {
+  window.location.href = "../index.php?cerrar_sesion=1"
+}
+</script>
 <head>
   <meta charset="utf-8">
   <title>ADMIN AXIOS</title>
