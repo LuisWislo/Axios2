@@ -1,0 +1,10 @@
+DELIMITER //
+
+
+CREATE PROCEDURE AgregarAsesoria () 
+BEGIN 
+    INSERT INTO Asesoria()
+
+END //
+
+DELIMITER ;
