@@ -26,7 +26,7 @@
   
   <script>
   function cerrar() {
-    window.location.href = "index.php?cerrar_sesion=1";
+    window.location.href = "logout.php";
   }
   </script>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

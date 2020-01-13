@@ -4,7 +4,7 @@
 <html>
 <script>
 function cerrar() {
-  window.location.href = "../index.php?cerrar_sesion=1";
+  window.location.href = "../logout.php";
 }
 </script>
 <head>
