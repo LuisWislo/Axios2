@@ -25,7 +25,7 @@ if(isset($_POST['filtrar'])){
 ?>
 <div class="container">
     <div class="row">
-        <form method="POST">
+        <form action="accion.php" method="POST">
             
             <div class="row">
                 <div class="col-sm-12">
