@@ -1,11 +1,6 @@
 <?php include 'asesor_check.php'; ?>
 <!DOCTYPE html>
 <html>
-<script>
-function cerrar() {
-  window.location.href = "index.php?cerrar_sesion=1"
-}
-</script>
 <head>
   <meta charset="utf-8">
   <title>Registro</title>
@@ -16,12 +11,24 @@ function cerrar() {
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <meta name="viewport" content="width=device-width, initial-scale=1,
     shrink-to-fit=no">
+    <style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style>  
 
 </head>
 
 <body>
-
-
+  
+  <script>
+  function cerrar() {
+    window.location.href = "index.php?cerrar_sesion=1";
+  }
+  </script>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
       aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">

@@ -104,3 +104,4 @@ if(isset($_POST['filtrar'])){
 <script src="paginacion/pagination.js"></script>
 
 </body>
+</html>

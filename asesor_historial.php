@@ -23,15 +23,6 @@ if(isset($_POST['filtrar'])){
 }
 
 ?>
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style>    
-
 <div class="container">
     <div class="row">
         <form method="POST">

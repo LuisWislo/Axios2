@@ -75,7 +75,7 @@
         $(document.body).on("click", "button[data-href]", function () {
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>;
+                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
         });
     });
 </script>

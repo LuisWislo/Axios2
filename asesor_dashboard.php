@@ -9,14 +9,6 @@
     $idAsesor = $filaId['idAsesor'];
     $conn->close();
 ?>
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style> 
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
