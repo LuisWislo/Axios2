@@ -48,14 +48,14 @@
           <div class="row my-4">
             <div class="col-sm-2"></div>
               <div class="col-sm-8">
-                <h3 for="input-tipo">Fecha de asesoria</h3>
+                <h3>Fecha de asesoria</h3>
                 
                 <input id="fecha" type="date">
                 <br>
                 <br>
-                <h3 for="input-tipo">Observaciones</h3>
+                <h3>Observaciones</h3>
                 
-                <input id="observaciones" type="text" placeholder="Escriba aquí"> 
+                <textarea rows="10" cols="100" placeholder="Escriba aquí"></textarea>
               </div>
               <div class="col-sm-2"></div>
             </div>
@@ -80,11 +80,7 @@
 <script>
     $(document).ready(function () {
         $(document.body).on("click", "button[data-href]", function () {
-            window.location.href = this.dataset.href
-                                 + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
-                                 + "&idTipoAsesoria=" + <?php echo(json_encode($idTipoAsesoria)); ?>
-                                 + "&idMotivoAsesoria=" + document.getElementById('motivoAsesoria');
+            window.location.href = this.dataset.href;
         });
     });
 </script>
