@@ -82,7 +82,7 @@
             ?>
 
             <form method="post">
-                <button data-href="carga__exitosa.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir">Subir asesoria</button>
+                <button data-href="carga_exitosa.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir">Subir asesoria</button>
             </form>
            </div> 
         </div>

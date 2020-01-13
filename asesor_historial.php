@@ -113,7 +113,7 @@ if(isset($_POST['filtrar'])){
         </div>
 
         <div class="row">
-            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">BACK</button><br>
+            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">REGRESAR</button><br>
         </div>
     </div>
 </div>
