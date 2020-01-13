@@ -1,5 +1,4 @@
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <!--
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.2.3/firebase-analytics.js"></script>
@@ -52,3 +51,16 @@
         })
     }
   </script>
+  -->
+
+<?php
+  session_start();
+  if(!isset($_SESSION['admin'])){
+    header('location: login.php');
+  }
+?>
+<script>
+function cerrar() {
+  window.location.href = "../index.php?cerrar_sesion=1"
+}
+</script>
