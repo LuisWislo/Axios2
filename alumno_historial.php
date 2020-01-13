@@ -1,6 +1,13 @@
 <?php
 include 'asesor_navbar.php';
 
+include 'Conn.php';
+$queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$usuario'";
+$resultadoId = $conn->query($queryId);
+$resultadoId->data_seek(0);
+$filaId = $resultadoId->fetch_assoc();
+$idAsesor = $filaId['idAsesor'];
+$conn->close();
 
 $where = "";
 $idAlumno = (int)$_GET['id'];
@@ -95,7 +102,7 @@ if(isset($_POST['filtrar'])){
         </div>
 
         <div class="row">
-            <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?inputMail=<?php echo $usuario; ?>'">Regresar</button><br>
+            <button class="btn-b purple-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">Regresar</button><br>
         </div>
     </div>
 </div>
