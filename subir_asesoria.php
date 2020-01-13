@@ -64,8 +64,27 @@
         <br>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-8">
-            <button data-href="subir_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Subir asesoria</button>
-          </div>
+
+            <?php 
+                if(isset($_POST['subir'])) {
+                    include 'Conn.php';
+                    $query = "INSERT INTO Asesoria (idAsesoria, idAlumno, idMotivo, idAsesor, fecha, observaciones) VALUES (NULL, $idAlumno, $idMotivoAsesoria,
+                    $idAsesor, fecha, observaciones)";
+                    if ($conn->query($query) === TRUE) {
+                        echo "Si se subio";
+                    } else {
+                        echo "Error: " . $query . "<br>" . $conn->error;
+                    }
+
+                    $conn->close();
+                    
+                }
+            ?>
+
+            <form method="post">
+                <button data-href="carga__exitosa.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir">Subir asesoria</button>
+            </form>
+           </div> 
         </div>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-5">

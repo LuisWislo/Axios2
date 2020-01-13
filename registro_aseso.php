@@ -15,7 +15,11 @@
     <div class="col-md-10">
       <h1>Registro de nueva asesoria</h1>
       <b>Escriba nombre de alumno</b>
-      <input id="search" type="text" placeholder="Escriba aquí"> 
+        <div class="row">
+          <div class="col-md-12">
+            <input id="search" type="text" placeholder="Escriba aquí">
+          </div>
+      </div>
         <br> 
         <br> 
         <table id="houdini" class="table table-striped table-dark table-sm table-bordered">
@@ -76,13 +80,13 @@
   document.getElementById("houdini").style.visibility = "hidden";
   $(document).ready(function() { 
       $("#search").on("keyup", function() {
-         var value = $(this).val();
+         var value = $(this).val().toLowerCase();
          if(value === "") {
           document.getElementById("houdini").style.visibility = "hidden";
          } else {
           document.getElementById("houdini").style.visibility = "visible";
           $("#filter tr").filter(function() { 
-              $(this).toggle($(this).text().indexOf(value) > -1) 
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
           }); 
         }
       }); 
