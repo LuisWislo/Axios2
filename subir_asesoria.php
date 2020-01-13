@@ -82,13 +82,13 @@
             ?>
 
             <form method="post">
-                <button data-href="carga__exitosa.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir">Subir asesoria</button>
+                <button data-href="carga_exitosa.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir">Subir asesoria</button>
             </form>
            </div> 
         </div>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-5">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php'">Cancelar</button>
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">Cancelar</button>
           </div>
         </div>
       </div>
