@@ -3,7 +3,7 @@
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
     $idTipoAsesoria = (int)$_GET['idTipoAsesoria'];
-    include 'Conn.php';
+    include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
     $resultadoId->data_seek(0);
@@ -16,7 +16,7 @@
     <div class="row justify-content-center">
       <div class="col-md-10">
         <?php
-        include 'Conn.php';
+        include 'config/Conn.php';
         $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
         e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
         FROM Alumno as a JOIN Grupo as gu
@@ -31,9 +31,10 @@
         ON t.idAsesor = ase.idAsesor
         WHERE ase.idAsesor = $idAsesor AND a.idAlumno = $idAlumno";
         $resultado = $conn->query($query);
-
-        $resultado->data_seek(0);
-        $fila = $resultado->fetch_assoc()
+        if ($resultado) {
+          $resultado->data_seek(0);
+          $fila = $resultado->fetch_assoc();
+        
         ?>
           <h1>Nueva asesoria con:</h1>
           <br>
@@ -42,6 +43,7 @@
           <form onsubmit="return validateForm()">
    
         <?php
+        }
         $conn->close();
         ?>
           <div class="row my-4">
@@ -50,7 +52,7 @@
                 <label for="input-tipo">Motivo de Asesoría</label>
                 <select id="motivoAsesoria" class="form-control">
                 <?php
-                include 'Conn.php';
+                include 'config/Conn.php';
                 $query = "SELECT m.idMotivo AS id, m.motivo AS motivo
                 FROM Motivo as m
                 WHERE m.idTipoAsesoria = $idTipoAsesoria";
@@ -59,7 +61,7 @@
                 $resultado->data_seek(0);
                 while ($fila = $resultado->fetch_assoc()) {
                   ?>
-                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['motivo']; ?></option>
+                  <option value="<?php echo $fila['id']; ?>"><?php echo utf8_encode($fila['motivo']); ?></option>
                 <?php } ?>
                 
                 </select>

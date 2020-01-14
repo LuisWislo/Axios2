@@ -1,7 +1,7 @@
 <?php include 'asesor_navbar.php';
     $where = "";
     $idAsesor = (int)$_GET['id'];
-    include 'Conn.php';
+    include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
     $resultadoId->data_seek(0);
@@ -31,7 +31,7 @@
           </thead>
           <tbody id="filter"> 
             <?php
-            include 'Conn.php';
+            include 'config/Conn.php';
             $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
             e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
             FROM Alumno as a JOIN Grupo as gu
@@ -49,6 +49,9 @@
             LIMIT 15";
             $resultado = $conn->query($query);
 
+            if (!$resultado) {
+              echo "ERROR: " . $conn->error;
+            }
             $resultado->data_seek(0);
             while ($fila = $resultado->fetch_assoc()) {
                 ?>

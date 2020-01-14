@@ -1,12 +1,16 @@
 <?php include 'asesor_navbar.php';
     $where = "";
     $mail = $_GET['inputMail'];
-    include 'Conn.php';
+    include 'config/Conn.php';
     $queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
     $resultadoId = $conn->query($queryId);
-    $resultadoId->data_seek(0);
-    $filaId = $resultadoId->fetch_assoc();
-    $idAsesor = $filaId['idAsesor'];
+    if ($resultadoId) {
+      $resultadoId->data_seek(0);
+      $filaId = $resultadoId->fetch_assoc();
+      $idAsesor = $filaId['idAsesor'];
+    } else {
+      echo "ERROR: " . $conn->error;
+    }
     $conn->close();
 ?>
 <div class="container p-5">
@@ -33,14 +37,14 @@
               </thead>
               <tbody>
                 <?php
-                  include 'Conn.php';
+                  include 'config/Conn.php';
                   $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
                   Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observaciones AS Observaciones
                   FROM (	
                       SELECT * FROM Asesor 
                       NATURAL JOIN (
                           SELECT *
-                          FROM Motivo 
+                          FROM Motivo
                           NATURAL JOIN Asesoria
                       ) as Motivos 
                   ) AS Asesores
@@ -50,6 +54,9 @@
                   ORDER BY Asesores.idAsesoria DESC
                   LIMIT 5";
                   $resultado = $conn->query($query);
+                  if (!$resultado) {
+                    echo "ERROR: " . $conn->error;
+                  }
                   if(!$resultado->fetch_array()){
                       echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
                   }else{
@@ -62,7 +69,7 @@
                           <td class="align-middle"><?php echo $fila['Asesoria']; ?></td>
                           <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                           <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
-                          <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
+                          <td class="align-middle"><?php echo utf8_encode($fila['Motivo']); ?></td>
                           <td class="align-middle"><?php echo $fila['Observaciones']; ?></td>
                       </tr>
                   <?php

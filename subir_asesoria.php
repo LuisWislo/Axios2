@@ -4,7 +4,7 @@ $idAsesor = (int) $_GET['idAsesor'];
 $idAlumno = (int) $_GET['idAlumno'];
 $idTipoAsesoria = (int) $_GET['idTipoAsesoria'];
 $idMotivoAsesoria = (int) $_GET['idMotivoAsesoria'];
-include 'Conn.php';
+include 'config/Conn.php';
 $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
 $resultadoId = $conn->query($queryId);
 $resultadoId->data_seek(0);
@@ -15,13 +15,13 @@ $conn->close();
 
 <?php
 if (isset($_POST['subir'])) {
-  include 'Conn.php';
+  include 'config/Conn.php';
   $fecha = date('Y-m-d', strtotime($_POST['fecha']));
   $observaciones = $_POST['observaciones'];
   echo $fecha;
   echo $observaciones;
-  $query = "INSERT INTO Asesoria (idAsesoria, idAlumno, idMotivo, idAsesor, fecha, observaciones) VALUES (NULL, $idAlumno, $idMotivoAsesoria,
-                        $idAsesor, $fecha, '$observaciones')";
+  $query = "INSERT INTO Asesoria (idAlumno, idMotivo, idAsesor, fecha, observaciones) VALUES ($idAlumno, $idMotivoAsesoria,
+                        $idAsesor, '$fecha', '$observaciones')";
   if ($conn->query($query) === TRUE) {
     ob_start();
     $url = 'http://facilitadoresaxios.com/carga_exitosa.php';
@@ -43,7 +43,7 @@ if (isset($_POST['subir'])) {
   <div class="row justify-content-center">
     <div class="col-md-10">
       <?php
-      include 'Conn.php';
+      include 'config/Conn.php';
       $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
             e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
             FROM Alumno as a JOIN Grupo as gu
@@ -106,7 +106,7 @@ if (isset($_POST['subir'])) {
         $(document.body).on("click", "button[data-href]", function () {
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>                                 
         });
     });
 </script>

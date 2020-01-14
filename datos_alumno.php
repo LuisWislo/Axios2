@@ -2,7 +2,7 @@
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
-    include 'Conn.php';
+    include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
     $resultadoId->data_seek(0);
@@ -15,7 +15,7 @@
     <div class="row justify-content-center">
       <div class="col-md-10">
         <?php
-        include 'Conn.php';
+        include 'config/Conn.php';
         $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
         e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
         FROM Alumno as a JOIN Grupo as gu
@@ -30,9 +30,11 @@
         ON t.idAsesor = ase.idAsesor
         WHERE ase.idAsesor = $idAsesor AND a.idAlumno = $idAlumno";
         $resultado = $conn->query($query);
-
-        $resultado->data_seek(0);
-        $fila = $resultado->fetch_assoc()
+        if ($resultado) {
+          $resultado->data_seek(0);
+          $fila = $resultado->fetch_assoc()
+          
+        
         ?>
           <h1>Nueva asesoria con:</h1>
           <br>
@@ -51,6 +53,10 @@
                 <input type="input-grupo" class="form-control" placeholder="<?php echo $fila['Grupo']; ?>" disabled>
               </div>
               <?php
+        } else {
+          echo "ERROR: " . $conn->error . "ON: \n";
+          echo $query;
+        }
               $conn->close();
               ?>
               <div class="col-sm-2"></div>

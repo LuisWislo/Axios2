@@ -2,7 +2,7 @@
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
-    include 'Conn.php';
+    include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
     $resultadoId->data_seek(0);
@@ -15,7 +15,7 @@
     <div class="row justify-content-center">
       <div class="col-md-10">
         <?php
-        include 'Conn.php';
+        include 'config/Conn.php';
         $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
         e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
         FROM Alumno as a JOIN Grupo as gu
@@ -48,7 +48,7 @@
                 <label for="input-tipo">Tipo de Asesoría</label>
                 <select id="tipoAsesoria" class="form-control">
                 <?php
-                include 'Conn.php';
+                include 'config/Conn.php';
                 $query = "SELECT t.idTipoAsesoria AS id, t.tipoAsesoria AS tipo
                 FROM TipoAsesoria as t";
                 $resultado = $conn->query($query);
@@ -56,7 +56,7 @@
                 $resultado->data_seek(0);
                 while ($fila = $resultado->fetch_assoc()) {
                   ?>
-                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['tipo']; ?></option>
+                  <option value="<?php echo $fila['id']; ?>"><?php echo utf8_encode($fila['tipo']); ?></option>
                 <?php } ?>
                 
                 </select>
