@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <title>Registro</title>
   <link rel="stylesheet" href="sauce/style.css">
+  <link rel="shortcut icon" href="/favicon.ico" type="favicon.ico">
+  <link rel="icon" href="/favicon.ico" type="favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"

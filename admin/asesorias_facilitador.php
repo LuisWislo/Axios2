@@ -7,6 +7,7 @@
         background-color: #33a652;
     }
 </style>
+
 <?php include 'navbar_admin.php';
 
 $idAsesor = (int) $_GET['id'];
@@ -35,7 +36,7 @@ if (isset($_POST['filtrar'])) {
 
 <div class="container">
     <div class="row text-center">
-        <h5>HISTORIAL DE <?php echo $nombre;?></h5>
+        <h5>Historial de: <?php echo $nombre;?></h5>
     </div>
     <div class="row">
         <form method="POST">

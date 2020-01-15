@@ -29,7 +29,7 @@ if(isset($_POST['filtrar'])){
             
             <div class="row">
                 <div class="col-sm-12">
-                    <h4>FILTROS</h4>
+                    <h5>FILTROS</h5>
                 </div>
                 
                 <div class="col-sm-4">
@@ -56,12 +56,12 @@ if(isset($_POST['filtrar'])){
             </div>
         </form>
     </div>
+    <br>
     <div class="row">
         <h5>ASESORIAS</h5>
         <div class="table-responsive">
             <table class="table table-striped table-dark table-sm table-bordered">
                 <thead>
-                    <th scope="col">ID</th>
                     <th scope="col">Alumno</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Motivo</th>
@@ -70,13 +70,13 @@ if(isset($_POST['filtrar'])){
                 <tbody id="pagination">
                     <?php
                     include 'config/Conn.php';
-                    $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellidos) AS Alumno, 
-                    Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observacion AS Observaciones
+                    $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
+                    Asesores.fecha AS Fecha, Asesores.idMotivo AS Motivo, Asesores.observaciones AS Observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
                             SELECT *
-                            FROM Motivo_Asesoria 
+                            FROM Motivo
                             NATURAL JOIN Asesoria
                         ) as Motivos 
                     ) AS Asesores
@@ -95,7 +95,6 @@ if(isset($_POST['filtrar'])){
                     while ($fila = $resultado->fetch_assoc()) {
                         ?>
                         <tr>
-                            <td class="align-middle"><?php echo $fila['Asesoria']; ?></td>
                             <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                             <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
                             <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
@@ -126,7 +125,7 @@ if(isset($_POST['filtrar'])){
 <script>
     $(document).ready(function () {
         $(document.body).on("click", "td[data-href]", function () {
-            window.location.href = this.dataset.href + "?id="+ this.dataset.id;
+            window.location.href = this.dataset.href + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
         });
     });
 </script>

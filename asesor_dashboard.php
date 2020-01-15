@@ -29,7 +29,6 @@
       <div class="table-responsive">
           <table class="table table-striped table-dark table-sm table-bordered">
               <thead>
-                  <th scope="col">ID</th>
                   <th scope="col">Alumno</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Motivo</th>
@@ -66,7 +65,6 @@
                   while ($fila = $resultado->fetch_assoc()) {
                       ?>
                       <tr>
-                          <td class="align-middle"><?php echo $fila['Asesoria']; ?></td>
                           <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                           <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
                           <td class="align-middle"><?php echo utf8_encode($fila['Motivo']); ?></td>
@@ -81,7 +79,7 @@
           </table>
       </div>
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">VER TODAS</button>
-    
+    </div>
   </div>
   </body>
   </html>

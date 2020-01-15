@@ -10,10 +10,17 @@
 <?php
 include 'navbar_admin.php';
 
-
 $where = "";
 $idAlumno = (int)$_GET['id'];
 $mes = $_POST['mes'];
+
+include '../config/Conn.php';
+$queryId = "SELECT CONCAT(a.nombre,' ', a.apellido) AS nombre FROM Alumno WHERE idAlumno = '$idAlumno'";
+$resultadoId = $conn->query($queryId);
+$resultadoId->data_seek(0);
+$filaId = $resultadoId->fetch_assoc();
+$nombre = $filaId['nombre'];
+$conn->close();
 
 if(isset($_POST['filtrar'])){
     if(!empty($_POST['mes'])){
@@ -27,12 +34,17 @@ if(isset($_POST['filtrar'])){
 ?>
 
 <div class="container">
+    <div class="row text-center">
+        <h4>HISTORIAL DE ASESORIAS DE:&nbsp;<?php echo $nombre;?></h45>
+        <br>
+        <br>
+    </div>
     <div class="row">
         <form method="POST">
             
             <div class="row">
                 <div class="col-sm-12">
-                    <h4>FILTROS</h4>
+                    <h5>FILTROS</h5>
                 </div>
                 
                 <div class="col-sm-4">
@@ -59,6 +71,7 @@ if(isset($_POST['filtrar'])){
             </div>
         </form>
     </div>
+    <br>
     <div class="row">
         <h5>ASESORIAS</h5>
         <div class="table-responsive">
@@ -73,7 +86,7 @@ if(isset($_POST['filtrar'])){
         </thead>
         <tbody id="pagination">
           <?php
-          include 'conexion_admin.php';
+          include '../config/Conn.php';
           $query = "SELECT Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 

@@ -33,8 +33,6 @@
         if ($resultado) {
           $resultado->data_seek(0);
           $fila = $resultado->fetch_assoc()
-          
-        
         ?>
           <h1>Nueva asesoria con:</h1>
           <br>
@@ -57,6 +55,24 @@
           echo "ERROR: " . $conn->error . "ON: \n";
           echo $query;
         }
+              $conn->close();
+              ?>
+
+              <label for="input-integrantes">Seleccione si la asesoria fue:</label>
+              <form>
+                <?php
+                include 'config/Conn.php';
+                $query = "SELECT ass.idIntegrantes AS id, ass.descripcion AS personas
+                FROM Integrantes as ass";
+                $resultado = $conn->query($query);
+
+                $resultado->data_seek(0);
+                while ($fila = $resultado->fetch_assoc()) {
+                  ?>
+                  <input type="radio" name="integrantes" value="<?php echo $fila['id']; ?>"><?php echo utf8_encode($fila['personas']); ?><br>
+                <?php } ?>
+              </form>
+              <?php
               $conn->close();
               ?>
               <div class="col-sm-2"></div>

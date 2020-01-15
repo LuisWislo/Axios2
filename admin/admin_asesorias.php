@@ -37,7 +37,7 @@ if(isset($_POST['filtrar'])){
             
             <div class="row mb-3">
                 <div class="col-sm-12">
-                    <h4>FILTROS</h4>
+                    <h5>FILTROS</h5>
                 </div>
                 
                 <div class="col-sm-4">
@@ -125,6 +125,7 @@ if(isset($_POST['filtrar'])){
             </div>
         </form>
     </div>
+    <br>
     <div class="row">
         <h5>ASESORIAS</h5>
         <div class="table-responsive">
