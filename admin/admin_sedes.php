@@ -1,7 +1,19 @@
 <?php include 'navbar_admin.php'; ?>
 
-<div class="container text-center p-5">
-    <h7>SEDES</h7>
+<div class="container text-center">
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2">
+                <div class="row">
+                    <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">Regresar</button><br>
+                </div>
+            </div>
+            <div class="col-lg-8 text-center">
+                <h5 class="display-4 text-center">SEDES</h5>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <?php
         include '../config/Conn.php';
@@ -53,7 +65,9 @@
 
                 </tbody>
             </table>
+            
         </div>
+        
     </div>
 </div>
 

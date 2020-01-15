@@ -42,7 +42,7 @@ if(isset($_POST['filtrar'])){
                 
                 <div class="col-sm-4">
                     
-                    <select id="tipoAsesoria" class="form-control" name="asesor">
+                    <select id="filtroAsesor" class="form-control" name="asesor">
                         <option value="0" selected>Asesor</option>
                         <?php
                         include '../config/Conn.php';
@@ -60,20 +60,30 @@ if(isset($_POST['filtrar'])){
                 </div>
                 <div class="col-sm-4">
                     
-                    <select id="motivoAsesoria" class="form-control" name="mes">
-                        <option value="0" selected>Mes</option>
-                        <option value="1">Enero</option>
-                        <option value="2">Febrero</option>
-                        <option value="3">Marzo</option>
-                        <option value="4">Abril</option>
-                        <option value="5">Mayo</option>
-                        <option value="6">Junio</option>
-                        <option value="7">Julio</option>
-                        <option value="8">Agosto</option>
-                        <option value="9">Septiembre</option>
-                        <option value="10">Octubre</option>
-                        <option value="11">Noviembre</option>
-                        <option value="12">Diciembre</option>
+                    <select id="filtroSede" class="form-control" name="sede">
+                        <option value="" selected>Sede</option>
+                        <?php
+                        include '../config/Conn.php';
+                        $resultado = $conn->query("SELECT nombre FROM Localidad");
+                        $resultado->data_seek(0);
+                        while ($fila = $resultado->fetch_assoc()) { 
+                            $nombreSede = $fila['nombre'];
+                            ?>
+                            <option value="<?php echo $nombreSede;?>"><?php echo $nombreSede; ?></option>
+                            <?php
+                        }
+                        $conn->close();
+                        ?>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select id="filtroAnio" class="form-control" name="anio">
+                        <option value="" selected>Año</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
                     </select>
                 </div>
             </div>
@@ -92,14 +102,21 @@ if(isset($_POST['filtrar'])){
                         <option value="EJ16">Enero-Junio 2016</option>
                     </select>
                 </div>
-                <div class="col-sm-4">
-                    <select id="filtroAnio" class="form-control" name="anio">
-                        <option value="" selected>Año</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
-                        <option value="2017">2017</option>
-                        <option value="2016">2016</option>
+                <div class="col-sm-4"> 
+                    <select id="filtroMes" class="form-control" name="mes">
+                        <option value="" selected>Mes</option>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
                     </select>
                 </div>
                 <div class="col-sm-4">
