@@ -2,7 +2,7 @@
 include 'asesor_navbar.php';
 
 $idAsesor = (int)$_GET['id'];
-include 'Conn.php';
+include 'config/Conn.php';
 $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
 $resultadoId = $conn->query($queryId);
 $resultadoId->data_seek(0);
@@ -11,8 +11,8 @@ $mail = $filaId['correo'];
 $conn->close();
 
 $where = "WHERE Asesores.idAsesor = $idAsesor";
-$asesor = $_POST['asesor'];
-$mes = $_POST['mes'];
+// $asesor = $_POST['asesor'];
+// $mes = $_POST['mes'];
 
 if(isset($_POST['filtrar'])){
     if(!empty($_POST['mes'])){
@@ -69,14 +69,14 @@ if(isset($_POST['filtrar'])){
                 </thead>
                 <tbody id="pagination">
                     <?php
-                    include 'Conn.php';
-                    $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
-                    Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observaciones AS Observaciones
+                    include 'config/Conn.php';
+                    $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellidos) AS Alumno, 
+                    Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observacion AS Observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
                             SELECT *
-                            FROM Motivo 
+                            FROM Motivo_Asesoria 
                             NATURAL JOIN Asesoria
                         ) as Motivos 
                     ) AS Asesores
@@ -85,6 +85,9 @@ if(isset($_POST['filtrar'])){
                     $where
                     ORDER BY Asesores.fecha DESC";
                     $resultado = $conn->query($query);
+                    if(!$resultado) {
+                        echo "ERROR: " . $conn->error;
+                    }
                     if(!$resultado->fetch_array()){
                         echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
                     }else{

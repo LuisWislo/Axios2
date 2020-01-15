@@ -21,7 +21,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    include 'conexion_admin.php';
+                    include '../config/Conn.php';
 
                     $resultado = $conn->query("SELECT * FROM Asesor");
 

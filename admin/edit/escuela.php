@@ -1,5 +1,5 @@
 <?php
-    include '../conexion_admin.php';
+    include '../../config/Conn.php';
 
     $id = $_GET['id'];
     $query = "SELECT nombre, numero, turno FROM Escuela WHERE idEscuela=" . $id;

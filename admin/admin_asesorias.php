@@ -12,29 +12,20 @@ include 'navbar_admin.php';
 
 
 $where = "";
-$asesor = $_POST['asesor'];
-$mes = $_POST['mes'];
+$asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
+$mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
+$semestre = !empty($_POST['semestre']) ? $_POST['semestre'] : "";
+$anio = !empty($_POST['anio']) ? $_POST['anio'] : "";
 
 if(isset($_POST['filtrar'])){
-    if(empty($_POST['asesor'])){
-        if($mes == 0){
-            $where = "";
-        }else{
-            $where = " WHERE MONTH(Asesores.fecha) = '" . $mes . "'";
-        }
-        
+    if ($mes && $asesor) $where = "WHERE MONTH(Asesores.fecha) = " . $mes . " and Asesores.nombre = '". $asesor ."'";
+    else if($mes){
+        $where = "WHERE MONTH(Asesores.fecha) = ". $mes;
     }
-    else if(empty($_POST['mes'])){
-        
-            $where = "WHERE Asesores.nombre = '". $asesor ."'";
-        
-        
+    else if($asesor){
+        $where = "WHERE Asesores.nombre = '". $asesor ."'";
     }
-    else{
-            $where = "WHERE MONTH(Asesores.fecha) = " . $mes . " and Asesores.nombre = '". $asesor ."'";
-        
-       
-    }
+
 }
 
 
@@ -44,7 +35,7 @@ if(isset($_POST['filtrar'])){
     <div class="row">
         <form method="POST">
             
-            <div class="row">
+            <div class="row mb-3">
                 <div class="col-sm-12">
                     <h4>FILTROS</h4>
                 </div>
@@ -54,7 +45,7 @@ if(isset($_POST['filtrar'])){
                     <select id="tipoAsesoria" class="form-control" name="asesor">
                         <option value="0" selected>Asesor</option>
                         <?php
-                        include 'conexion_admin.php';
+                        include '../config/Conn.php';
                         $resultado = $conn->query("SELECT nombre FROM Asesor");
                         $resultado->data_seek(0);
                         while ($fila = $resultado->fetch_assoc()) { 
@@ -85,6 +76,32 @@ if(isset($_POST['filtrar'])){
                         <option value="12">Diciembre</option>
                     </select>
                 </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <select id="filtroSemestre" class="form-control" name="semestre">
+                        <option value="" selected>Semestre</option>
+                        <option value="EJ20">Enero-Junio 2020</option>
+                        <option value="JD19">Julio-Agosto 2019</option>
+                        <option value="EJ20">Enero-Junio 2019</option>
+                        <option value="JD18">Julio-Agosto 2018</option>
+                        <option value="EJ20">Enero-Junio 2018</option>
+                        <option value="JD17">Julio-Agosto 2017</option>
+                        <option value="EJ20">Enero-Junio 2017</option>
+                        <option value="JD16">Julio-Agosto 2016</option>
+                        <option value="EJ16">Enero-Junio 2016</option>
+                    </select>
+                </div>
+                <div class="col-sm-4">
+                    <select id="filtroAnio" class="form-control" name="anio">
+                        <option value="" selected>Año</option>
+                        <option value="2020">2020</option>
+                        <option value="2019">2019</option>
+                        <option value="2018">2018</option>
+                        <option value="2017">2017</option>
+                        <option value="2016">2016</option>
+                    </select>
+                </div>
                 <div class="col-sm-4">
                     <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
                 </div>
@@ -105,7 +122,7 @@ if(isset($_POST['filtrar'])){
                 </thead>
                 <tbody id="pagination">
                     <?php
-                    include 'conexion_admin.php';
+                    include '../config/Conn.php';
                     $query = "SELECT Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
@@ -121,7 +138,7 @@ if(isset($_POST['filtrar'])){
                     ORDER BY Asesores.fecha DESC";
                     //echo $query;
                     $resultado = $conn->query($query);
-
+                    if (!$resultado) echo "ERROR: " . $conn->error . $query;
                     $resultado->data_seek(0);
                     while ($fila = $resultado->fetch_assoc()) {
                         ?>

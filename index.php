@@ -18,11 +18,15 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
   $mail = $_POST['inputEmail'];
   $pass = $_POST['inputPassword'];
 
-  include 'Conn.php';
+  include 'config/Conn.php';
 
-  $query = "SELECT * FROM Asesor WHERE correo = '$mail' AND password = PASSWORD('$pass')";
+  $query = "SELECT * FROM Asesor WHERE correo = '$mail' AND contra = PASSWORD('$pass')";
   $resultado = $conn->query($query);
-  $fila = mysqli_fetch_row($resultado);
+  if ($resultado) {
+    $fila = mysqli_fetch_row($resultado);
+  } else {
+    echo "ERROR: " . $conn->error;
+  }
   $conn->close();
   if($fila == true){
     $_SESSION['user'] = $mail;

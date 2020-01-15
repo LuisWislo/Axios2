@@ -28,7 +28,7 @@ include 'navbar_admin.php';
         </thead>
         <tbody>
           <?php
-          include 'conexion_admin.php';
+          include '../config/Conn.php';
           $query = "SELECT Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
@@ -44,7 +44,7 @@ include 'navbar_admin.php';
                     LIMIT 5";
 
           $resultado = $conn->query($query);
-
+          
           $resultado->data_seek(0);
           while ($fila = $resultado->fetch_assoc()) {
             ?>

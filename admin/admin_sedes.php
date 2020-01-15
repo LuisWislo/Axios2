@@ -4,7 +4,7 @@
     <h7>SEDES</h7>
     <div class="row">
         <?php
-        include 'conexion_admin.php';
+        include '../config/Conn.php';
 
         $resultado = $conn->query("SELECT * FROM Localidad");
         //$numSedes = $resultado->num_rows;
@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    include 'conexion_admin.php';
+                    include '../config/Conn.php';
                     //echo "ESCUELAS <br>";
                     $res2 = $conn->prepare(("SELECT * FROM Escuela WHERE idLocalidad = 1 "));
                     //$res2->bind_param("i", 1);
