@@ -10,7 +10,7 @@
 
 <?php include 'navbar_admin.php';
 
-$idAsesor = (int) $_GET['id'];
+$idAsesor = (int) $_GET['idUsuario'];
 
 include 'conexion_admin.php';
 $queryId = "SELECT nombre FROM Asesor WHERE idAsesor = '$idAsesor'";
@@ -35,9 +35,11 @@ if (isset($_POST['filtrar'])) {
 ?>
 
 <div class="container">
-    <div class="row text-center">
-        <h5>Historial de: <?php echo $nombre;?></h5>
-    </div>
+    <h4 class="display-4 text-center">Historial de asesoria</h4>
+    <br>
+    <h4 class="text-center">Historial de:&nbsp;<?php echo $nombre;?></h4>
+          
+    
     <div class="row">
         <form method="POST">
 

@@ -3,10 +3,10 @@
 if (isset($_POST['registrar'])) {
   $name = $_POST['inputName'];
   $email = $_POST['inputEmail'];
-  $password = $_POST['inputPassword'];
+  $pass = $_POST['inputPassword'];
 
   include '../config/Conn.php';
-  $query = "INSERT INTO Asesor (idAsesor, nombre, correo, `password`) VALUES (NULL, '$name', '$email', PASSWORD('$password'))";
+  $query = "INSERT INTO Asesor (idAsesor, nombre, correo, `password`) VALUES (NULL, '$name', '$email', PASSWORD('$pass'))";
   if ($conn->query($query) === TRUE) {
     $message = "Usuario registrado con éxito";
     echo "<script type='text/javascript'>alert('$message');</script>";
@@ -40,8 +40,7 @@ if (isset($_POST['registrar'])) {
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required
-                  autofocus>
+                <input type="password" id="inputPassword" name="inputPassword" class="form-control" placeholder="Contraseña" required>
                 <label for="inputPassword">Contraseña</label>
               </div>
 

@@ -4,8 +4,8 @@
 
 <?php
 
-$oldNombre = "";
-$oldCorreo = "";
+$nombre = "";
+$correo = "";
 
 include '../config/Conn.php';
 $query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
@@ -15,8 +15,8 @@ $query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
     if ($resultado) {
         $resultado->data_seek(0);
         $fila = $resultado->fetch_assoc();
-        $oldNombre = $fila['Asesor'];
-        $oldCorreo = $fila['Correo'];
+        $nombre = $fila['Asesor'];
+        $correo = $fila['Correo'];
     } else {
         echo "ERROR: " . $conn->error . "ON: \n";
         echo $query;
@@ -28,20 +28,11 @@ $query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
 
 <?php
 
-if (isset($_POST['subir'])) {
-  $nombre = $_POST['nombre'];
-  $correo = $_POST['correo'];
-  if($nombre === $oldNombre || $nombre === "") {
-    $nombre = $oldNombre;
-  }
-
-  if($correo === $oldCorreo || $correo === "") {
-    $correo = $oldCorreo;
-  }
+if (isset($_POST['eliminar'])) {
   include '../config/Conn.php';
-  $query = "UPDATE Asesor SET nombre='" . $nombre . "', correo='" . $correo . "' WHERE idAsesor = $idUsuario";
+  $query = "DELETE FROM Asesor WHERE idAsesor = $idUsuario";
   if ($conn->query($query) === TRUE) {
-    $message = "Cambios guardados con éxito";
+    $message = "Usuario eliminado con éxito";
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
@@ -51,23 +42,22 @@ if (isset($_POST['subir'])) {
   $conn->close();
 }
 ?>
-
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-10">
-          <h4 class="display-4 text-center">Editando usuario</h4>
+        <h4 class="display-4 text-center">Eliminando usuario</h4>
           <br>
-          <h4 class="text-center">Editando a:&nbsp;<?php echo $fila['Asesor']; ?></h4>
+          <h4 class="text-center">¿Estas seguro de que deseas eliminar a: <?php echo $fila['Asesor']; ?>?</h4>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">
             <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <label for="input-nombre">Nombre</label>
-                <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $oldNombre; ?>">
+                <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $nombre; ?>" disabled>
                 <br>
                 <label for="input-correo">Correo</label>
-                <input type="input-correo" class="form-control" name="correo" placeholder="<?php echo $oldCorreo; ?>" >
+                <input type="input-correo" class="form-control" name="correo" placeholder="<?php echo $correo; ?>" disabled>
                </div>
               <div class="col-sm-2"></div>
             </div>
@@ -76,7 +66,7 @@ if (isset($_POST['subir'])) {
         
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm" >Aceptar</button>
+            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="eliminar" form="insertForm" >Eliminar</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_facilitadores.php'">Cancelar</button>

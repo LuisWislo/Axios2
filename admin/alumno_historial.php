@@ -35,7 +35,8 @@ if(isset($_POST['filtrar'])){
 
 <div class="container">
     <div class="row text-center">
-        <h4>HISTORIAL DE ASESORIAS DE:&nbsp;<?php echo $nombre;?></h45>
+        
+        <h4 class="display-4 text-center">HISTORIAL DE ASESORIAS DE:&nbsp;<?php echo $nombre;?></h45>
         <br>
         <br>
     </div>

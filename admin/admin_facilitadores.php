@@ -1,8 +1,8 @@
 <?php include 'navbar_admin.php'; ?>
 <div class="container">
     <div class="row">
-        <div class="col-lg-8 text-center">
-            <h5 class="display-4 text-center">FACILITADORES</h5>
+        <div class="col-lg-12 text-center">
+            <h5 class="display-4 text-center">USUARIOS</h5>
         </div>
     </div>
 </div>
@@ -20,7 +20,7 @@
                     <th scope="col">Asesorias</th>
                     <th scope="col">Editar</th>
                     <th scope="col">Nueva contraseña</th>
-                    <th scope="col">Borrar</th>
+                    <th scope="col">Eliminar</th>
                 </thead>
                 <tbody>
                     <?php
@@ -39,7 +39,7 @@
                             <td class="align-middle"><a role="button" href="asesorias_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-primary">Historial</a></td>
                             <td class="align-middle"><a role="button" href="editar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Editar</a></td>
                             <td class="align-middle"><a role="button" href="editar_password.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Nueva contraseña</a></td>
-                            <td class="align-middle"><a role="button" href="borrar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Borrar</a></td>
+                            <td class="align-middle"><a role="button" href="borrar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Eliminar</a></td>
                         </tr>
                     <?php
                     }

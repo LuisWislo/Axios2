@@ -12,7 +12,7 @@ if (isset($_POST['subir'])) {
     } else {
         if($newPassword === $newConPassword) {
             include '../config/Conn.php';
-            $query = "UPDATE Asesor SET password = PASSWORD('$newPassword') WHERE Asesor.idAsesor = $idUsuario";
+            $query = "UPDATE Asesor SET `password` = PASSWORD('$newPassword') WHERE Asesor.idAsesor = $idUsuario";
             if ($conn->query($query) === TRUE) {
                 $message = "Cambios guardados con éxito";
                 echo "<script type='text/javascript'>alert('$message');</script>";
@@ -43,9 +43,9 @@ if (isset($_POST['subir'])) {
           $resultado->data_seek(0);
           $fila = $resultado->fetch_assoc()
         ?>
-          <br>
-          <h4>Editando:&nbsp;<?php echo $fila['Asesor']; ?></h4>
-          <br>
+         <h4 class="display-4 text-center">Editando contraseña</h4>
+         <br>
+         <h4 class="text-center">Editando contraseña de:&nbsp;<?php echo $fila['Asesor']; ?></h4>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
           <div class="row my-4">
