@@ -63,6 +63,12 @@ CREATE TABLE Alumno (
   FOREIGN KEY (idGrupo) REFERENCES Grupo (idGrupo)
 );
 
+CREATE TABLE Integrantes (
+  idIntegrantes INT NOT NULL AUTO_INCREMENT,
+  descripcion VARCHAR(30),
+  PRIMARY KEY (idIntegrantes)
+);
+
 CREATE TABLE TipoAsesoria(
   idTipoAsesoria INT NOT NULL AUTO_INCREMENT,
   tipoAsesoria VARCHAR(50),
