@@ -2,7 +2,7 @@
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
-    $idIntegrantes = $_GET['idIntegrantes'];
+    $idIntegrantes = (int)$_GET['idIntegrantes'];
     include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
     $resultadoId = $conn->query($queryId);
@@ -35,10 +35,9 @@
         $resultado->data_seek(0);
         $fila = $resultado->fetch_assoc()
         ?>
-          <h1>Nueva asesoria con:</h1>
+          <h4 class="display-4 text-center">Nueva asesoria con:</h4>
           <br>
-          <h2><?php echo $fila['Alumno']; ?></h2>
-          <br>
+          <h4 class="text-center"><?php echo $fila['Alumno']; ?></h4>
           <form onsubmit="return validateForm()">
         <?php
         $conn->close();
@@ -57,7 +56,7 @@
                 $resultado->data_seek(0);
                 while ($fila = $resultado->fetch_assoc()) {
                   ?>
-                  <option value="<?php echo $fila['id']; ?>"><?php echo utf8_encode($fila['tipo']); ?></option>
+                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['tipo']; ?></option>
                 <?php } ?>
                 
                 </select>

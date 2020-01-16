@@ -1,16 +1,8 @@
-<style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style> 
-
-
 <?php
 include 'asesor_navbar.php';
 
+$where = "";
+$idAlumno = (int)$_GET['idAlumno'];
 $idAsesor = (int)$_GET['idAsesor'];
 include 'config/Conn.php';
 $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
@@ -20,8 +12,6 @@ $filaId = $resultadoId->fetch_assoc();
 $mail = $filaId['correo'];
 $conn->close();
 
-$where = "";
-$idAlumno = (int)$_GET['idAlumno'];
 $mes = $_POST['mes'];
 
 if(isset($_POST['filtrar'])){
@@ -36,29 +26,21 @@ if(isset($_POST['filtrar'])){
 ?>
 
 <div class="container">
-    <div class="row text-center">
-        <?php
-        include 'config/Conn.php';
-        $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno
-        FROM Alumno as a
-        WHERE a.idAlumno = $idAlumno";
-        $resultado = $conn->query($query);
-        if ($resultado) {
-          $resultado->data_seek(0);
-          $fila = $resultado->fetch_assoc();
-        
-        ?>
-          <h4>HISTORIAL DE ASESORIAS DE: &nbsp;</h4>
-          <br>
-          <h4><?php echo $fila['Alumno']; ?></h4>
-          <br>
-          <br>
-   
-        <?php
-        }
-        $conn->close();
-        ?>
-        </div>
+    <?php
+    include 'config/Conn.php';
+    $queryId = "SELECT CONCAT(a.nombre,' ', a.apellido) AS nombre FROM Alumno a WHERE idAlumno = '$idAlumno'";
+    $resultadoId = $conn->query($queryId);
+    $resultadoId->data_seek(0);
+    $filaId = $resultadoId->fetch_assoc();
+    $nombre = $filaId['nombre'];
+    ?>
+    <h4 class="display-4 text-center">Historial de asesorias</h4>
+    <br>
+    <h4 class="text-center">Historial de alumno:<br /><?php echo $nombre;?></h4>
+    <br>
+    <?php
+    $conn->close();
+    ?>
     <div class="row">
         <form method="POST">
             

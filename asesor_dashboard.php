@@ -1,18 +1,21 @@
 <?php include 'asesor_navbar.php';
-    $where = "";
-    $mail = $_GET['inputMail'];
-    include 'config/Conn.php';
-    $queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
-    $resultadoId = $conn->query($queryId);
-    if ($resultadoId) {
-      $resultadoId->data_seek(0);
-      $filaId = $resultadoId->fetch_assoc();
-      $idAsesor = $filaId['idAsesor'];
-    } else {
-      echo "ERROR: " . $conn->error;
-    }
-    $conn->close();
+
+$where = "";
+$idAsesor = "";
+$mail = $_GET['inputMail'];
+include 'config/Conn.php';
+$queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$mail'";
+$resultadoId = $conn->query($queryId);
+if ($resultadoId) {
+  $resultadoId->data_seek(0);
+  $filaId = $resultadoId->fetch_assoc();
+  $idAsesor = $filaId['idAsesor'];
+} else {
+  echo "ERROR: " . $conn->error;
+}
+$conn->close();
 ?>
+
 <div class="container p-5">
   <div class="row p-2">
     <div class="col-md-6">
@@ -25,7 +28,7 @@
 </div>
 <div class="container">
   <div class="row">
-    <h5>ULTIMAS ASESORIAS</h5>
+    <h5>ÚLTIMAS ASESORIAS</h5>
       <div class="table-responsive">
           <table class="table table-striped table-dark table-sm table-bordered">
               <thead>
@@ -67,7 +70,7 @@
                       <tr>
                           <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
                           <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
-                          <td class="align-middle"><?php echo utf8_encode($fila['Motivo']); ?></td>
+                          <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
                           <td class="align-middle"><?php echo $fila['Observaciones']; ?></td>
                       </tr>
                   <?php
@@ -81,5 +84,13 @@
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='asesor_historial.php?id=<?php echo $idAsesor; ?>'">VER TODAS</button>
     </div>
   </div>
+
+  <script>
+    $(document).ready(function () {
+        $(document.body).on("click", "td[data-href]", function () {
+          window.location.href = this.dataset.href + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
+        });
+    });
+  </script>
   </body>
   </html>
