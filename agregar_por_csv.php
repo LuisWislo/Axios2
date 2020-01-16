@@ -11,8 +11,8 @@
             $file = fopen($filename, "r");
 
             while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-                $sql = "INSERT INTO alumno (noLista, nombre, apellidos, idGrupo) 
-                VALUES (". $column[0] . ",'" . $column[1] . "','" . $column[2]
+                $sql = "INSERT INTO alumno (noLista, nombre, apellido, idGrupo) 
+                VALUES (". $column[0] . ",'" . $column[2] . "','" . $column[1]
                  . "'," . $grupoId . ")";
 
                 $result = $conn->query($sql);
@@ -101,7 +101,7 @@
                 <td><?=utf8_encode($fila['idAlumno'])?></td>
                 <td><?=utf8_encode($fila['noLista'])?></td>
                 <td><?=utf8_encode($fila['nombre'])?></td>
-                <td><?=utf8_encode($fila['apellidos'])?></td>
+                <td><?=utf8_encode($fila['apellido'])?></td>
             </tr>
             <?php } ?>
         </tbody>
