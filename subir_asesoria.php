@@ -2,6 +2,7 @@
 $where = "";
 $idAsesor = (int) $_GET['idAsesor'];
 $idAlumno = (int) $_GET['idAlumno'];
+$idIntegrantes = $_GET['idIntegrantes'];
 $idTipoAsesoria = (int) $_GET['idTipoAsesoria'];
 $idMotivoAsesoria = (int) $_GET['idMotivoAsesoria'];
 include 'config/Conn.php';
@@ -20,8 +21,8 @@ if (isset($_POST['subir'])) {
   $observaciones = $_POST['observaciones'];
   echo $fecha;
   echo $observaciones;
-  $query = "INSERT INTO Asesoria (idAlumno, idMotivo, idAsesor, fecha, observaciones) VALUES ($idAlumno, $idMotivoAsesoria,
-                        $idAsesor, '$fecha', '$observaciones')";
+  $query = "INSERT INTO Asesoria (idAlumno, idMotivo, idAsesor, fecha, observaciones, idIntegrantes) VALUES ($idAlumno, 
+                        $idMotivoAsesoria, $idAsesor, '$fecha', '$observaciones', $idIntegrantes)";
   if ($conn->query($query) === TRUE) {
     ob_start();
     // FACILITADORESAXIOS.COM

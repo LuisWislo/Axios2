@@ -2,6 +2,7 @@
     $where = "";
     $idAsesor = (int)$_GET['idAsesor'];
     $idAlumno = (int)$_GET['idAlumno'];
+    $idIntegrantes = $_GET['idIntegrantes'];
     $idTipoAsesoria = (int)$_GET['idTipoAsesoria'];
     include 'config/Conn.php';
     $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
@@ -91,6 +92,7 @@
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
                                  + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+                                 + "&idIntegrantes=" + <?php echo(json_encode($idIntegrantes)); ?>
                                  + "&idTipoAsesoria=" + <?php echo(json_encode($idTipoAsesoria)); ?>
                                  + "&idMotivoAsesoria=" + document.getElementById('motivoAsesoria').value;
         });
