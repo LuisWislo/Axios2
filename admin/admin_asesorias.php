@@ -31,6 +31,9 @@ if(isset($_POST['filtrar'])){
 ?>
 
 <div class="container">
+    <h4 class="display-4 text-center">Historial de asesorias</h4>
+    <br>
+    <br>
     <div class="row">
         <form method="POST">
             
@@ -140,7 +143,7 @@ if(isset($_POST['filtrar'])){
                 <tbody id="pagination">
                     <?php
                     include '../config/Conn.php';
-                    $query = "SELECT Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
+                    $query = "SELECT Asesores.idAsesor AS idAsesor, Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
@@ -161,8 +164,8 @@ if(isset($_POST['filtrar'])){
                         ?>
                         <tr>
                             <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-                            <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
-                            <td class="align-middle"><?php echo $fila['nombre']; ?></td>
+                            <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+                            <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle"><?php echo $fila['nombre']; ?></td>
                             <td class="align-middle"><?php echo $fila['fecha']; ?></td>
                             <td class="align-middle"><?php echo $fila['motivo']; ?></td>
                             <td class="align-middle"><?php echo $fila['observaciones']; ?></td>
@@ -191,8 +194,11 @@ if(isset($_POST['filtrar'])){
 
     <script>
         $(document).ready(function () {
-            $(document.body).on("click", "td[data-href]", function () {
-                window.location.href = this.dataset.href + "?id="+ this.dataset.id;
+            $(document.body).on("click", "td[data-alumno]", function () {
+                window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
+            });
+            $(document.body).on("click", "td[data-asesor]", function () {
+                window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
             });
         });
     </script>

@@ -3,7 +3,7 @@
         cursor: pointer;
     }
 
-    td:hover {
+    td[data-href]:hover {
         background-color: #33a652;
     }
 </style>
@@ -35,9 +35,9 @@ if (isset($_POST['filtrar'])) {
 ?>
 
 <div class="container">
-    <h4 class="display-4 text-center">Historial de asesoria</h4>
+    <h4 class="display-4 text-center">Historial de asesorias</h4>
     <br>
-    <h4 class="text-center">Historial de:&nbsp;<?php echo $nombre;?></h4>
+    <h4 class="text-center">Historial de facilitador:&nbsp;<?php echo $nombre;?></h4>
           
     
     <div class="row">
@@ -134,13 +134,13 @@ if (isset($_POST['filtrar'])) {
     </div>
 </div>
 
-<script src="paginacion/bootstrap-table-pagination.js"></script>
-<script src="paginacion/pagination.js"></script>
+<script src="../paginacion/bootstrap-table-pagination.js"></script>
+<script src="../paginacion/pagination.js"></script>
 
 <script>
     $(document).ready(function() {
         $(document.body).on("click", "td[data-href]", function() {
-            window.location.href = this.dataset.href + "?id=" + this.dataset.id;
+            window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
         });
     });
 </script>

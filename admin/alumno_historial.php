@@ -11,7 +11,8 @@
 include 'navbar_admin.php';
 
 $where = "";
-$idAlumno = (int)$_GET['id'];
+$idAlumno = (int)$_GET['idAlumno'];
+$idAsesor = (int)$_GET['idUsuario'];
 $mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
 
 include '../config/Conn.php';
@@ -34,12 +35,10 @@ if(isset($_POST['filtrar'])){
 ?>
 
 <div class="container">
-    <div class="row text-center">
-        
-        <h4 class="display-4 text-center">HISTORIAL DE ASESORIAS DE:&nbsp;<?php echo $nombre;?></h45>
-        <br>
-        <br>
-    </div>
+    <h4 class="display-4 text-center">Historial de asesorias</h4>
+    <br>
+    <h4 class="text-center">Historial de alumno:<br /><?php echo $nombre;?></h4>
+    <br>
     <div class="row">
         <form method="POST">
             
@@ -88,7 +87,7 @@ if(isset($_POST['filtrar'])){
         <tbody id="pagination">
           <?php
           include '../config/Conn.php';
-          $query = "SELECT Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
+          $query = "SELECT Asesores.idAsesor AS idAsesor, Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
