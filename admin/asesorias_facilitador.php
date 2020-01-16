@@ -12,7 +12,7 @@
 
 $idAsesor = (int) $_GET['id'];
 
-include 'conexion_admin.php';
+include '../config/Conn.php';
 $queryId = "SELECT nombre FROM Asesor WHERE idAsesor = '$idAsesor'";
 $resultadoId = $conn->query($queryId);
 $resultadoId->data_seek(0);
@@ -83,7 +83,7 @@ if (isset($_POST['filtrar'])) {
                 </thead>
                 <tbody id="pagination">
                     <?php
-                    include 'conexion_admin.php';
+                    include '../config/Conn.php';
                     $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
                     Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observaciones AS Observaciones
                     FROM (	

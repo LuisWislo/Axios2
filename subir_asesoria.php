@@ -24,7 +24,11 @@ if (isset($_POST['subir'])) {
                         $idAsesor, '$fecha', '$observaciones')";
   if ($conn->query($query) === TRUE) {
     ob_start();
+    // FACILITADORESAXIOS.COM
     $url = 'http://facilitadoresaxios.com/carga_exitosa.php';
+
+    // TEST EN XAMP
+    $url = 'asesor_dashboard.php?inputMail=' . $mail;
 
     while (ob_get_status()) {
       ob_end_clean();
@@ -100,16 +104,6 @@ if (isset($_POST['subir'])) {
     </div>
   </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        $(document.body).on("click", "button[data-href]", function () {
-            window.location.href = this.dataset.href
-                                 + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
-                                 + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>                                 
-        });
-    });
-</script>
 
 </body>
 

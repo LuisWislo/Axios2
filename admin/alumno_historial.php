@@ -17,7 +17,6 @@ $mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
 include '../config/Conn.php';
 $queryId = "SELECT CONCAT(a.nombre,' ', a.apellido) AS nombre FROM Alumno a WHERE idAlumno = '$idAlumno'";
 $resultadoId = $conn->query($queryId);
-echo $conn->error;
 $resultadoId->data_seek(0);
 $filaId = $resultadoId->fetch_assoc();
 $nombre = $filaId['nombre'];
