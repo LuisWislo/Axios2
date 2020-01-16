@@ -129,6 +129,11 @@ INSERT INTO Grupo (grupo, idGrado) VALUES
 ('2', 35),
 ('3', 36);
 
+--integrantes
+INSERT INTO `Integrantes` (`descripcion`) VALUES
+('Solo alumno'),
+('Con padres');
+
 -- tipo asesoria
 INSERT INTO `tipo_asesoria` (`tipoAsesoria`) VALUES
 ('Familiar'), 

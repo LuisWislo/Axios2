@@ -11,19 +11,18 @@
 include 'navbar_admin.php';
 
 
-$where = "";
+$where = "WHERE TRUE";
 $asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
 $mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
 $semestre = !empty($_POST['semestre']) ? $_POST['semestre'] : "";
 $anio = !empty($_POST['anio']) ? $_POST['anio'] : "";
 
 if(isset($_POST['filtrar'])){
-    if ($mes && $asesor) $where = "WHERE MONTH(Asesores.fecha) = " . $mes . " and Asesores.nombre = '". $asesor ."'";
-    else if($mes){
-        $where = "WHERE MONTH(Asesores.fecha) = ". $mes;
+    if($mes){
+        $where = "AND MONTH(Asesores.fecha) = ". $mes;
     }
     else if($asesor){
-        $where = "WHERE Asesores.nombre = '". $asesor ."'";
+        $where = "AND Asesores.nombre = '". $asesor ."'";
     }
 
 }

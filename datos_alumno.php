@@ -98,6 +98,7 @@
             window.location.href = this.dataset.href
                                  + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?>
                                  + "&idAlumno=" + <?php echo(json_encode($idAlumno)); ?>
+                                 + "&idIntegrantes=" + $('input[name="integrantes"]:checked').val();
         });
     });
 </script>

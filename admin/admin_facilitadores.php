@@ -50,11 +50,7 @@
             </table>
         </div>
     </div>
-    <div class="col-lg-2">
-        <div class="row">
-            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">Regresar</button><br>
-        </div>
-    </div>
+    
 </div>
 
 
