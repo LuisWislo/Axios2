@@ -11,9 +11,9 @@
 <?php
 include 'asesor_navbar.php';
 
-$idAsesor = $filaId['idAsesor'];
+$idAsesor = (int)$_GET['idAsesor'];
 include 'config/Conn.php';
-$queryId = "SELECT idAsesor FROM Asesor WHERE correo = '$idAsesor'";
+$queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
 $resultadoId = $conn->query($queryId);
 $resultadoId->data_seek(0);
 $filaId = $resultadoId->fetch_assoc();

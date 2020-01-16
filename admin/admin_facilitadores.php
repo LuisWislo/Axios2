@@ -20,12 +20,13 @@
                     <th scope="col">Asesorias</th>
                     <th scope="col">Editar</th>
                     <th scope="col">Nueva contraseña</th>
+                    <th scope="col">Borrar</th>
                 </thead>
                 <tbody>
                     <?php
                     include '../config/Conn.php';
 
-                    $resultado = $conn->query("SELECT * FROM Asesor");
+                    $resultado = $conn->query("SELECT * FROM Asesor ORDER BY Asesor.idAsesor ASC");
 
                     $resultado->data_seek(0);
                     while ($fila = $resultado->fetch_assoc()) {
@@ -38,6 +39,7 @@
                             <td class="align-middle"><a role="button" href="asesorias_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-primary">Historial</a></td>
                             <td class="align-middle"><a role="button" href="editar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Editar</a></td>
                             <td class="align-middle"><a role="button" href="editar_password.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Nueva contraseña</a></td>
+                            <td class="align-middle"><a role="button" href="borrar_facilitador.php?idUsuario=<?php echo $fila['idAsesor']; ?>" class=" btn btn-danger">Borrar</a></td>
                         </tr>
                     <?php
                     }
@@ -48,12 +50,13 @@
             </table>
         </div>
     </div>
-</div>
-<div class="col-lg-2">
-    <div class="row">
-        <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">Regresar</button><br>
+    <div class="col-lg-2">
+        <div class="row">
+            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">Regresar</button><br>
+        </div>
     </div>
 </div>
+
 
 </body>
 </html>

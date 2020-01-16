@@ -20,7 +20,7 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
 
   include 'config/Conn.php';
 
-  $query = "SELECT * FROM Asesor WHERE correo = '$mail' AND contra = PASSWORD('$pass')";
+  $query = "SELECT * FROM Asesor WHERE correo = '$mail' AND `password` = PASSWORD('$pass')";
   $resultado = $conn->query($query);
   if ($resultado) {
     $fila = mysqli_fetch_row($resultado);
@@ -30,9 +30,9 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
   $conn->close();
   if($fila == true){
     $_SESSION['user'] = $mail;
-    if($mail == 'admin@axios.com'){
+    if(substr($mail,0,5) === "admin"){
       $_SESSION['admin'] = true;
-      header('location: admin/admin_dashboard.php');
+      header('location: admin/admin_dashboard.php?');
     }else{
       header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
     }

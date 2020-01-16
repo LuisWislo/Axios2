@@ -14,18 +14,11 @@ if (isset($_POST['subir'])) {
             include '../config/Conn.php';
             $query = "UPDATE Asesor SET password = PASSWORD('$newPassword') WHERE Asesor.idAsesor = $idUsuario";
             if ($conn->query($query) === TRUE) {
-            $message = "Cambios guardados con éxito";
-            echo "<script type='text/javascript'>alert('$message');</script>";
-        
-            ob_start();
-            $url = 'http://facilitadoresaxios.com/admin_facilitadores.php';
-        
-            while (ob_get_status()) {
-                ob_end_clean();
-            }
-            header("Location: $url");
+                $message = "Cambios guardados con éxito";
+                echo "<script type='text/javascript'>alert('$message');</script>";
+                echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
             } else {
-            echo "Error: " . $query . "<br>" . $conn->error;
+                echo "Error: " . $query . "<br>" . $conn->error;
             }
         
             $conn->close();
