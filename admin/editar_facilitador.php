@@ -1,15 +1,49 @@
 <?php include 'navbar_admin.php';
-    $idAsesor = (int)$_GET['idAsesor'];
+    $idUsuario = (int)$_GET['idUsuario'];
 ?>
 
 <?php
+
+$oldNombre = "";
+$oldCorreo = "";
+
+include '../config/Conn.php';
+$query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo
+    FROM Asesor as ass
+    WHERE ass.idAsesor = $idUsuario";
+    $resultado = $conn->query($query);
+    if ($resultado) {
+        $resultado->data_seek(0);
+        $fila = $resultado->fetch_assoc();
+        $oldNombre = $fila['Asesor'];
+        $oldCorreo = $fila['Correo'];
+    } else {
+        echo "ERROR: " . $conn->error . "ON: \n";
+        echo $query;
+    }
+    $conn->close();
+
+
+?>
+
+<?php
+
 if (isset($_POST['subir'])) {
-  include '../config/Conn.php';
   $nombre = $_POST['nombre'];
   $correo = $_POST['correo'];
-  $password = $_POST['pass'];
-  $query = "UPDATE Asesor SET nombre = $nombre, correo = $correo, password = PASSWORD($password) WHERE Asesor.idAsesor = $idAsesor";
+  if($nombre === $oldNombre || $nombre === "") {
+    $nombre = $oldNombre;
+  }
+
+  if($correo === $oldCorreo || $correo === "") {
+    $correo = $oldCorreo;
+  }
+  include '../config/Conn.php';
+  $query = "UPDATE Asesor SET nombre='" . $nombre . "', correo='" . $correo . "' WHERE idAsesor = $idUsuario";
   if ($conn->query($query) === TRUE) {
+    $message = "Cambios guardados con éxito";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+
     ob_start();
     $url = 'http://facilitadoresaxios.com/admin_facilitadores.php';
 
@@ -28,19 +62,8 @@ if (isset($_POST['subir'])) {
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-10">
-        <?php
-        include '../config/Conn.php';
-        $query = "SELECT ass.nombre AS Asesor, ass.correo AS Correo, PASSWORD(ass.password) AS Pass,
-        FROM Asesor as ass
-        WHERE ass.idAsesor = $idAsesor";
-        $resultado = $conn->query($query);
-        if ($resultado) {
-          $resultado->data_seek(0);
-          $fila = $resultado->fetch_assoc()
-        ?>
-          <h1>Editando:</h1>
           <br>
-          <h2><?php echo $fila['Asesor']; ?></h2>
+          <h4>Editando:&nbsp;<?php echo $fila['Asesor']; ?></h4>
           <br>
           <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
 
@@ -48,19 +71,11 @@ if (isset($_POST['subir'])) {
             <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <label for="input-nombre">Nombre</label>
-                <input type="input-nombre" class="form-control" name="asesor" placeholder="<?php echo $fila['Asesor']; ?>">
+                <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $oldNombre; ?>">
+                <br>
                 <label for="input-correo">Correo</label>
-                <input type="input-correo" class="form-control" name="correo" placeholder="<?php echo $fila['Correo']; ?>" >
-                <label for="input-contraseña">Contraseña</label>
-                <input type="input-contraseña" class="form-control" name="pass" placeholder="<?php echo $fila['Pass']; ?>" >
-              </div>
-              <?php
-        } else {
-          echo "ERROR: " . $conn->error . "ON: \n";
-          echo $query;
-        }
-              $conn->close();
-              ?>
+                <input type="input-correo" class="form-control" name="correo" placeholder="<?php echo $oldCorreo; ?>" >
+               </div>
               <div class="col-sm-2"></div>
             </div>
           </form>
