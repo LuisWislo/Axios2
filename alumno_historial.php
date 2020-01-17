@@ -3,7 +3,7 @@ include 'asesor_navbar.php';
 
 $where = "";
 $idAlumno = (int)$_GET['idAlumno'];
-$idAsesor = (int)$_GET['idAsesor'];
+$idAsesor = (int)$_GET['id'];
 include 'config/Conn.php';
 $queryId = "SELECT correo FROM Asesor WHERE idAsesor = '$idAsesor'";
 $resultadoId = $conn->query($queryId);

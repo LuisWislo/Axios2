@@ -40,43 +40,47 @@
           <h4 class="display-4 text-center">Nueva asesoria con:</h4>
           <br>
           <h4 class="text-center"><?php echo $fila['Alumno']; ?></h4>
+          <br>
           <form onsubmit="return validateForm()">
    
         <?php
         }
         $conn->close();
         ?>
-          <div class="row my-4">
-            <div class="col-sm-2"></div>
-              <div class="col-sm-4">
-                <label for="input-tipo">Motivo de Asesoría</label>
-                <select id="motivoAsesoria" class="form-control">
-                <?php
-                include 'config/Conn.php';
-                $query = "SELECT m.idMotivo AS id, m.motivo AS motivo
-                FROM Motivo as m
-                WHERE m.idTipoAsesoria = $idTipoAsesoria";
-                $resultado = $conn->query($query);
+        <center>
+          <label for="input-tipo">Motivo de Asesoría</label>
+        </center>
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="row">
+              <select id="motivoAsesoria" class="form-control">
+              <?php
+              include 'config/Conn.php';
+              $query = "SELECT m.idMotivo AS id, m.motivo AS motivo
+              FROM Motivo as m
+              WHERE m.idTipoAsesoria = $idTipoAsesoria";
+              $resultado = $conn->query($query);
 
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                  ?>
-                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['motivo']; ?></option>
-                <?php } ?>
-                
-                </select>
-                <?php
-                $conn->close();
+              $resultado->data_seek(0);
+              while ($fila = $resultado->fetch_assoc()) {
                 ?>
-              </div>
-              <div class="col-sm-2"></div>
+                <option value="<?php echo $fila['id']; ?>"><?php echo $fila['motivo']; ?></option>
+              <?php } ?>
+              
+              </select>
+              <br>
+              <?php
+              $conn->close();
+              ?>
             </div>
-          </form>
+          </div>
+        </div>
+        </form>
         
         
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
-            <button data-href="subir_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
+            <button data-href="fobs_asesoria.php" class="btn btn-success btn-lg btn-primary btn-block text-uppercase">Aceptar</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='asesor_dashboard.php?inputMail=<?php echo $mail; ?>'">Cancelar</button>

@@ -128,7 +128,7 @@ if(isset($_POST['filtrar'])){
 <script>
     $(document).ready(function () {
         $(document.body).on("click", "td[data-href]", function () {
-            window.location.href = this.dataset.href + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
+            window.location.href = this.dataset.href + "?id=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
         });
     });
 </script>

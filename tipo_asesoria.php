@@ -38,35 +38,39 @@
           <h4 class="display-4 text-center">Nueva asesoria con:</h4>
           <br>
           <h4 class="text-center"><?php echo $fila['Alumno']; ?></h4>
+          <br>
           <form onsubmit="return validateForm()">
         <?php
         $conn->close();
         ?>
-          <div class="row my-4">
-            <div class="col-sm-2"></div>
-              <div class="col-sm-4">
-                <label for="input-tipo">Tipo de Asesoría</label>
-                <select id="tipoAsesoria" class="form-control">
-                <?php
-                include 'config/Conn.php';
-                $query = "SELECT t.idTipoAsesoria AS id, t.tipoAsesoria AS tipo
-                FROM TipoAsesoria as t";
-                $resultado = $conn->query($query);
+        <center>
+          <label for="input-tipo">Tipo de Asesoría</label>
+        </center>
+        <div class="row justify-content-center">
+          <div class="col-md-4">
+            <div class="row">
+              <select id="tipoAsesoria" class="form-control">
+              <?php
+              include 'config/Conn.php';
+              $query = "SELECT t.idTipoAsesoria AS id, t.tipoAsesoria AS tipo
+              FROM TipoAsesoria as t";
+              $resultado = $conn->query($query);
 
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                  ?>
-                  <option value="<?php echo $fila['id']; ?>"><?php echo $fila['tipo']; ?></option>
-                <?php } ?>
-                
-                </select>
-                <?php
-                $conn->close();
+              $resultado->data_seek(0);
+              while ($fila = $resultado->fetch_assoc()) {
                 ?>
-              </div>
-              <div class="col-sm-2"></div>
+                <option value="<?php echo $fila['id']; ?>"><?php echo $fila['tipo']; ?></option>
+              <?php } ?>
+              
+              </select>
+              <br>
+              <?php
+              $conn->close();
+              ?>
             </div>
-          </form>
+          </div>
+        </div>
+        </form>
         
         
         <div class="row my-4 justify-content-center">
