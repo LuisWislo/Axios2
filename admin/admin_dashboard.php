@@ -30,7 +30,7 @@ include 'navbar_admin.php';
         <thead>
           <th scope="col">ID</th>
           <th scope="col">Alumno</th>
-          <th scope="col">Asesor</th>
+          <th scope="col">Facilitador</th>
           <th scope="col">Fecha</th>
           <th scope="col">Motivo</th>
           <th scope="col">Observaciones</th>
