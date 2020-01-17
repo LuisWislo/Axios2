@@ -13,19 +13,25 @@ include 'navbar_admin.php';
 
 
 $where = "WHERE TRUE";
+
+$escuela = !empty($_POST['escuela']) ? $_POST['escuela'] : "";
 $asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
-$mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
-$semestre = !empty($_POST['semestre']) ? $_POST['semestre'] : "";
 $anio = !empty($_POST['anio']) ? $_POST['anio'] : "";
+$semestre = !empty($_POST['semestre']) ? $_POST['semestre'] : "";
+$mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
+$rangoDeFechasInicio = !empty($_POST['rangoDeFechasInicio']) ? $_POST['rangoDeFechasInicio'] : "";
+$rangoDeFechasFin = !empty($_POST['rangoDeFechasFin']) ? $_POST['rangoDeFechasFin'] : "";
 
 if (isset($_POST['filtrar'])) {
-  if ($mes) {
-    $where = "AND MONTH(Asesores.fecha) = " . $mes;
-  } else if ($asesor) {
-    $where = "AND Asesores.nombre = '" . $asesor . "'";
-  }
-}
 
+  if ($asesor) $where .= " AND asesor.nombre = '" . $asesor . "' ";
+  if ($anio) $where .= " AND YEAR(asesoria.fecha) = '" . $anio . "' ";
+  if ($mes) $where .= " AND MONTH(asesoria.fecha) = " . $mes;
+  if (isset($_POST['filtroFecha']) && $rangoDeFechasInicio && $rangoDeFechasFin) {
+    $where .= " AND asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
+  }
+
+}
 
 ?>
 
@@ -35,16 +41,13 @@ if (isset($_POST['filtrar'])) {
   <br>
   <div class="row">
     <form method="POST">
-
       <div class="row mb-3">
         <div class="col-sm-12">
           <h5>FILTROS</h5>
         </div>
-
-        <div class="col-sm-4">
-
+        <div class="col-sm-3">
           <select id="filtroAsesor" class="form-control" name="asesor">
-            <option value="0" selected>Asesor</option>
+            <option value="" selected>Asesor</option>
             <?php
             include '../config/Conn.php';
             $resultado = $conn->query("SELECT nombre FROM Asesor");
@@ -59,8 +62,7 @@ if (isset($_POST['filtrar'])) {
             ?>
           </select>
         </div>
-        <div class="col-sm-4">
-
+        <div class="col-sm-3">
           <select id="filtroSede" class="form-control" name="sede">
             <option value="" selected>Sede</option>
             <?php
@@ -77,7 +79,24 @@ if (isset($_POST['filtrar'])) {
             ?>
           </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
+          <select id="filtroEscuela" class="form-control" name="Escuela">
+            <option value="" selected>Escuela</option>
+            <?php
+            include '../config/Conn.php';
+            $resultado = $conn->query("SELECT nombre FROM Escuela");
+            $resultado->data_seek(0);
+            while ($fila = $resultado->fetch_assoc()) {
+              $nombreEscuela = $fila['nombre'];
+            ?>
+              <option value="<?php echo $nombreEscuela; ?>"><?=utf8_encode($nombreEscuela)?></option>
+            <?php
+            }
+            $conn->close();
+            ?>
+          </select>
+        </div>
+        <div class="col-sm-3">
           <select id="filtroAnio" class="form-control" name="anio">
             <option value="" selected>Año</option>
             <option value="2020">2020</option>
@@ -88,8 +107,8 @@ if (isset($_POST['filtrar'])) {
           </select>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-4">
+      <div class="row mb-3">
+        <div class="col-sm-3">
           <select id="filtroSemestre" class="form-control" name="semestre">
             <option value="" selected>Semestre</option>
             <option value="EJ20">Enero-Junio 2020</option>
@@ -103,7 +122,7 @@ if (isset($_POST['filtrar'])) {
             <option value="EJ16">Enero-Junio 2016</option>
           </select>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
           <select id="filtroMes" class="form-control" name="mes">
             <option value="" selected>Mes</option>
             <option value="1">Enero</option>
@@ -120,14 +139,34 @@ if (isset($_POST['filtrar'])) {
             <option value="12">Diciembre</option>
           </select>
         </div>
-        <div class="col-sm-4">
+      </div>
+      <div class="row mb-3">
+        <div class="col-sm-12">
+          <h5>FILTRAR POR FECHA</h5>
+          <input type="checkbox" name="filtroFecha" id="filtroFecha">
+        </div>
+        <div id="rangoDeFechas" class="form-group col-sm-5">
+            <input id="rangoDate" type="text" autocomplete="off" name="fechas" class="form-control">
+            <input id="resultStart" type="hidden" name="rangoDeFechasInicio">
+            <input id="resultEnd" type="hidden" name="rangoDeFechasFin">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2">
           <button name="filtrar" type="submit" class="btn btn-success">FILTRAR</button>
         </div>
       </div>
     </form>
   </div>
+  <div class="row">
+      <form action="exportar_csv.php?where=<?=$where?>" method="post">
+        <input type="submit" name="exportar" value="Exportar CSV" class="btn btn-warning">
+        <input type="hidden" name="where" value="<?=$where?>">
+      </form>
+  </div>
   <br>
   <div class="row">
+    
     <h5>ASESORIAS</h5>
     <div class="table-responsive">
       <table class="table table-striped table-dark table-sm table-bordered">
@@ -144,21 +183,22 @@ if (isset($_POST['filtrar'])) {
           include '../config/Conn.php';
           $query =
             "SELECT 
-                        asesoria.idAsesoria AS idAsesoria 
-                        , alumno.idAlumno AS id 
-                        , CONCAT(alumno.nombre,' ',alumno.apellido) AS Alumno
-                        , asesor.idAsesor AS idAsesor
-                        , asesor.nombre AS Asesor
-                        , DATE_FORMAT(asesoria.fecha, '%d-%m-%Y') AS Fecha 
-                        , motivo.motivo AS Motivo
-                        , integrantes.descripcion AS Dinamica 
-                        , asesoria.observaciones AS Observaciones
-                    FROM asesoria 
-                    JOIN alumno on alumno.idAlumno = asesoria.idAlumno 
-                    JOIN asesor on asesor.idAsesor = asesoria.idAsesor 
-                    JOIN motivo on motivo.idMotivo = asesoria.idMotivo 
-                    JOIN integrantes on integrantes.idIntegrantes = asesoria.idIntegrantes
-                    ORDER BY asesoria.idAsesoria DESC";
+                asesoria.idAsesoria AS idAsesoria 
+                , alumno.idAlumno AS id 
+                , CONCAT(alumno.nombre,' ',alumno.apellido) AS Alumno
+                , asesor.idAsesor AS idAsesor
+                , asesor.nombre AS Asesor
+                , DATE_FORMAT(asesoria.fecha, '%d-%m-%Y') AS Fecha 
+                , motivo.motivo AS Motivo
+                , integrantes.descripcion AS Dinamica 
+                , asesoria.observaciones AS Observaciones
+            FROM asesoria 
+            JOIN alumno on alumno.idAlumno = asesoria.idAlumno 
+            JOIN asesor on asesor.idAsesor = asesoria.idAsesor 
+            JOIN motivo on motivo.idMotivo = asesoria.idMotivo 
+            JOIN integrantes on integrantes.idIntegrantes = asesoria.idIntegrantes
+            $where
+            ORDER BY asesoria.idAsesoria DESC";
           //echo $query;
           $resultado = $conn->query($query);
           if (!$resultado) echo "ERROR: " . $conn->error . $query;
@@ -167,13 +207,11 @@ if (isset($_POST['filtrar'])) {
           ?>
             <tr>
               <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" 
-                class="align-middle"><?php echo $fila['Alumno']; ?></td>
-              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" 
-                class="align-middle"><?php echo $fila['Asesor']; ?></td>
-              <td class="align-middle"><?php echo $fila['fecha']; ?></td>
-              <td class="align-middle"><?php echo $fila['motivo']; ?></td>
-              <td class="align-middle"><?php echo $fila['observaciones']; ?></td>
+              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle"><?php echo $fila['Asesor']; ?></td>
+              <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
+              <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
+              <td class="align-middle"><?php echo $fila['Observaciones']; ?></td>
             </tr>
           <?php
           }
@@ -199,6 +237,8 @@ if (isset($_POST['filtrar'])) {
 
 <script src="../paginacion/bootstrap-table-pagination.js"></script>
 <script src="../paginacion/pagination.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
 <script>
   $(document).ready(function() {
@@ -210,6 +250,8 @@ if (isset($_POST['filtrar'])) {
     });
   });
 </script>
+
+<script src="../js/filtrosPorFecha.js"></script>
 
 </body>
 
