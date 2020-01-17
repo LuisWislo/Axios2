@@ -39,7 +39,6 @@ if (isset($_POST['filtrar'])) {
     <br>
     <h4 class="text-center">Historial de facilitador:&nbsp;<?php echo $nombre;?></h4>
           
-    
     <div class="row">
         <form method="POST">
 
@@ -129,7 +128,7 @@ if (isset($_POST['filtrar'])) {
         </div>
 
         <div class="row">
-            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_facilitadores.php'">BACK</button><br>
+            <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_facilitadores.php'">Regresar</button><br>
         </div>
     </div>
 </div>

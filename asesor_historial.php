@@ -24,6 +24,9 @@ if(isset($_POST['filtrar'])){
 
 ?>
 <div class="container">
+    <h4 class="display-4 text-center">Historial de asesorias</h4>
+    <br>
+     
     <div class="row">
         <form action="accion.php" method="POST">
             
@@ -125,7 +128,7 @@ if(isset($_POST['filtrar'])){
 <script>
     $(document).ready(function () {
         $(document.body).on("click", "td[data-href]", function () {
-            window.location.href = this.dataset.href + "?idAsesor=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
+            window.location.href = this.dataset.href + "?id=" + <?php echo(json_encode($idAsesor)); ?> + "&idAlumno="+ this.dataset.id;
         });
     });
 </script>

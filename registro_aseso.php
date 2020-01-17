@@ -11,17 +11,16 @@
 ?>
 
 <div class="container">
+  <h4 class="display-4 text-center">Registro de nueva asesoria</h4>
+  <br>
+  <h4 class="text-center">Escriba el nombre del alumno</h4>
+  <center>
+      <input id="search" type="text" size="50" style="text-align:center;" placeholder="Escriba aquí">
+  </center>
+  <br>
   <div class="row justify-content-center">
     <div class="col-md-10">
-      <h1>Registro de nueva asesoria</h1>
-      <b>Escriba nombre de alumno</b>
-        <div class="row">
-          <div class="col-md-12">
-            <input id="search" type="text" placeholder="Escriba aquí">
-          </div>
-      </div>
-        <br> 
-        <br> 
+       
         <table id="houdini" class="table table-striped table-dark table-sm table-bordered">
           <thead>
             <th scope="col">Alumno</th>

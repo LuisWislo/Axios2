@@ -1,3 +1,12 @@
+<style>
+    td[data-href] {
+        cursor: pointer;  
+    }
+    td[data-href]:hover {
+        background-color: #33a652;
+    }
+</style> 
+
 <?php
 include 'navbar_admin.php';
 ?>
@@ -15,13 +24,13 @@ include 'navbar_admin.php';
 </div>
 <div class="container">
   <div class="row">
-    <h5>ULTIMAS ASESORIAS</h5>
+    <h5>ÚLTIMAS ASESORIAS</h5>
     <div class="table-responsive">
       <table class="table table-striped table-dark table-sm table-bordered">
         <thead>
           <th scope="col">ID</th>
           <th scope="col">Alumno</th>
-          <th scope="col">Asesor</th>
+          <th scope="col">Facilitador</th>
           <th scope="col">Fecha</th>
           <th scope="col">Motivo</th>
           <th scope="col">Observaciones</th>
@@ -29,7 +38,7 @@ include 'navbar_admin.php';
         <tbody>
           <?php
           include '../config/Conn.php';
-          $query = "SELECT Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
+          $query = "SELECT Asesores.idAsesor AS idAsesor, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
                     FROM (	
                         SELECT * FROM Asesor 
                         NATURAL JOIN (
@@ -50,8 +59,8 @@ include 'navbar_admin.php';
             ?>
             <tr>
               <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td class="align-middle"><?php echo $fila['Alumno']; ?></td>
-              <td class="align-middle"><?php echo $fila['nombre']; ?></td>
+              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
+              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>"class="align-middle"><?php echo $fila['nombre']; ?></td>
               <td class="align-middle"><?php echo $fila['fecha']; ?></td>
               <td class="align-middle"><?php echo $fila['motivo']; ?></td>
               <td class="align-middle"><?php echo $fila['observaciones']; ?></td>
@@ -68,5 +77,17 @@ include 'navbar_admin.php';
         <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
       </div>
   </div>
+
+  <script>
+    $(document).ready(function () {
+        $(document.body).on("click", "td[data-alumno]", function () {
+            window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
+        });
+        $(document.body).on("click", "td[data-asesor]", function () {
+            window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
+        });
+    });
+  </script>
+
   </body>
   </html>
