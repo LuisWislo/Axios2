@@ -30,7 +30,7 @@ $conn->close();
   <div class="row">
     <h5>ÚLTIMAS ASESORIAS</h5>
       <div class="table-responsive">
-          <table class="table table-striped table-dark table-sm table-bordered">
+          <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
               <thead>
                   <th scope="col">Alumno</th>
                   <th scope="col">Fecha</th>
@@ -68,10 +68,10 @@ $conn->close();
                   while ($fila = $resultado->fetch_assoc()) {
                       ?>
                       <tr>
-                          <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
-                          <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
-                          <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
-                          <td class="align-middle"><?php echo $fila['Observaciones']; ?></td>
+                          <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                       </tr>
                   <?php
                   }
