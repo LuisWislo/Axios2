@@ -1,18 +1,19 @@
 <style>
     td[data-href] {
-        cursor: pointer;  
+        cursor: pointer;
     }
+
     td[data-href]:hover {
         background-color: #33a652;
     }
-</style> 
+</style>
 
 <?php
 include 'navbar_admin.php';
 
 $where = "";
-$idAlumno = (int)$_GET['idAlumno'];
-$idAsesor = (int)$_GET['idUsuario'];
+$idAlumno = (int) $_GET['idAlumno'];
+// $idAsesor = (int)$_GET['idUsuario'];
 $mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
 
 include '../config/Conn.php';
@@ -23,10 +24,10 @@ $filaId = $resultadoId->fetch_assoc();
 $nombre = $filaId['nombre'];
 $conn->close();
 
-if(isset($_POST['filtrar'])){
-    if(!empty($_POST['mes'])){
-        
-         $where = "and MONTH(Asesores.fecha) = " . $mes . "";
+if (isset($_POST['filtrar'])) {
+    if (!empty($_POST['mes'])) {
+
+        $where = "and MONTH(Asesores.fecha) = " . $mes . "";
     } else {
         $where = "";
     }
@@ -37,18 +38,18 @@ if(isset($_POST['filtrar'])){
 <div class="container">
     <h4 class="display-4 text-center">Historial de asesorias</h4>
     <br>
-    <h4 class="text-center">Historial de alumno:<br /><?php echo $nombre;?></h4>
+    <h4 class="text-center">Historial de alumno:<br /><?php echo $nombre; ?></h4>
     <br>
     <div class="row">
         <form method="POST">
-            
+
             <div class="row">
                 <div class="col-sm-12">
                     <h5>FILTROS</h5>
                 </div>
-                
+
                 <div class="col-sm-4">
-                    
+
                     <select id="motivoAsesoria" class="form-control" name="mes">
                         <option value="0" selected>Mes</option>
                         <option value="1">Enero</option>
@@ -75,57 +76,69 @@ if(isset($_POST['filtrar'])){
     <div class="row">
         <h5>ASESORIAS</h5>
         <div class="table-responsive">
-      <table class="table table-striped table-dark table-sm table-bordered">
-        <thead>
-          <th scope="col">ID</th>
-          <th scope="col">Alumno</th>
-          <th scope="col">Facilitador</th>
-          <th scope="col">Fecha</th>
-          <th scope="col">Motivo</th>
-          <th scope="col">Observaciones</th>
-        </thead>
-        <tbody id="pagination">
-          <?php
-          include '../config/Conn.php';
-          $query = "SELECT Asesores.idAsesor AS idAsesor, Asesores.idAlumno AS id, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
-                    FROM (	
-                        SELECT * FROM Asesor 
-                        NATURAL JOIN (
-                            SELECT *
-                            FROM Motivo 
-                            NATURAL JOIN Asesoria
-                        ) as Motivos 
-                    ) AS Asesores
-                    INNER JOIN Alumno
-                    ON Asesores.idAlumno = Alumno.idAlumno
-                    WHERE Asesores.idAlumno = $idAlumno
-                            $where
-                    ORDER BY Asesores.idAsesoria DESC";
+            <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
+                <thead>
+                    <th scope="col">ID</th>
+                    <th scope="col">Alumno</th>
+                    <th scope="col">Facilitador</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Motivo</th>
+                    <th scope="col">Dinámica</th>
+                    <th scope="col">Observaciones</th>
+                </thead>
+                <tbody>
+                    <?php
+                    include '../config/Conn.php';
+                    $query = "SELECT 
+                      Asesoria.idAsesoria AS idAsesoria 
+                      , Alumno.idAlumno AS idAlumno 
+                      , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+                      , Asesor.idAsesor AS idAsesor
+                      , Asesor.nombre AS Asesor
+                      , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+                      , Motivo.motivo AS Motivo
+                      , Integrantes.descripcion AS Dinamica 
+                      , Asesoria.observaciones AS Observaciones
+                  FROM Asesoria 
+                  JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+                  JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+                  JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+                  JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+                  WHERE Alumno.idAlumno = $idAlumno
+                  ORDER BY Asesoria.idAsesoria DESC";
 
-          $resultado = $conn->query($query);
+                    $resultado = $conn->query($query);
+                    if (!$resultado) {
+                        echo "ERROR: " . $conn->error;
+                    }
+                    if (!$resultado->fetch_array()) {
+                        echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
+                    } else {
 
-          $resultado->data_seek(0);
-          while ($fila = $resultado->fetch_assoc()) {
-            ?>
-            <tr>
-              <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
-              <td class="align-middle"><?php echo $fila['nombre']; ?></td>
-              <td class="align-middle"><?php echo $fila['fecha']; ?></td>
-              <td class="align-middle"><?php echo $fila['motivo']; ?></td>
-              <td class="align-middle"><?php echo $fila['observaciones']; ?></td>
-            </tr>
-          <?php
-          }
-          $conn->close();
+                        $resultado->data_seek(0);
 
-          ?>
-        </tbody>
-      </table>
-    </div>
+                        while ($fila = $resultado->fetch_assoc()) {
+                    ?>
+                            <tr>
+                                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Asesor']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Motivo']); ?></td>
+                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Dinamica']); ?></td>
+                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Observaciones']); ?></td>
+                            </tr>
+                    <?php
+                        }
+                    }
+                    $conn->close();
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
         <div class="col-md-12 text-center">
-        <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
+            <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
         </div>
 
         <div class="row">
@@ -138,4 +151,5 @@ if(isset($_POST['filtrar'])){
 <script src="../paginacion/pagination.js"></script>
 
 </body>
+
 </html>

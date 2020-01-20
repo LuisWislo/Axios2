@@ -36,7 +36,7 @@ if (isset($_POST['filtrar'])) {
 ?>
 
 <div class="container">
-  <h4 class="display-4 text-center">Historial de asesorias</h4>
+  <h4 class="display-4 text-center">Historial de asesorías</h4>
   <br>
   <br>
   <div class="row">
@@ -167,31 +167,32 @@ if (isset($_POST['filtrar'])) {
   <br>
   <div class="row">
     
-    <h5>ASESORIAS</h5>
+    <h5>ASESORÍAS</h5>
     <div class="table-responsive">
-      <table class="table table-striped table-dark table-sm table-bordered">
+    <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
         <thead>
           <th scope="col">ID</th>
           <th scope="col">Alumno</th>
           <th scope="col">Facilitador</th>
           <th scope="col">Fecha</th>
           <th scope="col">Motivo</th>
+          <th scope="col">Dinámica</th>
           <th scope="col">Observaciones</th>
         </thead>
         <tbody id="pagination">
           <?php
           include '../config/Conn.php';
-          $query =
+          $query = 
             "SELECT 
                 Asesoria.idAsesoria AS idAsesoria 
-                , Alumno.idAlumno AS id 
-                , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+                , Alumno.idAlumno AS idAlumno 
+                , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS alumno
                 , Asesor.idAsesor AS idAsesor
-                , Asesor.nombre AS Asesor
-                , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
-                , Motivo.motivo AS Motivo
-                , Integrantes.descripcion AS Dinamica 
-                , Asesoria.observaciones AS Observaciones
+                , Asesor.nombre AS asesor
+                , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha 
+                , Motivo.motivo AS motivo
+                , Integrantes.descripcion AS dinamica 
+                , Asesoria.observaciones AS observaciones
             FROM Asesoria 
             JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
             JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
@@ -199,24 +200,32 @@ if (isset($_POST['filtrar'])) {
             JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
             $where
             ORDER BY Asesoria.idAsesoria DESC";
-          //echo $query;
+
           $resultado = $conn->query($query);
-          if (!$resultado) echo "ERROR: " . $conn->error . $query;
-          $resultado->data_seek(0);
-          while ($fila = $resultado->fetch_assoc()) {
+          if (!$resultado) {
+            echo "ERROR: " . $conn->error;
+          }
+          if (!$resultado->fetch_array()) {
+            echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
+          } else {
+
+            $resultado->data_seek(0);
+
+            while ($fila = $resultado->fetch_assoc()) {
           ?>
-            <tr>
-              <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
-              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle"><?php echo $fila['Asesor']; ?></td>
-              <td class="align-middle"><?php echo $fila['Fecha']; ?></td>
-              <td class="align-middle"><?php echo $fila['Motivo']; ?></td>
-              <td class="align-middle"><?php echo $fila['Observaciones']; ?></td>
-            </tr>
+              <tr>
+                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
+                <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['idAlumno']; ?>" class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
+                <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['motivo']); ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['dinamica']); ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['observaciones']); ?></td>
+              </tr>
           <?php
+            }
           }
           $conn->close();
-
           ?>
         </tbody>
       </table>

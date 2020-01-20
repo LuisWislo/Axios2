@@ -28,33 +28,36 @@ $conn->close();
 </div>
 <div class="container">
   <div class="row">
-    <h5>ÚLTIMAS ASESORIAS</h5>
+    <h5>ÚLTIMAS ASESORÍAS</h5>
       <div class="table-responsive">
           <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
               <thead>
                   <th scope="col">Alumno</th>
                   <th scope="col">Fecha</th>
                   <th scope="col">Motivo</th>
+                  <th scope="col">Dinámica</th>
                   <th scope="col">Observaciones</th>
               </thead>
               <tbody>
                 <?php
                   include 'config/Conn.php';
-                  $query = "SELECT Asesores.idAsesoria AS Asesoria, Alumno.idAlumno AS id, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno, 
-                  Asesores.fecha AS Fecha, Asesores.Motivo AS Motivo, Asesores.observaciones AS Observaciones
-                  FROM (	
-                      SELECT * FROM Asesor 
-                      NATURAL JOIN (
-                          SELECT *
-                          FROM Motivo
-                          NATURAL JOIN Asesoria
-                      ) as Motivos 
-                  ) AS Asesores
-                  INNER JOIN Alumno
-                  ON Asesores.idAlumno = Alumno.idAlumno  
-                  WHERE Asesores.idAsesor = $idAsesor
-                  ORDER BY Asesores.idAsesoria DESC
+                  $query = "SELECT 
+                      Asesoria.idAsesoria AS idAsesoria 
+                      , Alumno.idAlumno AS id 
+                      , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+                      , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+                      , Motivo.motivo AS Motivo
+                      , Integrantes.descripcion AS Dinamica 
+                      , Asesoria.observaciones AS Observaciones
+                  FROM Asesoria 
+                  JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+                  JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+                  JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+                  JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+                  WHERE Asesor.idAsesor = $idAsesor
+                  ORDER BY Asesoria.idAsesoria DESC 
                   LIMIT 5";
+
                   $resultado = $conn->query($query);
                   if (!$resultado) {
                     echo "ERROR: " . $conn->error;
@@ -70,8 +73,9 @@ $conn->close();
                       <tr>
                           <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
                           <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
-                          <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
-                          <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Motivo']); ?></td>
+                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Dinamica']); ?></td>
+                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Observaciones']); ?></td>
                       </tr>
                   <?php
                   }

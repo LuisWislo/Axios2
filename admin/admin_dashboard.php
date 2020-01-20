@@ -1,11 +1,12 @@
 <style>
-    td[data-href] {
-        cursor: pointer;  
-    }
-    td[data-href]:hover {
-        background-color: #33a652;
-    }
-</style> 
+  td[data-href] {
+    cursor: pointer;
+  }
+
+  td[data-href]:hover {
+    background-color: #33a652;
+  }
+</style>
 
 <?php
 include 'navbar_admin.php';
@@ -24,70 +25,84 @@ include 'navbar_admin.php';
 </div>
 <div class="container">
   <div class="row">
-    <h5>ÚLTIMAS ASESORIAS</h5>
+    <h5>ÚLTIMAS ASESORÍAS</h5>
     <div class="table-responsive">
-      <table class="table table-striped table-dark table-sm table-bordered">
+      <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
         <thead>
           <th scope="col">ID</th>
           <th scope="col">Alumno</th>
           <th scope="col">Facilitador</th>
           <th scope="col">Fecha</th>
           <th scope="col">Motivo</th>
+          <th scope="col">Dinámica</th>
           <th scope="col">Observaciones</th>
         </thead>
         <tbody>
           <?php
           include '../config/Conn.php';
-          $query = "SELECT Asesores.idAsesor AS idAsesor, Asesores.idAsesoria, CONCAT(Alumno.nombre,' ', Alumno.apellido) AS Alumno,Asesores.nombre, Asesores.fecha, Asesores.Motivo, Asesores.observaciones
-                    FROM (	
-                        SELECT * FROM Asesor 
-                        NATURAL JOIN (
-                            SELECT *
-                            FROM Motivo 
-                            NATURAL JOIN Asesoria
-                        ) as Motivos 
-                    ) AS Asesores
-                    INNER JOIN Alumno
-                    ON Asesores.idAlumno = Alumno.idAlumno  
-                    ORDER BY Asesores.idAsesoria DESC
-                    LIMIT 5";
+          $query = "SELECT 
+                      Asesoria.idAsesoria AS idAsesoria 
+                      , Alumno.idAlumno AS idAlumno 
+                      , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS alumno
+                      , Asesor.idAsesor AS idAsesor
+                      , Asesor.nombre AS asesor
+                      , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha 
+                      , Motivo.motivo AS motivo
+                      , Integrantes.descripcion AS dinamica 
+                      , Asesoria.observaciones AS observaciones
+                  FROM Asesoria 
+                  JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+                  JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+                  JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+                  JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+                  ORDER BY Asesoria.idAsesoria DESC 
+                  LIMIT 5";
 
           $resultado = $conn->query($query);
-          
-          $resultado->data_seek(0);
-          while ($fila = $resultado->fetch_assoc()) {
-            ?>
-            <tr>
-              <td class="align-middle"><?php echo $fila['idAsesoria']; ?></td>
-              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle"><?php echo $fila['Alumno']; ?></td>
-              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>"class="align-middle"><?php echo $fila['nombre']; ?></td>
-              <td class="align-middle"><?php echo $fila['fecha']; ?></td>
-              <td class="align-middle"><?php echo $fila['motivo']; ?></td>
-              <td class="align-middle"><?php echo $fila['observaciones']; ?></td>
-            </tr>
+          if (!$resultado) {
+            echo "ERROR: " . $conn->error;
+          }
+          if (!$resultado->fetch_array()) {
+            echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
+          } else {
+
+            $resultado->data_seek(0);
+
+            while ($fila = $resultado->fetch_assoc()) {
+          ?>
+              <tr>
+                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['motivo']); ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['dinamica']); ?></td>
+                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['observaciones']); ?></td>
+              </tr>
           <?php
+            }
           }
           $conn->close();
-
           ?>
         </tbody>
       </table>
     </div>
     <div class="row">
-        <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
-      </div>
+      <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_asesorias.php'">VER TODAS</button><br>
+    </div>
   </div>
 
-  <script>
-    $(document).ready(function () {
-        $(document.body).on("click", "td[data-alumno]", function () {
-            window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
-        });
-        $(document.body).on("click", "td[data-asesor]", function () {
-            window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
-        });
+  <!-- <script>
+    $(document).ready(function() {
+      $(document.body).on("click", "td[data-alumno]", function() {
+        window.location.href = this.dataset.href + "?idAlumno=" + this.dataset.id;
+      });
+      $(document.body).on("click", "td[data-asesor]", function() {
+        window.location.href = this.dataset.href + "?idUsuario=" + this.dataset.id;
+      });
     });
-  </script>
+  </script> -->
 
   </body>
+
   </html>
