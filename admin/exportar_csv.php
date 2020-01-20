@@ -7,20 +7,22 @@
     fputcsv($output, array("Asesoria No.", "ID Alumno", "Nombre", "idAsesor", "Asesor", "Fecha", "Motivo", "Dinamica", "Observaciones"));
     $query = 
     "SELECT 
-        asesoria.idAsesoria AS idAsesoria 
-        , alumno.idAlumno AS id 
-        , CONCAT(alumno.nombre,' ',alumno.apellido) AS Alumno
-        , asesor.idAsesor AS idAsesor
-        , asesor.nombre AS Asesor
-        , DATE_FORMAT(asesoria.fecha, '%d-%m-%Y') AS Fecha 
-        , motivo.motivo AS Motivo
-        , integrantes.descripcion AS Dinamica 
-        , asesoria.observaciones AS Observaciones
-    FROM asesoria 
-    JOIN alumno on alumno.idAlumno = asesoria.idAlumno 
-    JOIN asesor on asesor.idAsesor = asesoria.idAsesor 
-    JOIN motivo on motivo.idMotivo = asesoria.idMotivo 
-    JOIN integrantes on integrantes.idIntegrantes = asesoria.idIntegrantes " . 
+        Asesoria.idAsesoria AS idAsesoria 
+        , Alumno.idAlumno AS id 
+        , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+        , Asesor.idAsesor AS idAsesor
+        , Asesor.nombre AS Asesor
+        , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+        , Motivo.motivo AS Motivo
+        , Integrantes.descripcion AS Dinamica 
+        , Asesoria.observaciones AS Observaciones
+    FROM Asesoria 
+    JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+    JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+    JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+    JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+    $where
+    ORDER BY Asesoria.idAsesoria DESC " . 
     $_POST['where'] .
     " ORDER BY asesoria.idAsesoria DESC";
 
@@ -34,4 +36,3 @@
 
     fclose($output);
   }
-?>

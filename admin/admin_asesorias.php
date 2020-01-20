@@ -24,11 +24,11 @@ $rangoDeFechasFin = !empty($_POST['rangoDeFechasFin']) ? $_POST['rangoDeFechasFi
 
 if (isset($_POST['filtrar'])) {
 
-  if ($asesor) $where .= " AND asesor.nombre = '" . $asesor . "' ";
-  if ($anio) $where .= " AND YEAR(asesoria.fecha) = '" . $anio . "' ";
-  if ($mes) $where .= " AND MONTH(asesoria.fecha) = " . $mes;
+  if ($asesor) $where .= " AND Asesor.nombre = '" . $asesor . "' ";
+  if ($anio) $where .= " AND YEAR(Asesoria.fecha) = '" . $anio . "' ";
+  if ($mes) $where .= " AND MONTH(Asesoria.fecha) = " . $mes;
   if (isset($_POST['filtroFecha']) && $rangoDeFechasInicio && $rangoDeFechasFin) {
-    $where .= " AND asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
+    $where .= " AND Asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
   }
 
 }
@@ -183,22 +183,22 @@ if (isset($_POST['filtrar'])) {
           include '../config/Conn.php';
           $query =
             "SELECT 
-                asesoria.idAsesoria AS idAsesoria 
-                , alumno.idAlumno AS id 
-                , CONCAT(alumno.nombre,' ',alumno.apellido) AS Alumno
-                , asesor.idAsesor AS idAsesor
-                , asesor.nombre AS Asesor
-                , DATE_FORMAT(asesoria.fecha, '%d-%m-%Y') AS Fecha 
-                , motivo.motivo AS Motivo
-                , integrantes.descripcion AS Dinamica 
-                , asesoria.observaciones AS Observaciones
-            FROM asesoria 
-            JOIN alumno on alumno.idAlumno = asesoria.idAlumno 
-            JOIN asesor on asesor.idAsesor = asesoria.idAsesor 
-            JOIN motivo on motivo.idMotivo = asesoria.idMotivo 
-            JOIN integrantes on integrantes.idIntegrantes = asesoria.idIntegrantes
+                Asesoria.idAsesoria AS idAsesoria 
+                , Alumno.idAlumno AS id 
+                , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+                , Asesor.idAsesor AS idAsesor
+                , Asesor.nombre AS Asesor
+                , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+                , Motivo.motivo AS Motivo
+                , Integrantes.descripcion AS Dinamica 
+                , Asesoria.observaciones AS Observaciones
+            FROM Asesoria 
+            JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+            JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+            JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+            JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
             $where
-            ORDER BY asesoria.idAsesoria DESC";
+            ORDER BY Asesoria.idAsesoria DESC";
           //echo $query;
           $resultado = $conn->query($query);
           if (!$resultado) echo "ERROR: " . $conn->error . $query;

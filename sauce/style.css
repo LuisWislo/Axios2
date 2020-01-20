@@ -179,3 +179,18 @@
       color: #777;
     }
   }
+
+  .asesorias {
+    table-layout: fixed;
+  }
+
+  .long-cell {
+    width: 200px;
+  }
+
+  .text-overflow {
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }

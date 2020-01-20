@@ -1,7 +1,7 @@
 <?php
 
     include 'config/Conn.php';
-
+    
     $grupoId = $_GET['id'];
     
     if (isset($_POST['importar'])) {
@@ -11,9 +11,9 @@
             $file = fopen($filename, "r");
 
             while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-                $sql = "INSERT INTO alumno (noLista, nombre, apellido, idGrupo) 
-                VALUES (". $column[0] . ",'" . $column[2] . "','" . $column[1]
-                 . "'," . $grupoId . ")";
+                $sql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo) 
+                VALUES (". $column[0] . ",'" . utf8_encode($column[2]) . "','" . 
+                    utf8_encode($column[1]) . "'," . $grupoId . ")";
 
                 $result = $conn->query($sql);
 
@@ -61,10 +61,10 @@
     // query 1 get asesor de grupo
     $sql = "SELECT 
             grup.grupo, a.nombre 
-        FROM grupo grup 
-            JOIN grado grad on grad.idGrado = grup.idGrado 
-            JOIN turno t on t.idTurno = grad.idTurno 
-            JOIN asesor a on a.idAsesor = t.idAsesor 
+        FROM Grupo grup 
+            JOIN Grado grad on grad.idGrado = grup.idGrado 
+            JOIN Turno t on t.idTurno = grad.idTurno 
+            JOIN Asesor a on a.idAsesor = t.idAsesor 
         WHERE idGrupo =" . $grupoId;
     
     $result = $conn->query($sql);
@@ -73,11 +73,15 @@
         echo "<p>Grupo: <strong>" . $row['grupo'] . "</strong></p>";
         echo "<p>Asesor: <strong> " . $row['nombre'] . "</strong></p>";
     }
+    else {
+        echo $conn->error;
+        echo $sql;
+    }
 
     
 
     // query 2 alumnos ya subidos
-    $sql = "SELECT * FROM alumno WHERE idGrupo = " . $grupoId;
+    $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId;
     $result = $conn->query($sql);
     if ($result) {
         $result->data_seek(0);
@@ -98,10 +102,10 @@
         ?>
         <tbody>
             <tr>
-                <td><?=utf8_encode($fila['idAlumno'])?></td>
-                <td><?=utf8_encode($fila['noLista'])?></td>
-                <td><?=utf8_encode($fila['nombre'])?></td>
-                <td><?=utf8_encode($fila['apellido'])?></td>
+                <td><?=$fila['idAlumno']?></td>
+                <td><?=$fila['noLista']?></td>
+                <td><?=$fila['nombre']?></td>
+                <td><?=$fila['apellido']?></td>
             </tr>
             <?php } ?>
         </tbody>
