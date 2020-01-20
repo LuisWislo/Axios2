@@ -1,22 +1,16 @@
 SELECT 
-    asesoria.idAsesoria AS idAsesoria 
-    , alumno.idAlumno AS id 
-    , CONCAT(alumno.nombre,' ',alumno.apellido) AS Alumno
-    , asesor.idAsesor AS idAsesor
-    , asesor.nombre AS Asesor
-    , DATE_FORMAT(asesoria.fecha, '%d-%m-%Y') AS Fecha 
-    , motivo.motivo AS Motivo
-    , integrantes.descripcion AS Dinamica 
-    , asesoria.observaciones AS Observaciones
-    , escuela.nombre AS ESCUELA
-    , localidad.nombre AS SEDE
-FROM asesoria 
-JOIN alumno on alumno.idAlumno = asesoria.idAlumno 
-JOIN asesor on asesor.idAsesor = asesoria.idAsesor 
-JOIN motivo on motivo.idMotivo = asesoria.idMotivo 
-JOIN integrantes on integrantes.idIntegrantes = asesoria.idIntegrantes
-JOIN turno on turno.idAsesor = asesor.idAsesor
-JOIN escuela on escuela.idEscuela = turno.idEscuela
-JOIN localidad on localidad.idLocalidad = escuela.idEscuela;
--- ORDER BY asesoria.idAsesoria DESC
--- LIMIT 5
+    Asesoria.idAsesoria AS idAsesoria 
+    , Alumno.idAlumno AS id 
+    , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+    , Asesor.idAsesor AS idAsesor
+    , Asesor.nombre AS Asesor
+    , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+    , Motivo.motivo AS Motivo
+    , Integrantes.descripcion AS Dinamica 
+    , Asesoria.observaciones AS Observaciones
+FROM Asesoria 
+JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+ORDER BY Asesoria.idAsesoria DESC;
