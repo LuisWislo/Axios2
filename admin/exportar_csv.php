@@ -1,5 +1,6 @@
 <?php
   if (isset($_POST['exportar'])) {
+    $where = $_POST['where'];
     include "../config/Conn.php";
     header('Content-Type: text/csv');
     header('Content-Disposition: attachment; filename="datos.csv"');
@@ -22,9 +23,7 @@
     JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
     JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
     $where
-    ORDER BY Asesoria.idAsesoria DESC " . 
-    $_POST['where'] .
-    " ORDER BY asesoria.idAsesoria DESC";
+    ORDER BY Asesoria.idAsesoria DESC";
 
     $result = $conn->query($query);
 

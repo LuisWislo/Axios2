@@ -61,7 +61,7 @@ if (isset($_POST['filtrar'])) {
     </div>
     <br>
     <div class="row">
-        <h5>ASESORIAS</h5>
+        <h5>ASESORÍAS</h5>
         <div class="table-responsive">
             <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
                 <thead>
@@ -105,9 +105,9 @@ if (isset($_POST['filtrar'])) {
                             <tr>
                                 <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Motivo']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Dinamica']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Observaciones']); ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                             </tr>
                     <?php
                         }

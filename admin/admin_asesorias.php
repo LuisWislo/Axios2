@@ -218,9 +218,9 @@ if (isset($_POST['filtrar'])) {
                 <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['idAlumno']; ?>" class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
                 <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
                 <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['motivo']); ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['dinamica']); ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['observaciones']); ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
               </tr>
           <?php
             }

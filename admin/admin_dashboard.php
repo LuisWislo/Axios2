@@ -75,9 +75,9 @@ include 'navbar_admin.php';
                 <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
                 <td class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
                 <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['motivo']); ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['dinamica']); ?></td>
-                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['observaciones']); ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
               </tr>
           <?php
             }

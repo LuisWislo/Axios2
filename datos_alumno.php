@@ -32,7 +32,7 @@
     $resultado->data_seek(0);
     $fila = $resultado->fetch_assoc()
   ?>
-  <h4 class="display-4 text-center">Nueva asesoria con:</h4>
+  <h4 class="display-4 text-center">Nueva asesoría con:</h4>
   <br>
   <h4 class="text-center"><?php echo $fila['Alumno']; ?></h4>
     <div class="row justify-content-center">
@@ -61,7 +61,7 @@
         <div class="row my-4">
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
-            <label for="input-integrantes">Seleccione si la asesoria fue:</label>
+            <label for="input-integrantes">Seleccione si la asesoría fue:</label>
             <br>
             <form>
               <?php

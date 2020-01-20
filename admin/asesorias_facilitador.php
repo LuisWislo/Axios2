@@ -111,12 +111,12 @@ if (isset($_POST['filtrar'])) {
                         while ($fila = $resultado->fetch_assoc()) {
                             ?>
                             <tr>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['idAsesoria']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['alumno']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['fecha']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['motivo']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['dinamica']); ?></td>
-                                <td class="align-middle text-truncate"><?php echo utf8_encode($fila['observaciones']); ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
+                                <td class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
                             </tr>
                     <?php
                         }
