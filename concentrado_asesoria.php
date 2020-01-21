@@ -27,7 +27,7 @@ if (isset($_POST['subir'])) {
   if ($conn->query($query) === TRUE) {
     //$message = "Asesoría registrada con éxito";
     //echo "<script type='text/javascript'>alert('$message');</script>";
-    echo "<script type='text/javascript'> document.location = 'carga_exitosa.php'; </script>";
+    echo "<script type='text/javascript'> document.location = 'carga_exitosa.php?mail=$mail'; </script>";
   } else {
     $message = "Error: " . $query . "<br>" . $conn->error;
     echo "<script type='text/javascript'>alert('$message');</script>";
