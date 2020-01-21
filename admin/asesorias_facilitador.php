@@ -21,15 +21,11 @@ $nombre = $filaId['nombre'];
 $conn->close();
 
 $where = "WHERE Asesor.idAsesor = $idAsesor";
-// $asesor = $_POST['asesor'];
-// $mes = $_POST['mes'];
 
 if (isset($_POST['filtrar'])) {
-    if (!empty($_POST['mes'])) {
-        $where = "WHERE Asesores.idAsesor = $idAsesor AND MONTH(Asesores.fecha) = " . $mes . "";
-    } else {
-        $where = "WHERE Asesores.idAsesor = $idAsesor";
-    }
+    if ($_POST['mes']) {
+        $where .= " AND MONTH(Asesoria.fecha) = " . $_POST['mes'];
+    }    
 }
 
 ?>
@@ -50,7 +46,7 @@ if (isset($_POST['filtrar'])) {
                 <div class="col-sm-4">
 
                     <select id="motivoAsesoria" class="form-control" name="mes">
-                        <option value="0" selected>Mes</option>
+                        <option selected>Mes</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
                         <option value="3">Marzo</option>

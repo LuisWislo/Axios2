@@ -11,8 +11,8 @@
 <?php
 include 'navbar_admin.php';
 
-$where = "";
 $idAlumno = (int) $_GET['idAlumno'];
+$where = "WHERE Alumno.idAlumno = $idAlumno";
 // $idAsesor = (int)$_GET['idUsuario'];
 $mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
 
@@ -25,12 +25,8 @@ $nombre = $filaId['nombre'];
 $conn->close();
 
 if (isset($_POST['filtrar'])) {
-    if (!empty($_POST['mes'])) {
-
-        $where = "and MONTH(Asesores.fecha) = " . $mes . "";
-    } else {
-        $where = "";
-    }
+    echo $mes;
+    if ($mes) $where .= " AND MONTH(Asesoria.fecha) = " . $mes;
 }
 
 ?>
@@ -51,7 +47,7 @@ if (isset($_POST['filtrar'])) {
                 <div class="col-sm-4">
 
                     <select id="motivoAsesoria" class="form-control" name="mes">
-                        <option value="0" selected>Mes</option>
+                        <option value="" selected>Mes</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
                         <option value="3">Marzo</option>
@@ -104,7 +100,7 @@ if (isset($_POST['filtrar'])) {
                   JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
                   JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
                   JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-                  WHERE Alumno.idAlumno = $idAlumno
+                  $where
                   ORDER BY Asesoria.idAsesoria DESC";
 
                     $resultado = $conn->query($query);

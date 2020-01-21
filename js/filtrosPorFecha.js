@@ -51,6 +51,7 @@ $(function () {
             'Hoy': [moment(), moment()],
             'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Esta semana': [moment().startOf('week'), moment().endOf('week')],
+            'La semana anterior': [moment().subtract(1, 'week').startOf('week'), moment().subtract(1, 'week').endOf('week')],
             'Este mes': [moment().startOf('month'), moment().endOf('month')],
             'El mes anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         }

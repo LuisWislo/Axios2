@@ -17,7 +17,7 @@
                     <th scope="col">ID</th>
                     <th scope="col">Nombre</th>
                     <th scope="col">Correo</th>
-                    <th scope="col">Asesorias</th>
+                    <th scope="col">Asesorías</th>
                     <th scope="col">Editar</th>
                     <th scope="col">Nueva contraseña</th>
                     <th scope="col">Eliminar</th>
