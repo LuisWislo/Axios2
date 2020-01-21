@@ -11,7 +11,7 @@
 ?>
 
 <div class="container">
-  <h4 class="display-4 text-center">Registro de nueva asesoria</h4>
+  <h4 class="display-4 text-center">Registro de nueva asesoría</h4>
   <br>
   <h4 class="text-center">Escriba el nombre del alumno</h4>
   <center>

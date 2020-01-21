@@ -141,7 +141,7 @@ if (isset($_POST['subir'])) {
       <form method="post" action="" id="insertForm">
         <div class="row my-4 justify-content-center">
           <div class="col-sm-8">
-              <button type="submit" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Subir asesoria</button>
+              <button type="submit" class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Subir asesoría</button>
           </div>
         </div>
       </form>
