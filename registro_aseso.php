@@ -44,8 +44,7 @@
             LEFT JOIN Asesor as ase
             ON t.idAsesor = ase.idAsesor
             WHERE ase.idAsesor = $idAsesor
-            ORDER BY Alumno ASC
-            LIMIT 15";
+            ORDER BY Alumno ASC";
             $resultado = $conn->query($query);
 
             if (!$resultado) {
