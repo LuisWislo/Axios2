@@ -25,14 +25,13 @@ $nombre = $filaId['nombre'];
 $conn->close();
 
 if (isset($_POST['filtrar'])) {
-    echo $mes;
     if ($mes) $where .= " AND MONTH(Asesoria.fecha) = " . $mes;
 }
 
 ?>
 
 <div class="container">
-    <h4 class="display-4 text-center">Historial de asesorias</h4>
+    <h4 class="display-4 text-center">Historial de asesorías</h4>
     <br>
     <h4 class="text-center">Historial de alumno:<br /><?php echo $nombre; ?></h4>
     <br>

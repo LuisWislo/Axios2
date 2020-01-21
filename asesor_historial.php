@@ -10,16 +10,12 @@ $filaId = $resultadoId->fetch_assoc();
 $mail = $filaId['correo'];
 $conn->close();
 
-$where = "WHERE Asesores.idAsesor = $idAsesor";
-// $asesor = $_POST['asesor'];
-// $mes = $_POST['mes'];
+$where = "WHERE Asesor.idAsesor = $idAsesor";
 
 if (isset($_POST['filtrar'])) {
-    if (!empty($_POST['mes'])) {
-        $where = "WHERE Asesores.idAsesor = $idAsesor AND MONTH(Asesores.fecha) = " . $mes . "";
-    } else {
-        $where = "WHERE Asesores.idAsesor = $idAsesor";
-    }
+    if ($_POST['mes']) {
+        $where .= " AND MONTH(Asesoria.fecha) = " . $_POST['mes'];
+    }    
 }
 
 ?>
@@ -28,7 +24,7 @@ if (isset($_POST['filtrar'])) {
     <br>
 
     <div class="row">
-        <form action="accion.php" method="POST">
+        <form method="POST">
 
             <div class="row">
                 <div class="col-sm-12">
@@ -87,7 +83,7 @@ if (isset($_POST['filtrar'])) {
                   JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
                   JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
                   JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-                  WHERE Asesor.idAsesor = $idAsesor
+                  $where
                   ORDER BY Asesoria.idAsesoria DESC";
 
                     $resultado = $conn->query($query);

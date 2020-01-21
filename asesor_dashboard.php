@@ -73,9 +73,9 @@ $conn->close();
                       <tr>
                           <td data-href="alumno_historial.php" data-id="<?php echo $fila['id']; ?>" class="align-middle text-truncate"><?php echo $fila['Alumno']; ?></td>
                           <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
-                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Motivo']); ?></td>
-                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Dinamica']); ?></td>
-                          <td class="align-middle text-truncate"><?php echo utf8_encode($fila['Observaciones']); ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
+                          <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                       </tr>
                   <?php
                   }

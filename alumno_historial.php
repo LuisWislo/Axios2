@@ -1,7 +1,6 @@
 <?php
 include 'asesor_navbar.php';
 
-$where = "";
 $idAlumno = (int)$_GET['idAlumno'];
 $idAsesor = (int)$_GET['idAsesor'];
 include 'config/Conn.php';
@@ -12,13 +11,11 @@ $filaId = $resultadoId->fetch_assoc();
 $mail = $filaId['correo'];
 $conn->close();
 
-if(isset($_POST['filtrar'])){
-    if(!empty($_POST['mes'])){
-        
-         $where = "and MONTH(Asesores.fecha) = " . $mes . "";
-    } else {
-        $where = "";
-    }
+$where = "WHERE Alumno.idAlumno = $idAlumno";
+if (isset($_POST['filtrar'])) {
+    if ($_POST['mes']) {
+        $where .= " AND MONTH(Asesoria.fecha) = " . $_POST['mes'];
+    }    
 }
 
 ?>
@@ -97,7 +94,7 @@ if(isset($_POST['filtrar'])){
                   JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
                   JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
                   JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-                  WHERE Alumno.idAlumno = $idAlumno
+                  $where
                   ORDER BY Asesoria.idAsesoria DESC";
 
                     $resultado = $conn->query($query);
