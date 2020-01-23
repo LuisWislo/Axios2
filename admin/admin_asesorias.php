@@ -50,7 +50,7 @@ if (isset($_POST['filtrar'])) {
         </div>
         <div class="col-sm-3">
           <select id="filtroAsesor" class="form-control" name="asesor">
-            <option value="" selected>Asesor</option>
+            <option value="" selected>Facilitador</option>
             <?php
             include '../config/Conn.php';
             $resultado = $conn->query("SELECT nombre FROM Asesor");
@@ -104,11 +104,18 @@ if (isset($_POST['filtrar'])) {
         <div class="col-sm-3">
           <select id="filtroAnio" class="form-control" name="anio">
             <option value="" selected>Año</option>
-            <option value="2020">2020</option>
-            <option value="2019">2019</option>
-            <option value="2018">2018</option>
-            <option value="2017">2017</option>
-            <option value="2016">2016</option>
+            <?php
+            include '../config/Conn.php';
+            $resultado = $conn->query("SELECT DISTINCT YEAR(fecha) AS ano FROM Asesoria");
+            $resultado->data_seek(0);
+            while ($fila = $resultado->fetch_assoc()) {
+              $ano = $fila['ano'];
+            ?>
+              <option value="<?php echo $ano; ?>"><?=$ano?></option>
+            <?php
+            }
+            $conn->close();
+            ?>
           </select>
         </div>
       </div>
@@ -214,7 +221,7 @@ if (isset($_POST['filtrar'])) {
             echo "ERROR: " . $conn->error;
           }
           if (!$resultado->fetch_array()) {
-            echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
+            echo "<tr><td colspan='7'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
           } else {
 
             $resultado->data_seek(0);
@@ -243,12 +250,65 @@ if (isset($_POST['filtrar'])) {
       <ul class="pagination pagination-lg pager" id="pagination_page"></ul>
     </div>
 
+    <h5>ESTADÍSTICAS</h5>
+    <div class="table-responsive">
+    <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
+        <thead>
+          <th scope="col">Total de asesorías</th>
+          <th scope="col">Total de alumnos atendidos</th>
+          <th scope="col">Total de asesorías con alumnos</th>
+          <th scope="col">Total de asesorías con padres</th>
+        </thead>
+        <tbody>
+          <?php
+          include '../config/Conn.php';
+          $query =
+            "SELECT COUNT(Asesoria.idAsesoria) AS totalAsesorias,
+                    COUNT(DISTINCT Asesoria.idAlumno) AS totalAlumnos,
+                    COUNT(DISTINCT CASE WHEN Asesoria.idIntegrantes = 1 THEN Asesoria.idAsesoria END) AS totalConAlumno,
+                    COUNT(DISTINCT CASE WHEN Asesoria.idIntegrantes = 2 THEN Asesoria.idAsesoria END) AS totalConPadres
+            FROM Asesoria
+            JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno
+            JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor
+            JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo
+            JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+            JOIN Turno on Turno.idAsesor = Asesor.idAsesor
+            JOIN Escuela on Escuela.idEscuela = Turno.idTurno
+            JOIN Localidad on Localidad.idLocalidad = Escuela.idLocalidad
+            $where";
+
+          $resultado = $conn->query($query);
+          if (!$resultado) {
+            echo "ERROR: " . $conn->error;
+          }
+          if ($resultado->fetch_array()) {
+
+            $resultado->data_seek(0);
+
+            while ($fila = $resultado->fetch_assoc()) {
+          ?>
+              <tr>
+                <td class="align-middle text-truncate"><?php echo $fila['totalAsesorias']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['totalAlumnos']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['totalConAlumno']; ?></td>
+                <td class="align-middle text-truncate"><?php echo $fila['totalConPadres']; ?></td>
+              </tr>
+          <?php
+            }
+          }
+          $conn->close();
+          ?>
+        </tbody>
+      </table>
+    </div>
+
     <div class="row">
       <button class="btn-b aqua-gradient btn-block p-3" onclick="window.location.href='admin_dashboard.php'">
         Regresar
       </button>
       <br>
     </div>
+
   </div>
 </div>
 
