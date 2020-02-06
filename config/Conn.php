@@ -10,7 +10,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "facilit1_axios_dev_db_test";
+$database = "facilit1_axios_dev_db";
 
 //  CONEXION AL SERVIDOR
 $conn = new mysqli($servername, $username, $password);

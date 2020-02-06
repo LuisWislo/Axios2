@@ -57,7 +57,7 @@ CREATE TABLE Alumno (
   idAlumno INT NOT NULL AUTO_INCREMENT,
   noLista INT,
   nombre VARCHAR(100),
-  apellidos VARCHAR(100),
+  apellido VARCHAR(100),
   idGrupo INT,
   PRIMARY KEY (idAlumno),
   FOREIGN KEY (idGrupo) REFERENCES Grupo (idGrupo)
