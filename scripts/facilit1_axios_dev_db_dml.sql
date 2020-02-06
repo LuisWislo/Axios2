@@ -130,12 +130,12 @@ INSERT INTO Grupo (grupo, idGrado) VALUES
 ('3', 36);
 
 --integrantes
-INSERT INTO `Integrantes` (`descripcion`) VALUES
+INSERT INTO Integrantes (`descripcion`) VALUES
 ('Solo alumno'),
 ('Con padres');
 
 -- tipo asesoria
-INSERT INTO `tipo_asesoria` (`tipoAsesoria`) VALUES
+INSERT INTO tipoasesoria (`tipoAsesoria`) VALUES
 ('Familiar'), 
 ('Académico'),
 ('Emocional'), 
@@ -143,7 +143,7 @@ INSERT INTO `tipo_asesoria` (`tipoAsesoria`) VALUES
 ('Sexualidad');
 
 -- motivo asesoria
-INSERT INTO `motivo_asesoria` (`motivo`, `idTipoAsesoria`) VALUES
+INSERT INTO motivoasesoria (`motivo`, `idTipoAsesoria`) VALUES
 ('Separación o divorcio de padres', 1),
 ('Falta de comunicación', 1),
 ('Falta de atención, cuidado', 1),
