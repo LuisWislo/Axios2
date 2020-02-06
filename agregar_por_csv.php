@@ -12,8 +12,8 @@
 
             while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
                 $sql = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo) 
-                VALUES (". $column[0] . ",'" . utf8_encode($column[2]) . "','" . 
-                    utf8_encode($column[1]) . "'," . $grupoId . ")";
+                VALUES (". $column[0] . ",'" . utf8_encode($column[1]) . "','" . 
+                    utf8_encode($column[2]) . "'," . $grupoId . ")";
 
                 $result = $conn->query($sql);
 
@@ -60,11 +60,13 @@
     <?php
     // query 1 get asesor de grupo
     $sql = "SELECT 
-            grup.grupo, a.nombre 
+            grup.grupo, a.nombre, e.nombre as nombreEscuela, t.tipo, t.descripcion, e.numero, l.nombre as sede
         FROM Grupo grup 
             JOIN Grado grad on grad.idGrado = grup.idGrado 
             JOIN Turno t on t.idTurno = grad.idTurno 
             JOIN Asesor a on a.idAsesor = t.idAsesor 
+            JOIN Escuela e on e.idEscuela = t.idEscuela
+            JOIN Localidad l on l.idLocalidad = e.idLocalidad
         WHERE idGrupo =" . $grupoId;
     
     $result = $conn->query($sql);
@@ -72,6 +74,10 @@
         $row = $result->fetch_assoc();
         echo "<p>Grupo: <strong>" . $row['grupo'] . "</strong></p>";
         echo "<p>Asesor: <strong> " . $row['nombre'] . "</strong></p>";
+        echo "<p>Escuela: <strong> " . $row['nombreEscuela'] . "</strong></p>";
+        echo "<p>Turno: <strong> " . $row['tipo'] . "</strong></p>";
+        echo "<p>Descripcion: <strong> " . $row['numero'] . " ". $row['sede'] . " " . $row['descripcion']  . "</strong></p>";
+
     }
     else {
         echo $conn->error;
@@ -81,7 +87,7 @@
     
 
     // query 2 alumnos ya subidos
-    $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId;
+    $sql = "SELECT * FROM Alumno WHERE idGrupo = " . $grupoId . " ORDER BY idAlumno";
     $result = $conn->query($sql);
     if ($result) {
         $result->data_seek(0);
