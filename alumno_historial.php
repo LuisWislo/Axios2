@@ -111,7 +111,7 @@ if (isset($_POST['filtrar'])) {
                     ?>
                             <tr>
                                 <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
-                                <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
+                                <td data-motivo="<?=$fila['Motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
                                 <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                             </tr>
@@ -138,6 +138,7 @@ if (isset($_POST['filtrar'])) {
 <script src="paginacion/pagination.js"></script>
 
 <?php include "modal_obs.php" ?>
+<?php include "modal_motivo.php" ?>
 
 <script>
     $(document).ready(function() {
@@ -145,6 +146,10 @@ if (isset($_POST['filtrar'])) {
             $("#modalObservacion .modal-body").html(this.dataset.obs);
             $("#modalObservacion").modal("show");
         });  
+        $(document.body).on("click", "td[data-motivo]", function() {
+            $("#modalMotivo .modal-body").html(this.dataset.motivo);
+            $("#modalMotivo").modal("show");
+        });
     });
 </script>
 
