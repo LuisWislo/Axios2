@@ -103,7 +103,7 @@ if (isset($_POST['filtrar'])) {
                                 <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
-                                <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+                                <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                             </tr>
                     <?php
                         }
@@ -123,6 +123,25 @@ if (isset($_POST['filtrar'])) {
         </div>
     </div>
 </div>
+
+<!-- Modal for observaciones -->
+<div class="modal fade" id="modalObservacion" tabindex="-1" role="dialog" aria-labelledby="modalObservacionTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalObservacionTitle">Observaciones:</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src="paginacion/bootstrap-table-pagination.js"></script>
 <script src="paginacion/pagination.js"></script>
 
@@ -131,6 +150,10 @@ if (isset($_POST['filtrar'])) {
         $(document.body).on("click", "td[data-href]", function() {
             window.location.href = this.dataset.href + "?idAsesor=" + <?php echo (json_encode($idAsesor)); ?> + "&idAlumno=" + this.dataset.id;
         });
+        $(document.body).on("click", "td[data-obs]", function() {
+            $("#modalObservacion .modal-body").html(this.dataset.obs);
+            $("#modalObservacion").modal("show");
+        });  
     });
 </script>
 

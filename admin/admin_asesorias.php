@@ -235,7 +235,7 @@ if (isset($_POST['filtrar'])) {
                 <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
                 <td class="align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
                 <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
-                <td data-obs="<?=$fila['observaciones']; ?>" data-href="" class="align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
+                <td data-obs="<?=$fila['observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
               </tr>
           <?php
             }

@@ -179,3 +179,8 @@
       color: #777;
     }
   }
+
+  .linkToModal:hover {
+    background:  #27ae60;
+    cursor: pointer;
+  }
