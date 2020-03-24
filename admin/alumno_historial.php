@@ -121,7 +121,7 @@ if (isset($_POST['filtrar'])) {
                                 <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
-                                <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+                                <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                             </tr>
                     <?php
                         }
@@ -142,8 +142,18 @@ if (isset($_POST['filtrar'])) {
     </div>
 </div>
 
+<?php include '../modal_obs.php' ?>
+
 <script src="../paginacion/bootstrap-table-pagination.js"></script>
 <script src="../paginacion/pagination.js"></script>
+<script>
+    $(document).ready(function() {
+        $(document.body).on("click", "td[data-obs]", function() {
+            $("#modalObservacion .modal-body").html(this.dataset.obs);
+            $("#modalObservacion").modal("show");
+        });  
+    });
+</script>
 
 </body>
 

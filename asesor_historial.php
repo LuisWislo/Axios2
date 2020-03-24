@@ -67,7 +67,7 @@ if (isset($_POST['filtrar'])) {
                     <th scope="col">Dinámica</th>
                     <th scope="col">Observaciones</th>
                 </thead>
-                <tbody>
+                <tbody id="pagination">
                     <?php
                     include 'config/Conn.php';
                     $query = "SELECT 
@@ -124,23 +124,7 @@ if (isset($_POST['filtrar'])) {
     </div>
 </div>
 
-<!-- Modal for observaciones -->
-<div class="modal fade" id="modalObservacion" tabindex="-1" role="dialog" aria-labelledby="modalObservacionTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <!-- Modal content -->
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalObservacionTitle">Observaciones:</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        
-      </div>
-    </div>
-  </div>
-</div>
+<?php include "modal_obs.php" ?>
 
 <script src="paginacion/bootstrap-table-pagination.js"></script>
 <script src="paginacion/pagination.js"></script>

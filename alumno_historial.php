@@ -46,7 +46,7 @@ if (isset($_POST['filtrar'])) {
                 
                 <div class="col-sm-4">
                     
-                    <select id="motivoAsesoria" class="form-control" name="mes">
+                    <select class="form-control" name="mes">
                         <option value="0" selected>Mes</option>
                         <option value="1">Enero</option>
                         <option value="2">Febrero</option>
@@ -113,7 +113,7 @@ if (isset($_POST['filtrar'])) {
                                 <td class="align-middle text-truncate"><?php echo $fila['Fecha']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Motivo']; ?></td>
                                 <td class="align-middle text-truncate"><?php echo $fila['Dinamica']; ?></td>
-                                <td class="align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
+                                <td data-obs="<?=$fila['Observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['Observaciones']; ?></td>
                             </tr>
                     <?php
                         }
@@ -136,6 +136,17 @@ if (isset($_POST['filtrar'])) {
 
 <script src="paginacion/bootstrap-table-pagination.js"></script>
 <script src="paginacion/pagination.js"></script>
+
+<?php include "modal_obs.php" ?>
+
+<script>
+    $(document).ready(function() {
+        $(document.body).on("click", "td[data-obs]", function() {
+            $("#modalObservacion .modal-body").html(this.dataset.obs);
+            $("#modalObservacion").modal("show");
+        });  
+    });
+</script>
 
 </body>
 </html>
