@@ -154,6 +154,11 @@
     padding: .84rem 2.14rem !important;
     font-size: .81rem !important;
   }
+
+.linkToModal:hover {
+  background:  #27ae60;
+  cursor: pointer;
+}
   
   /* Fallback for Edge
   -------------------------------------------------- */
@@ -178,9 +183,4 @@
     .form-label-group input:-ms-input-placeholder {
       color: #777;
     }
-  }
-
-  .linkToModal:hover {
-    background:  #27ae60;
-    cursor: pointer;
   }
