@@ -143,9 +143,11 @@ if (isset($_POST['subir'])) {
     }
     $conn->close();
   }
-} else if (isset($_POST['borrar'])) {
+}
+if (isset($_POST['borrar'])) {
     include '../config/Conn.php';
     $query = "DELETE FROM Alumno WHERE idAlumno = $idAlumno";
+    echo "<script type='text/javascript'>alert('$query');</script>";
     if ($conn->query($query) === TRUE) {
         $message = "Alumno borrado con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -291,7 +293,7 @@ if (isset($_POST['subir'])) {
             <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
           </div>
           <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name="borrar">Borrar alumno</button>
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name="borrar" form="insertForm">Borrar alumno</button>
           </div>
           <div class="col-sm-3">
             <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
