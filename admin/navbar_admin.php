@@ -47,16 +47,13 @@ function cerrar() {
         <a class="nav-link" href="admin_dashboard.php">Inicio<span class="sr-only">(current)</span></a>
       </li>
       <li>
+        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores</a>
+      </li>
+      <li>
         <a class="nav-link" href="admin_alumnos.php">Administrar Alumnos</a>
       </li>
       <li>
         <a class="nav-link" href="admin_sedes.php">Administrar Sedes</a>
-      </li>
-      <li>
-        <a class="nav-link" href="admin_facilitadores.php">Administrar Facilitadores</a>
-      </li>
-      <li>
-        <a class="nav-link" href="admin_sedes.php">Administrar Escuelas</a>
       </li>
     </ul>
 
