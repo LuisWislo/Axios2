@@ -11,7 +11,6 @@
 <?php
 include 'navbar_admin.php';
 
-
 $where = "WHERE TRUE";
 
 $asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
@@ -33,9 +32,7 @@ if (isset($_POST['filtrar'])) {
   if (isset($_POST['filtroFecha']) && $rangoDeFechasInicio && $rangoDeFechasFin) {
     $where .= " AND Asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
   }
-
 }
-
 ?>
 
 <div class="container">
