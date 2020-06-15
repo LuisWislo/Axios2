@@ -25,7 +25,8 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
   if ($resultado) {
     $fila = mysqli_fetch_row($resultado);
   } else {
-    echo "ERROR: " . $conn->error;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
   $conn->close();
   if($fila == true){

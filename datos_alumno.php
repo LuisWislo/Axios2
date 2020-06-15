@@ -53,8 +53,8 @@
         </form>
             <?php
   } else {
-    echo "ERROR: " . $conn->error . "ON: \n";
-    echo $query;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
               $conn->close();
               ?>

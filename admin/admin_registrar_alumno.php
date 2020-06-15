@@ -6,7 +6,6 @@ if (isset($_POST['subir'])) {
     $apellidos = $_POST['apellidos'];
     $nolista = $_POST['nolista'];
     $escuela = $_POST['escuela'];
-    echo "<script type='text/javascript'>alert('$escuela');</script>";
     $grado = $_POST['grado'];
     $grupo = $_POST['grupo'];
     $turno = $_POST['turno'];
@@ -14,7 +13,7 @@ if (isset($_POST['subir'])) {
 
     include '../config/Conn.php';
     $query = "SELECT e.nombre AS Escuela, ga.numero AS Grado,
-    gu.grupo AS Grupo, ase.nombre AS NAsesor, t.descripcion AS Turno
+    gu.grupo AS Grupo, gu.idGrupo AS idGrupo, ase.nombre AS NAsesor, t.descripcion AS Turno
     FROM Grupo as gu JOIN Grado as ga
     ON gu.idGrado = ga.idGrado
     JOIN Turno as t
@@ -26,30 +25,28 @@ if (isset($_POST['subir'])) {
     JOIN Asesor as ase
     ON t.idAsesor = ase.idAsesor
     WHERE gu.grupo = '" . $grupo . "' AND ga.numero = $grado AND t.descripcion = '" . $turno . "'
-    AND e.idEscuela = '" . $escuela . "' AND ase.nombre = '" . $asesor . "'";
+    AND e.idEscuela = $escuela  AND ase.nombre = '" . $asesor . "'";
     $resultado = $conn->query($query);
     if(!$resultado->fetch_array()) {
-        echo "<script type='text/javascript'>alert('$grupo');</script>";
-        echo "<script type='text/javascript'>alert('$grado');</script>";
-        echo "<script type='text/javascript'>alert('$turno');</script>";
-        echo "<script type='text/javascript'>alert('$escuela');</script>";
-        echo "<script type='text/javascript'>alert('$asesor');</script>";
-    } else if ($resultado) {
-        $message = "Cambios guardados con éxito";
+        $message = "Los datos ingresados no son válidos. Por favor ingresa una combinación permitida.";
         echo "<script type='text/javascript'>alert('$message');</script>";
+    } else if ($resultado) {
         $resultado->data_seek(0);
         $origin = $resultado->fetch_assoc();
+        $idGrupo = $origin['idGrupo'];
         $query = "INSERT INTO Alumno (noLista, nombre, apellido, idGrupo)
-        VALUES ('" . $nolista . "', '" . $nombres . "', '" . $apellidos . "', '" . $grupo . "')";
+        VALUES ($nolista, '" . $nombres . "', '" . $apellidos . "', $idGrupo)";
         if ($conn->query($query) === TRUE) {
             $message = "Cambios guardados con éxito";
             echo "<script type='text/javascript'>alert('$message');</script>";
-            //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
+            echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
         } else {
-            echo "Error: " . $query . "<br>" . $conn->error;
+            $message = "Error: " . $query . "<br>" . $conn->error;
+        echo "<script type='text/javascript'>alert('$message');</script>";
         }
     } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
+        $message = "Error: " . $query . "<br>" . $conn->error;
+        echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
 }

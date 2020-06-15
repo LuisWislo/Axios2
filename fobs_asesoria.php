@@ -23,7 +23,8 @@ if (isset($_POST['aceptar'])) {
   $observaciones = $_POST['observaciones'];
   if($observaciones !== "") {
     $_SESSION['fecha'] = $fecha;
-    $_SESSION['obs'] = $observaciones;
+    $nObservaciones = str_replace('"', "&quot;", $observaciones);
+    $_SESSION['obs'] = $nObservaciones;
     echo "<script type='text/javascript'> document.location = 'concentrado_asesoria.php'; </script>";
   }
   $message = "Por favor escribe tus notas de la asesoría en la sección de observaciones";

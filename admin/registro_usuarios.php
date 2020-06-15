@@ -12,7 +12,8 @@ if (isset($_POST['registrar'])) {
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
   } else {
-    echo "Error: " . $query . "<br>" . $conn->error;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
   $conn->close();
 }
