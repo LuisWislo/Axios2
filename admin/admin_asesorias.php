@@ -11,32 +11,32 @@
 <?php
 include 'navbar_admin.php';
 $asesor = new Asesor();
+$asesoria = new Asesoria();
 
 $asesores = $asesor->getAsesores();
-
-$where = "WHERE TRUE";
-
-$asesor = !empty($_POST['asesor']) ? $_POST['asesor'] : "";
-$sede = !empty($_POST['sede']) ? $_POST['sede'] : "";
-$escuela = !empty($_POST['escuela']) ? $_POST['escuela'] : "";
-$anio = !empty($_POST['anio']) ? $_POST['anio'] : "";
-// $semestre = !empty($_POST['semestre']) ? $_POST['semestre'] : "";
-$mes = !empty($_POST['mes']) ? $_POST['mes'] : "";
-$rangoDeFechasInicio = !empty($_POST['rangoDeFechasInicio']) ? $_POST['rangoDeFechasInicio'] : "";
-$rangoDeFechasFin = !empty($_POST['rangoDeFechasFin']) ? $_POST['rangoDeFechasFin'] : "";
+$asesoriasTabla = $asesoria->getAsesoriasTabla();
 
 if (isset($_POST['filtrar'])) {
+  $where = "";
 
-  print_r($_POST);
+  $asesor = $_POST['asesor'];
+  $sede = $_POST['sede'];
+  $escuela = $_POST['escuela'];
+  $anio = $_POST['anio'];
+  $mes = $_POST['mes'];
+  $rangoDeFechasInicio = $_POST['rangoDeFechasInicio'];
+  $rangoDeFechasFin = $_POST['rangoDeFechasFin'];
 
-  if ($asesor) $where .= " AND Asesor.nombre = '" . $asesor . "' ";
-  if ($sede) $where .= " AND Localidad.idLocalidad = " . $sede . " ";
+  if ($asesor) $where .= " AND Asesor.idAsesor = '$asesor'";
+  if ($sede) $where .= " AND Localidad.idLocalidad = '$sede'";
   if ($escuela) $where .= " AND Escuela.idEscuela = " . $escuela . " ";
   if ($anio) $where .= " AND YEAR(Asesoria.fecha) = '" . $anio . "' ";
   if ($mes) $where .= " AND MONTH(Asesoria.fecha) = " . $mes;
   if (isset($_POST['filtroFecha']) && $rangoDeFechasInicio && $rangoDeFechasFin) {
     $where .= " AND Asesoria.fecha BETWEEN '$rangoDeFechasInicio' AND '$rangoDeFechasFin'";
   }
+
+  $asesoriasFiltrado = $asesoria->getAsesoriasTabla($where);
 }
 ?>
 
@@ -45,21 +45,26 @@ if (isset($_POST['filtrar'])) {
   <br>
   <br>
   <div class="row">
-    <form method="POST">
+    <form method="POST" id="filtros">
       <div class="row mb-3">
         <div class="col-sm-12">
           <h5>FILTROS</h5>
         </div>
         <div class="col-sm-3">
+        <!-- FILTRO ASESOR -->
           <select id="filtroAsesor" class="form-control" name="asesor">
             <option value="" selected>Facilitador</option>
-            <?php
-            while ($fila = $asesores->fetch_assoc()): ?>
+            <?php while ($fila = $asesores->fetch_assoc()): ?>
+            <?php if (isset($asesor) && $asesor == $fila['idAsesor']): ?>
+            <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
+            <?php else:?>
             <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endif;?>
             <?php endwhile; ?>
           </select>
-        </div>
+        </div><!--col-sm-3-->
         <div class="col-sm-3">
+        <!-- FILTRO SEDE -->
           <select id="filtroSede" class="form-control" name="sede">
             <option value="" selected>Sede</option>
             <?php
@@ -164,20 +169,40 @@ if (isset($_POST['filtrar'])) {
       </div>
     </form>
   </div>
-  <div class="row">
-      <form action="exportar_csv.php?where=<?=$where?>" method="post">
-        <input type="submit" name="exportar" value="Exportar CSV" class="btn btn-warning">
-        <input type="hidden" name="where" value="<?=$where?>">
-      </form>
-  </div>
   <br>
   <div class="row">
+  <?php if (isset($asesoriasFiltrado)) {
+    $tabla = $asesoriasFiltrado;
+  } else {
+    $tabla = $asesoriasTabla;
+  }
+  ?>
+    <div class="col-sm-6">
+      <div class="row d-block">
+        <h5>ASESORÍAS</h5>
+        <p>Mostrando <strong><?=$tabla->num_rows ?></strong>  resultados</p>
+      </div>
+    </div><!--col-sm-6-->
+    <div class="col-sm-6">
+    <form action="exportar_csv.php" method="post">
+    <?php if (isset($where)) :?>
+    <input type="hidden" name="filters" value="<?=$where?>">
+    <?php endif;?>
+      <div class="row justify-content-end">
+        <div class="col-sm-6">
+          <button type="submit" name="exportar" class="btn btn-warning btn-block">Exportar CSV</button>
+        </div>
+        <div class="col-sm-6">
+          <button type="submit" name="exportar_todo" class="btn btn-secondary btn-block">Exportar Todo</button>
+        </div>
+      </div>
+    </form>
+    </div><!--col-sm-6-->
 
-    <h5>ASESORÍAS</h5>
+    
     <div class="table-responsive">
     <table class="table table-striped table-dark table-sm table-bordered" style="table-layout: fixed;">
         <thead>
-          <th scope="col">ID</th>
           <th scope="col">Alumno</th>
           <th scope="col">Facilitador</th>
           <th scope="col">Fecha</th>
@@ -186,56 +211,16 @@ if (isset($_POST['filtrar'])) {
           <th scope="col">Observaciones</th>
         </thead>
         <tbody id="pagination">
-          <?php
-          include '../config/Conn.php';
-          $query =
-            "SELECT
-                Asesoria.idAsesoria AS idAsesoria
-                , Alumno.idAlumno AS idAlumno
-                , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS alumno
-                , Asesor.idAsesor AS idAsesor
-                , Asesor.nombre AS asesor
-                , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS fecha
-                , Motivo.motivo AS motivo
-                , Integrantes.descripcion AS dinamica
-                , Asesoria.observaciones AS observaciones
-            FROM Asesoria
-            JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno
-            JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor
-            JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo
-            JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
-            JOIN Turno on Turno.idAsesor = Asesor.idAsesor
-            JOIN Escuela on Escuela.idEscuela = Turno.idTurno
-            JOIN Localidad on Localidad.idLocalidad = Escuela.idLocalidad
-            $where
-            ORDER BY Asesoria.idAsesoria DESC";
-
-          $resultado = $conn->query($query);
-          if (!$resultado) {
-            echo "ERROR: " . $conn->error;
-          }
-          if (!$resultado->fetch_array()) {
-            echo "<tr><td colspan='7'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
-          } else {
-
-            $resultado->data_seek(0);
-
-            while ($fila = $resultado->fetch_assoc()) {
-          ?>
-              <tr>
-                <td class="align-middle text-truncate"><?php echo $fila['idAsesoria']; ?></td>
-                <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['idAlumno']; ?>" class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
-                <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
-                <td data-motivo="<?=$fila['motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
-                <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
-                <td data-obs="<?=$fila['observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
-              </tr>
-          <?php
-            }
-          }
-          $conn->close();
-          ?>
+          <?php while ($fila = $tabla->fetch_assoc()): ?>
+            <tr>
+              <td data-alumno="" data-href="alumno_historial.php" data-id="<?php echo $fila['idAlumno']; ?>" class="align-middle text-truncate"><?php echo $fila['alumno']; ?></td>
+              <td data-asesor="" data-href="asesorias_facilitador.php" data-id="<?php echo $fila['idAsesor']; ?>" class="align-middle text-truncate"><?php echo $fila['asesor']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['fecha']; ?></td>
+              <td data-motivo="<?=$fila['motivo']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['motivo']; ?></td>
+              <td class="align-middle text-truncate"><?php echo $fila['dinamica']; ?></td>
+              <td data-obs="<?=$fila['observaciones']; ?>" class="linkToModal align-middle text-truncate"><?php echo $fila['observaciones']; ?></td>
+            </tr>
+          <?php endwhile; ?>
         </tbody>
       </table>
     </div>
