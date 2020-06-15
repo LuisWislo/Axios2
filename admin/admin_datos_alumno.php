@@ -49,7 +49,6 @@ include '../config/Conn.php';
         echo $query;
     }
     $conn->close();
-
 ?>
 
 <?php
@@ -135,9 +134,14 @@ if (isset($_POST['subir'])) {
         $resultado->data_seek(0);
         $origin = $resultado->fetch_assoc();
         $query = "UPDATE Alumno SET noLista='" . $nolista . "', nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo='" . $grupo . "' WHERE idAlumno = $idAlumno";
-        $message = "Cambios guardados con éxito";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-        //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
+        if ($conn->query($query) === TRUE) {
+          $message = "Cambios guardados con éxito";
+          echo "<script type='text/javascript'>alert('$message');</script>";
+          //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
+      } else {
+          echo "Error: " . $query . "<br>" . $conn->error;
+      }
+      $conn->close();
     } else {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
