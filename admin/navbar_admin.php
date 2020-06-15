@@ -1,3 +1,4 @@
+<?php include '../config/init.php'; ?>
 <?php include 'admin_check.php'; ?>
 
 <!DOCTYPE html>
@@ -7,8 +8,8 @@ function cerrar() {
   window.location.href = "../logout.php";
 }
 </script>
-<head>
-  <meta charset="utf-8">
+<head><meta charset="gb18030">
+  
   <title>ADMIN AXIOS</title>
   <link rel="stylesheet" href="../sauce/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js">
@@ -41,7 +42,7 @@ function cerrar() {
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Adminstrador</a>
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Administrador</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="admin_dashboard.php">Inicio<span class="sr-only">(current)</span></a>
@@ -57,6 +58,9 @@ function cerrar() {
       </li>
       <li>
         <a class="nav-link" href="admin_sedes.php">Administrar Escuelas</a>
+      </li>
+      <li>
+        <a class="nav-link" href="admin_grupos.php">Administrar Grupos</a>
       </li>
     </ul>
 
