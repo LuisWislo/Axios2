@@ -215,7 +215,8 @@ if (isset($_POST['filtrar'])) {
 
           $resultado = $conn->query($query);
           if (!$resultado) {
-            echo "ERROR: " . $conn->error;
+            $message = "Error: " . $query . "<br>" . $conn->error;
+            echo "<script type='text/javascript'>alert('$message');</script>";
           }
           if (!$resultado->fetch_array()) {
             echo "<tr><td colspan='7'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";
@@ -276,7 +277,8 @@ if (isset($_POST['filtrar'])) {
 
           $resultado = $conn->query($query);
           if (!$resultado) {
-            echo "ERROR: " . $conn->error;
+            $message = "Error: " . $query . "<br>" . $conn->error;
+            echo "<script type='text/javascript'>alert('$message');</script>";
           }
           if ($resultado->fetch_array()) {
 

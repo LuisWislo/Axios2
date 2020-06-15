@@ -24,8 +24,8 @@ include '../config/Conn.php';
         $oldTurno = $origin['Turno'];
         $oldLocalidad = $origin['Localidad'];
     } else {
-        echo "ERROR: " . $conn->error . "ON: \n";
-        echo $query;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
 ?>
@@ -60,23 +60,19 @@ if (isset($_POST['subir'])) {
   }
 
   if($noChanges == 4) {
-    $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $idLocalidad . " WHERE idEscuela = $idEscuela";
-    echo $query;
-    echo "<script type='text/javascript'>alert('SIN CAMBIOS');</script>";
+    $message = "No se realizaron cambios a los datos de la escuela";
+    echo "<script type='text/javascript'>alert('$message');</script>";
   } else {
     include '../config/Conn.php';
-    $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $idLocalidad . " WHERE idEscuela = $idEscuela";
-    echo $query;
-    /*
+    $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $localidad . " WHERE idEscuela = $idEscuela";
     if ($conn->query($query) === TRUE) {
         $message = "Cambios guardados con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
-        //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
     } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
-    */
   }
 }
 ?>
@@ -92,7 +88,8 @@ if (isset($_POST['subir'])) {
     $resultado = $conn->query($query);
     if ($resultado) {
     $resultado->data_seek(0);
-    $origin = $resultado->fetch_assoc()
+    $origin = $resultado->fetch_assoc();
+    $rNombre = str_replace('"', "&quot;", $origin['Nombre']);
   ?>
   <h4 class="display-4 text-center">Datos de la escuela:</h4>
   <br>
@@ -104,7 +101,7 @@ if (isset($_POST['subir'])) {
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
             <label for="input-nombre">Nombre</label>
-            <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $origin['Nombre']; ?>">
+            <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $rNombre; ?>">
             <label for="input-numero">Número</label>
             <input type="input-numero" class="form-control" name="numero" placeholder="<?php echo $origin['Numero']; ?>">
             <label for="input-turno">Turno</label>
@@ -131,8 +128,8 @@ if (isset($_POST['subir'])) {
         </form>
             <?php
   } else {
-    echo "ERROR: " . $conn->error . "ON: \n";
-    echo $query;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
               $conn->close();
               ?>

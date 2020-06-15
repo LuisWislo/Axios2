@@ -16,7 +16,7 @@ $oldAsesor = "";
 include '../config/Conn.php';
     $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno,
     a.nombre AS Nombres, a.apellido AS Apellidos, a.noLista AS NoLista,
-    e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo,
+    e.idEscuela AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo,
     ase.nombre AS NAsesor, t.descripcion AS Turno
     FROM Alumno as a JOIN Grupo as gu
     ON a.idGrupo = gu.idGrupo
@@ -45,8 +45,8 @@ include '../config/Conn.php';
         $oldTurno = $origin['Turno'];
         $oldAsesor = $origin['NAsesor'];
     } else {
-        echo "ERROR: " . $conn->error . "ON: \n";
-        echo $query;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
 ?>
@@ -105,12 +105,14 @@ if (isset($_POST['subir'])) {
   }
 
   if($noChanges == 8) {
-    echo "<script type='text/javascript'>alert('SIN CAMBIOS');</script>";
+    $message = "No se realizaron cambios a los datos del alumno";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+    echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
   } else {
     include '../config/Conn.php';
     $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno,
     a.nombre AS Nombres, a.apellido AS Apellidos, a.noLista AS NoLista,
-    e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo,
+    e.nombre AS Escuela, ga.numero AS Grado, gu.idGrupo AS Grupo,
     ase.nombre AS NAsesor, t.descripcion AS Turno
     FROM Alumno as a JOIN Grupo as gu
     ON a.idGrupo = gu.idGrupo
@@ -124,26 +126,29 @@ if (isset($_POST['subir'])) {
     on l.idLocalidad = e.idLocalidad
     JOIN Asesor as ase
     ON t.idAsesor = ase.idAsesor
-    WHERE a.idAlumno = $idAlumno AND gu.grupo = '" . $grupo . "' AND
+    WHERE gu.grupo = '" . $grupo . "' AND
     ga.numero = $grado AND t.descripcion = '" . $turno . "' AND
-    e.nombre = '" . $escuela . "' AND ase.nombre = '" . $asesor . "'";
+    e.idEscuela = '" . $escuela . "' AND ase.nombre = '" . $asesor . "'";
     $resultado = $conn->query($query);
     if(!$resultado->fetch_array()) {
-        echo "<script type='text/javascript'>alert('EMPTY');</script>";
+        $message = "Los datos ingresados no son válidos. Por favor ingresa una combinación permitida.";
+        echo "<script type='text/javascript'>alert('$message');</script>";
     } else if ($resultado) {
         $resultado->data_seek(0);
         $origin = $resultado->fetch_assoc();
-        $query = "UPDATE Alumno SET noLista='" . $nolista . "', nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo='" . $grupo . "' WHERE idAlumno = $idAlumno";
+        $idGrupo = $origin['Grupo'];
+        $query = "UPDATE Alumno SET noLista= $nolista, nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo= $idGrupo WHERE idAlumno = $idAlumno";
         if ($conn->query($query) === TRUE) {
           $message = "Cambios guardados con éxito";
           echo "<script type='text/javascript'>alert('$message');</script>";
-          //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
       } else {
-          echo "Error: " . $query . "<br>" . $conn->error;
+          $message = "Error: " . $query . "<br>" . $conn->error;
+          echo "<script type='text/javascript'>alert('$message');</script>";
       }
       $conn->close();
     } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
+        $message = "Error: " . $query . "<br>" . $conn->error;
+        echo "<script type='text/javascript'>alert('$message');</script>";
     }
     $conn->close();
   }
@@ -151,13 +156,13 @@ if (isset($_POST['subir'])) {
 if (isset($_POST['borrar'])) {
     include '../config/Conn.php';
     $query = "DELETE FROM Alumno WHERE idAlumno = $idAlumno";
-    echo "<script type='text/javascript'>alert('$query');</script>";
     if ($conn->query($query) === TRUE) {
         $message = "Alumno borrado con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
-        //echo "<script type='text/javascript'> document.location = 'admin_facilitadores.php'; </script>";
+        echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
     } else {
-        echo "Error: " . $query . "<br>" . $conn->error;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
     }
 }
 ?>
@@ -207,12 +212,13 @@ if (isset($_POST['borrar'])) {
                 <option value="" selected="selected"><?php echo $origin['Escuela']; ?></option>
                 <?php
                 include '../config/Conn.php';
-                $resultado = $conn->query("SELECT nombre FROM Escuela");
+                $resultado = $conn->query("SELECT idEscuela, nombre FROM Escuela");
                 $resultado->data_seek(0);
                 while ($fila = $resultado->fetch_assoc()) {
                     $escuelas = $fila['nombre'];
+                    $idEscuela = $fila['idEscuela'];
                     ?>
-                    <option value="<?php echo $escuelas; ?>"><?php echo $escuelas; ?></option>
+                    <option value="<?php echo $idEscuela; ?>"><?php echo $escuelas; ?></option>
                     <?php
                 }
                 $conn->close();
@@ -287,8 +293,8 @@ if (isset($_POST['borrar'])) {
         </form>
             <?php
   } else {
-    echo "ERROR: " . $conn->error . "ON: \n";
-    echo $query;
+      $message = "Error: " . $query . "<br>" . $conn->error;
+      echo "<script type='text/javascript'>alert('$message');</script>";
   }
               $conn->close();
               ?>

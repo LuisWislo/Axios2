@@ -11,7 +11,8 @@ if ($resultadoId) {
   $filaId = $resultadoId->fetch_assoc();
   $idAsesor = $filaId['idAsesor'];
 } else {
-  echo "ERROR: " . $conn->error;
+  $message = "Error: " . $queryId . "<br>" . $conn->error;
+  echo "<script type='text/javascript'>alert('$message');</script>";
 }
 $conn->close();
 ?>
@@ -60,7 +61,8 @@ $conn->close();
 
                   $resultado = $conn->query($query);
                   if (!$resultado) {
-                    echo "ERROR: " . $conn->error;
+                    $message = "Error: " . $query . "<br>" . $conn->error;
+                    echo "<script type='text/javascript'>alert('$message');</script>";
                   }
                   if(!$resultado->fetch_array()){
                       echo "<tr><td colspan='5'>AUN NO HAY ASESORIAS REGISTRADAS</td></tr>";

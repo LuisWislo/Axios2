@@ -117,7 +117,8 @@
           echo "actualizado correctamente";
       }
       else {
-          echo "ERROR: " . $conn->error;
+        $message = "Error: " . $query . "<br>" . $conn->error;
+        echo "<script type='text/javascript'>alert('$message');</script>";
       };
   }
   

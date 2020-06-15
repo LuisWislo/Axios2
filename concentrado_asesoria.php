@@ -21,9 +21,10 @@ $conn->close();
 
 <?php
 if (isset($_POST['subir'])) {
+  $nObservaciones = str_replace("&quot;", '"', $observaciones);
   include 'config/Conn.php';
   $query = "INSERT INTO Asesoria (idAsesoria, idAlumno, idMotivo, idAsesor, idIntegrantes, fecha, observaciones)
-            VALUES (NULL, $idAlumno, $idMotivoAsesoria, $idAsesor, $idIntegrantes, '$fecha', '$observaciones')";
+            VALUES (NULL, $idAlumno, $idMotivoAsesoria, $idAsesor, $idIntegrantes, '$fecha', '$nObservaciones')";
   if ($conn->query($query) === TRUE) {
     //$message = "Asesoría registrada con éxito";
     //echo "<script type='text/javascript'>alert('$message');</script>";
@@ -63,8 +64,8 @@ if (isset($_POST['subir'])) {
   <h4 class="text-center"><?php echo $fila['Alumno']; ?></h4>
   <?php
   } else {
-    echo "ERROR: " . $conn->error . "ON: \n";
-    echo $query;
+    $message = "Error: " . $query . "<br>" . $conn->error;
+    echo "<script type='text/javascript'>alert('$message');</script>";
   }
   $conn->close();
   ?> 
@@ -101,8 +102,8 @@ if (isset($_POST['subir'])) {
                 <input type="input-grupo" class="form-control" placeholder="<?php echo $fila['Grupo']; ?>" disabled>
                 <?php
                 } else {
-                  echo "ERROR: " . $conn->error . "ON: \n";
-                  echo $query;
+                  $message = "Error: " . $query . "<br>" . $conn->error;
+                  echo "<script type='text/javascript'>alert('$message');</script>";
                 }
                 $conn->close();
                 ?>
@@ -127,8 +128,8 @@ if (isset($_POST['subir'])) {
                 <input type="input-motivo" class="form-control" placeholder="<?php echo $fila['motivo'] ?>" disabled>
                 <?php
                 } else {
-                  echo "ERROR: " . $conn->error . "ON: \n";
-                  echo $query;
+                  $message = "Error: " . $query . "<br>" . $conn->error;
+                  echo "<script type='text/javascript'>alert('$message');</script>";
                 }
                 $conn->close();
                 ?> 
