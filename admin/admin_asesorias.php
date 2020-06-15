@@ -10,6 +10,9 @@
 
 <?php
 include 'navbar_admin.php';
+$asesor = new Asesor();
+
+$asesores = $asesor->getAsesores();
 
 $where = "WHERE TRUE";
 
@@ -23,6 +26,8 @@ $rangoDeFechasInicio = !empty($_POST['rangoDeFechasInicio']) ? $_POST['rangoDeFe
 $rangoDeFechasFin = !empty($_POST['rangoDeFechasFin']) ? $_POST['rangoDeFechasFin'] : "";
 
 if (isset($_POST['filtrar'])) {
+
+  print_r($_POST);
 
   if ($asesor) $where .= " AND Asesor.nombre = '" . $asesor . "' ";
   if ($sede) $where .= " AND Localidad.idLocalidad = " . $sede . " ";
@@ -49,17 +54,9 @@ if (isset($_POST['filtrar'])) {
           <select id="filtroAsesor" class="form-control" name="asesor">
             <option value="" selected>Facilitador</option>
             <?php
-            include '../config/Conn.php';
-            $resultado = $conn->query("SELECT nombre FROM Asesor");
-            $resultado->data_seek(0);
-            while ($fila = $resultado->fetch_assoc()) {
-              $nombreAsesor = $fila['nombre'];
-            ?>
-              <option value="<?php echo $nombreAsesor; ?>"><?php echo $nombreAsesor; ?></option>
-            <?php
-            }
-            $conn->close();
-            ?>
+            while ($fila = $asesores->fetch_assoc()): ?>
+            <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+            <?php endwhile; ?>
           </select>
         </div>
         <div class="col-sm-3">
