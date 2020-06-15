@@ -60,10 +60,14 @@ if (isset($_POST['subir'])) {
   }
 
   if($noChanges == 4) {
+    $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $idLocalidad . " WHERE idEscuela = $idEscuela";
+    echo $query;
     echo "<script type='text/javascript'>alert('SIN CAMBIOS');</script>";
   } else {
     include '../config/Conn.php';
     $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $idLocalidad . " WHERE idEscuela = $idEscuela";
+    echo $query;
+    /*
     if ($conn->query($query) === TRUE) {
         $message = "Cambios guardados con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
@@ -72,6 +76,7 @@ if (isset($_POST['subir'])) {
         echo "Error: " . $query . "<br>" . $conn->error;
     }
     $conn->close();
+    */
   }
 }
 ?>
@@ -99,7 +104,7 @@ if (isset($_POST['subir'])) {
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
             <label for="input-nombre">Nombre</label>
-            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $origin['Nombre']; ?>">
+            <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $origin['Nombre']; ?>">
             <label for="input-numero">Número</label>
             <input type="input-numero" class="form-control" name="numero" placeholder="<?php echo $origin['Numero']; ?>">
             <label for="input-turno">Turno</label>
@@ -136,7 +141,7 @@ if (isset($_POST['subir'])) {
             <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
           </div>
           <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_escuelas.php'">Cancelar</button>
+            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_sedes.php'">Cancelar</button>
           </div>
         </div>
     </div>
