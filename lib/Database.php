@@ -2,6 +2,7 @@
 // instance of db
 class Database {
     private $conn;
+    private $stmt;
 
     //  DATOS DEL SERVIDOR
     // private $servername = "localhost";
