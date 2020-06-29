@@ -42,6 +42,7 @@
 
   // Alumnos
   $resultAlumnosSuccess = false;
+
   
   if (isset($_GET['search'])) {
     $busqueda = true;

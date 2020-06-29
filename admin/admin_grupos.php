@@ -21,8 +21,12 @@
         <!-- First search filter: filtro escuela -->
         <select id="filtroEscuela" class="form-control" name="escuela">
           <option value="0">Escuela</option>
-          <?php while ($fila = $escuelas->fetch_assoc()):?>
-          <option value="<?=$fila['idEscuela']?>"><?=$fila['nombre']?></option>
+          <?php while ($fila = $escuelas->fetch_assoc()): ?>
+          <?php if (isset($pEscuela) && $pEscuela == $fila['idEscuela']): ?>
+          <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+          <?php else:?>
+          <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+          <?php endif;?>
           <?php endwhile; ?>
         </select>
       </div><!--col-->
@@ -30,8 +34,8 @@
         <!-- Filtro turno -->
         <select id="filtroTurno" class="form-control" name="turno">
           <option value="0" selected>Turno</option>
-          <option value="1">Matutino</option>
-          <option value="2">Vespertino</option>
+          <option value="1" <?=(isset($pTurno) && $pTurno == "Matutino") ? "selected" : "" ?>>Matutino</option>
+          <option value="2" <?=(isset($pTurno) && $pTurno == "Vespertino") ? "selected" : "" ?>>Vespertino</option>
         </select>
       </div><!--col-->
       <div class="col-sm-3">
