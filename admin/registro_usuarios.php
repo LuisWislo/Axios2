@@ -25,7 +25,7 @@ if (isset($_POST['registrar'])) {
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body text-center">
-            <img src="../sauce/Logo AXIOS.png" class="img-responsive" style="width:100px;" /><br>
+            <img src="../assets/logo.png" class="img-responsive" style="width:100px;" /><br>
             <h5 class="card-title text-center">Registro de Asesores</h5>
             <form method="post" action="" class="form-signup" id="form-signup">
               <div class="form-label-group">

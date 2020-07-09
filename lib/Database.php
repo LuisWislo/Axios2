@@ -4,27 +4,51 @@ class Database {
     private $conn;
     private $stmt;
 
-    //  DATOS DEL SERVIDOR
-    // private $servername = "localhost";
-    // private $username = "facilit1_admin";
-    // private $password = "ALPQD3CbBmtUzjV";
-    // private $database = "facilit1_axios_dev_db";
-
-    // PRUEBAS EN XAMPP
-    private $servername = "localhost";
-    private $username = "root";
-    private $password = "";
-    private $database = "axios";
+    private $servername = DB_HOST;
+	private $username = DB_USER;
+	private $password = DB_PASS;
+	private $database = DB_NAME;
 
     public function __construct() {
-        $this->conn = new mysqli($this->servername, $this->username, $this->password, $this->database) or 
-            die("Conexion fallida: " . $this->conn->connect_error);
+        // Set DSN
+		$dsn = 'mysql:host=' . $this->servername . ';dbname=' . $this->database;
+		$options = array (
+			PDO::ATTR_PERSISTENT => true,
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION 
+		);
+		// Create a new PDO instanace
+		try {
+			$this->conn = new PDO ($dsn, $this->username, $this->password, $options);
+		}		// Catch any errors
+		catch ( PDOException $e ) {
+			$this->error = $e->getMessage();
+		}
     }
 
+    // Preparar query
     public function query($query) {
-
-        return $this->conn->query($query);
+        $this->stmt = $this->conn->prepare($query);
     }
+
+    // Bind values
+	public function bind($param, $value, $type = null) {
+		if (is_null ($type)) {
+			switch (true) {
+				case is_int ($value) :
+					$type = PDO::PARAM_INT;
+					break;
+				case is_bool ($value) :
+					$type = PDO::PARAM_BOOL;
+					break;
+				case is_null ($value) :
+					$type = PDO::PARAM_NULL;
+					break;
+				default :
+					$type = PDO::PARAM_STR;
+			}
+		}
+		$this->stmt->bindValue($param, $value, $type);
+	}
 
     // Get all alumnos
     public function getAllAlumnos($grupoId) {
@@ -34,64 +58,25 @@ class Database {
         return $result;
     }
 
-    // Get escuela name by id
-    public function getEscuela($idEscuela) {
-        $sql = "SELECT nombre FROM Escuela WHERE idEscuela = $idEscuela";
-        $result = $this->conn->query($sql) or die($this->conn->error);
-        return $result->fetch_assoc()['nombre'];
+    // Execute the prepared statement
+	public function execute(){
+		return $this->stmt->execute();
     }
 
-    // Get information about student group
-    public function getDatos($pEscuela, $pTurno, $pGrado, $pGrupo) {
-        $sql = "SELECT 
-              grup.grupo
-              , a.nombre
-              , e.nombre as nombreEscuela
-              , t.tipo
-              , t.descripcion
-              , e.numero
-              , l.nombre as sede
-            FROM Grupo grup 
-              JOIN Grado grad on grad.idGrado = grup.idGrado 
-              JOIN Turno t on t.idTurno = grad.idTurno 
-              JOIN Asesor a on a.idAsesor = t.idAsesor 
-              JOIN Escuela e on e.idEscuela = t.idEscuela
-              JOIN Localidad l on l.idLocalidad = e.idLocalidad
-            WHERE e.idEscuela = '$pEscuela'
-            AND t.descripcion = '$pTurno'
-            AND grad.numero = '$pGrado'
-            AND grup.grupo LIKE '_$pGrupo%' " ;
-        
-        $result = $this->conn->query($sql) or die($this->conn->error);
-        return $result;
+    // Get result set as associative array
+	public function resultSet(){
+		$this->execute();
+		return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    // Get grado Id
-    public function getGradoId($pEscuela, $pTurno, $pGrado) {
-        $sql = "SELECT idGrado FROM Grado
-            JOIN Turno ON Grado.idTurno = Turno.idTurno
-            JOIN Escuela ON Turno.idEscuela = Escuela.idEscuela
-            WHERE Grado.numero = $pGrado 
-            AND Turno.descripcion = '$pTurno'
-            AND Escuela.idEscuela = $pEscuela
-        ";
-        echo $sql;
-        $result = $this->conn->query($sql);
-        return $result->fetch_array()[0];
-
-    }
-    
-    // Insert group in grado
-    public function insertGrado($gradoNombre, $idGrado) {
-        
-        $sql = "INSERT INTO Grupo(grupo, idGrado) VALUES ('$gradoNombre', $idGrado)";
-        echo $sql;
-        
-        $result = $this->conn->query($sql);
-        return $result;
-    }
-
-    public function close() {
-        $this->conn->close();
-    }
+    // Get single record as object
+	public function single(){
+		$this->execute();
+		return $this->stmt->fetch(PDO::FETCH_ASSOC);
+	}
+	
+	// Get record row count
+	public function rowCount(){
+		return $this->stmt->rowCount();
+	}
 }

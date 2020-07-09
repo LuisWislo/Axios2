@@ -1,59 +1,29 @@
-<?php include 'navbar_admin.php'; 
-$idAlumno = (int)$_GET['idAlumno']
-?>
+<?php 
+include 'navbar_admin.php'; 
+require_once '../models/Alumno.php';
+require_once '../models/Escuela.php';
+require_once '../models/Asesor.php';
 
-<?php
+$idAlumno = (int)$_GET['idAlumno'];
+$alumno_model = new Alumno();
+$escuela_model = new Escuela();
+$asesor_model = new Asesor();
 
-$oldNombres = "";
-$oldApellidos = "";
-$oldNoLista = "";
-$oldEscuela = "";
-$oldGrado = "";
-$oldGrupo = "";
-$oldTurno = "";
-$oldAsesor = "";
-
-include '../config/Conn.php';
-    $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno,
-    a.nombre AS Nombres, a.apellido AS Apellidos, a.noLista AS NoLista,
-    e.idEscuela AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo,
-    ase.nombre AS NAsesor, t.descripcion AS Turno
-    FROM Alumno as a JOIN Grupo as gu
-    ON a.idGrupo = gu.idGrupo
-    JOIN Grado as ga
-    ON gu.idGrado = ga.idGrado
-    JOIN Turno as t
-    ON ga.idTurno = t.idTurno
-    JOIN Escuela as e
-    ON t.idEscuela = e.idEscuela
-    JOIN Localidad as l
-    on l.idLocalidad = e.idLocalidad
-    LEFT JOIN Asesor as ase
-    ON t.idAsesor = ase.idAsesor
-    WHERE a.idAlumno = $idAlumno";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-        $resultado->data_seek(0);
-        $origin = $resultado->fetch_assoc();
-
-        $oldNombres = $origin['Nombres'];
-        $oldApellidos = $origin['Apellidos'];
-        $oldNoLista = $origin['NoLista'];
-        $oldEscuela = $origin['Escuela'];
-        $oldGrado = $origin['Grado'];
-        $oldGrupo = $origin['Grupo'];
-        $oldTurno = $origin['Turno'];
-        $oldAsesor = $origin['NAsesor'];
-    } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-    }
-    $conn->close();
-?>
-
-<?php
+$alumno = $alumno_model->getAlumnoById($idAlumno);
+$escuelas = $escuela_model->getEscuelas();
+$asesores = $asesor_model->getAsesores();
+  
+$oldNombres = $alumno['Nombres'];
+$oldApellidos = $alumno['Apellidos'];
+$oldNoLista = $alumno['NoLista'];
+$oldEscuela = $alumno['Escuela'];
+$oldGrado = $alumno['Grado'];
+$oldGrupo = $alumno['Grupo'];
+$oldTurno = $alumno['Turno'];
+$oldAsesor = $alumno['NAsesor'];
 
 if (isset($_POST['subir'])) {
+  print_r($_POST);
   $nombres = $_POST['nombres'];
   $apellidos = $_POST['apellidos'];
   $nolista = $_POST['nolista'];
@@ -109,48 +79,16 @@ if (isset($_POST['subir'])) {
     echo "<script type='text/javascript'>alert('$message');</script>";
     echo "<script type='text/javascript'> document.location = 'admin_alumnos.php'; </script>";
   } else {
-    include '../config/Conn.php';
-    $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno,
-    a.nombre AS Nombres, a.apellido AS Apellidos, a.noLista AS NoLista,
-    e.nombre AS Escuela, ga.numero AS Grado, gu.idGrupo AS Grupo,
-    ase.nombre AS NAsesor, t.descripcion AS Turno
-    FROM Alumno as a JOIN Grupo as gu
-    ON a.idGrupo = gu.idGrupo
-    JOIN Grado as ga
-    ON gu.idGrado = ga.idGrado
-    JOIN Turno as t
-    ON ga.idTurno = t.idTurno
-    JOIN Escuela as e
-    ON t.idEscuela = e.idEscuela
-    JOIN Localidad as l
-    on l.idLocalidad = e.idLocalidad
-    JOIN Asesor as ase
-    ON t.idAsesor = ase.idAsesor
-    WHERE gu.grupo = '" . $grupo . "' AND
-    ga.numero = $grado AND t.descripcion = '" . $turno . "' AND
-    e.idEscuela = '" . $escuela . "' AND ase.nombre = '" . $asesor . "'";
-    $resultado = $conn->query($query);
-    if(!$resultado->fetch_array()) {
-        $message = "Los datos ingresados no son válidos. Por favor ingresa una combinación permitida.";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-    } else if ($resultado) {
-        $resultado->data_seek(0);
-        $origin = $resultado->fetch_assoc();
-        $idGrupo = $origin['Grupo'];
-        $query = "UPDATE Alumno SET noLista= $nolista, nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo= $idGrupo WHERE idAlumno = $idAlumno";
-        if ($conn->query($query) === TRUE) {
-          $message = "Cambios guardados con éxito";
-          echo "<script type='text/javascript'>alert('$message');</script>";
-      } else {
-          $message = "Error: " . $query . "<br>" . $conn->error;
-          echo "<script type='text/javascript'>alert('$message');</script>";
-      }
-      $conn->close();
+    
+    $idGrupo = $alumno['idGrupo'];
+    $query = "UPDATE Alumno SET noLista= $nolista, nombre='" . $nombres . "', apellido='" . $apellidos . "', idGrupo= $idGrupo WHERE idAlumno = $idAlumno";
+    if ($conn->query($query) === TRUE) {
+      $message = "Cambios guardados con éxito";
+      echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
         $message = "Error: " . $query . "<br>" . $conn->error;
         echo "<script type='text/javascript'>alert('$message');</script>";
     }
-    $conn->close();
   }
 }
 if (isset($_POST['borrar'])) {
@@ -167,148 +105,94 @@ if (isset($_POST['borrar'])) {
 }
 ?>
 
-  <div class="container">
-  <?php
-    include '../config/Conn.php';
-    $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno,
-    a.nombre AS Nombres, a.apellido AS Apellidos, a.noLista AS NoLista,
-    e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo,
-    ase.nombre AS NAsesor, t.descripcion AS Turno
-    FROM Alumno as a JOIN Grupo as gu
-    ON a.idGrupo = gu.idGrupo
-    JOIN Grado as ga
-    ON gu.idGrado = ga.idGrado
-    JOIN Turno as t
-    ON ga.idTurno = t.idTurno
-    JOIN Escuela as e
-    ON t.idEscuela = e.idEscuela
-    JOIN Localidad as l
-    on l.idLocalidad = e.idLocalidad
-    LEFT JOIN Asesor as ase
-    ON t.idAsesor = ase.idAsesor
-    WHERE a.idAlumno = $idAlumno";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-    $resultado->data_seek(0);
-    $origin = $resultado->fetch_assoc()
-  ?>
+<div class="container">
   <h4 class="display-4 text-center">Datos del alumno:</h4>
   <br>
-  <h4 class="text-center"><?php echo $origin['Alumno']; ?></h4>
-    <div class="row justify-content-center">
-      <div class="col-md-10">
-        <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
-        <div class="row my-4">
-          <div class="col-sm-2"></div>
+  <h4 class="text-center"><?php echo $alumno['Alumno']; ?></h4>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
+        <div class="row my-4 justify-content-center">
           <div class="col-sm-8">
+
             <label for="input-nombre">Nombre(s)</label>
-            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $origin['Nombres']; ?>">
+            <input type="input-nombre" class="form-control" name="nombres" placeholder="<?php echo $alumno['Nombres']; ?>" readonly>
+
             <label for="input-apellidos">Apellido(s)</label>
-            <input type="input-apellidos" class="form-control" name="apellidos" placeholder="<?php echo $origin['Apellidos']; ?>">
+            <input type="input-apellidos" class="form-control" name="apellidos" placeholder="<?php echo $alumno['Apellidos']; ?>" readonly>
+
             <label for="input-nlista">Número de Lista</label>
-            <input type="input-nlista" class="form-control" name="nolista" placeholder="<?php echo $origin['NoLista']; ?>">
+            <input type="input-nlista" class="form-control" name="nolista" placeholder="<?php echo $alumno['NoLista']; ?>">
+
             <label for="input-escuela">Escuela</label>
             <select id="escuela" class="form-control" name="escuela">
-                <option value="" selected="selected"><?php echo $origin['Escuela']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT idEscuela, nombre FROM Escuela");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $escuelas = $fila['nombre'];
-                    $idEscuela = $fila['idEscuela'];
-                    ?>
-                    <option value="<?php echo $idEscuela; ?>"><?php echo $escuelas; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+              <option value="" selected>Escuela</option>
+              <?php foreach ($escuelas as $fila): ?>
+                <?php if ($alumno['Escuela'] == $fila['idEscuela']): ?>
+                  <option value="<?=$fila['idEscuela'] ?>" selected><?=$fila['nombre'] ?></option>
+                <?php else: ?>
+                  <option value="<?=$fila['idEscuela'] ?>"><?=$fila['nombre'] ?></option>
+                <?php endif; ?>
+              <?php endforeach; ?>
             </select>
+
             <label for="input-grado">Grado</label>
             <select id="grado" class="form-control" name="grado">
-                <option value="" selected="selected"><?php echo $origin['Grado']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT DISTINCT(numero) AS Numero FROM Grado");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $grado = $fila['Numero'];
-                    ?>
-                    <option value="<?php echo $grado; ?>"><?php echo $grado; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+              <option value="" selected>Grado</option>
+              <?php for ($gr=1; $gr <= 3; $gr++): ?>
+                <?php if ($gr == $alumno['Grado']): ?>
+                  <option value="<?=$gr?>" selected><?=$gr?></option>
+                <?php else: ?>
+                  <option value="<?=$gr?>"><?=$gr?></option>
+                <?php endif; ?>
+              <?php endfor; ?>
             </select>
+
             <label for="input-grupo">Grupo</label>
             <select id="grupo" class="form-control" name="grupo">
-                <option value="" selected="selected"><?php echo $origin['Grupo']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT DISTINCT(grupo) AS grupos FROM Grupo");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $grupo = $fila['grupos'];
-                    ?>
-                    <option value="<?php echo $grupo; ?>"><?php echo $grupo; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+              <option value="" selected>Grado</option>
+              <?php foreach (str_split('ABCDEF') as $gr): ?>
+                <?php if ($gr == $alumno['Grupo']): ?>
+                  <option value="<?=$gr?>" selected><?=$gr?></option>
+                <?php else: ?>
+                  <option value="<?=$gr?>"><?=$gr?></option>
+                <?php endif; ?>
+              <?php endforeach; ?>
             </select>
+
             <label for="input-turno">Turno</label>
             <select id="turno" class="form-control" name="turno">
-                <option value="" selected="selected"><?php echo $origin['Turno']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT DISTINCT(descripcion) AS turno FROM Turno");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $turno = $fila['turno'];
-                    ?>
-                    <option value="<?php echo $turno; ?>"><?php echo $turno; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+              <option value="" selected>Turno</option>
+              <option value="M" <?=($alumno['Turno'] == "Matutino") ? "selected" : "" ?>>Matutino</option>
+              <option value="V" <?=($alumno['Turno'] == "Vespertino") ? "selected" : "" ?>>Vespertino</option>
             </select>
+
             <label for="input-asesor">Facilitador</label>
             <select id="asesor" class="form-control" name="asesor">
-                <option value="" selected="selected"><?php echo $origin['NAsesor']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT nombre FROM Asesor");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $nombreAsesor = $fila['nombre'];
-                    ?>
-                    <option value="<?php echo $nombreAsesor; ?>"><?php echo $nombreAsesor; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+            <option value="" selected>Facilitador</option>
+              <?php foreach ($asesores as $fila): ?>
+              <?php if ($alumno['idAsesor'] == $fila['idAsesor']): ?>
+              <option value="<?=$fila['idAsesor'] ?>" selected><?=$fila['nombre'] ?></option>
+              <?php else:?>
+              <option value="<?=$fila['idAsesor'] ?>"><?=$fila['nombre'] ?></option>
+              <?php endif;?>
+              <?php endforeach; ?>
             </select>
-          </div>
+
+          </div><!--col-->
+        </div><!--row-->
+      </form>
+      <div class="row my-4 justify-content-center">
+        <div class="col-sm-3">
+          <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
         </div>
-        </form>
-            <?php
-  } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-  }
-              $conn->close();
-              ?>
-        <div class="row my-4 justify-content-center">
-          <div class="col-sm-3">
-            <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>
-          </div>
-          <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name="borrar" form="insertForm">Borrar alumno</button>
-          </div>
-          <div class="col-sm-3">
-            <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
-          </div>
+        <div class="col-sm-3">
+          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" name="borrar" form="insertForm">Borrar alumno</button>
         </div>
+        <div class="col-sm-3">
+          <button class="btn btn-danger btn-lg btn-primary btn-block text-uppercase" onclick="window.location.href='admin_alumnos.php'">Cancelar</button>
+        </div>
+      </div>
     </div>
   </div>
 </body>
