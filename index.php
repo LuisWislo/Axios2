@@ -15,8 +15,10 @@ if(isset($_GET['cerrar_sesion'])){
 if(isset($_SESSION['user'])){
   if(isset($_SESSION['admin'])){
     header('location: admin/admin_dashboard.php');
-  }else{
+  }else if (isset($_SESSION['facilit'])){
     header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
+  } else {
+    header('location: index.php');
   }
 }
 
@@ -32,6 +34,7 @@ if (isset($_POST['inputEmail']) && isset($_POST['inputPassword'])) {
       $_SESSION['admin'] = true;
       header('location: admin/admin_dashboard.php?');
     }else{
+      $_SESSION['facilit'] = true;
       header('location: asesor_dashboard.php?inputMail=' . $_SESSION['user'] . '');
     }
   }else{

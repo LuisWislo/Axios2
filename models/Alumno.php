@@ -6,9 +6,16 @@ class Alumno {
     $this->db = new Database();
   }
 
-  public function getAlumnos($filters="") {
-    $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
-              e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
+  // @method  SELECT
+  // @desc    GET ALUMNOS with filters
+  // @fields  id, alumno(nombre completo), escuela(nombre), grado, grupo, 
+  public function getAlumnos() {
+    $query = "SELECT 
+      a.idAlumno AS id, 
+      CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
+      e.nombre AS Escuela, 
+      ga.numero AS Grado, 
+      gu.grupo AS Grupo
               FROM Alumno as a JOIN Grupo as gu
               ON a.idGrupo = gu.idGrupo
               JOIN Grado as ga
@@ -21,7 +28,6 @@ class Alumno {
               on l.idLocalidad = e.idLocalidad
               LEFT JOIN Asesor as ase
               ON t.idAsesor = ase.idAsesor
-              WHERE 1 $filters
               ORDER BY Alumno ASC";
   
 
@@ -34,7 +40,7 @@ class Alumno {
 
   // @method  SELECT
   // @desc    GET ALUMNO BY ITS ID
-  // @fields  id, alumno(nombre completo), nombres, apellidos, noLista, escuela(id), grado, grupo, 
+  // @fields  id, alumno(nombre completo), nombres, apellidos, noLista, escuela(id, nombre), grado, grupo, 
   //          idAsesor, Nasesor, turno
   public function getAlumnoById($idAlumno) {
     $query = "SELECT 
@@ -43,7 +49,8 @@ class Alumno {
         a.nombre AS Nombres, 
         a.apellido AS Apellidos, 
         a.noLista AS NoLista,
-        e.idEscuela AS Escuela, 
+        e.idEscuela AS Escuela,
+        e.nombre AS nombreEscuela, 
         ga.numero AS Grado, 
         gu.idGrupo AS idGrupo,
         gu.grupo AS Grupo,
@@ -99,6 +106,36 @@ class Alumno {
     $this->db->bind(':idAlumno', $idAlumno);
 
     return $this->db->single();
+
+  }
+
+
+  // @method  SELECT
+  // @desc    GET ALUMNO DE ASESOR
+  // @fields  id, alumno(nombre completo), nombres, apellidos, noLista, escuela(id), grado, grupo, 
+  //          idAsesor, Nasesor, turno
+  public function getAlumnosDeAsesor($idAsesor) {
+
+    $query = "SELECT a.idAlumno AS id, CONCAT(a.nombre,' ', a.apellido) AS Alumno, 
+    e.nombre AS Escuela, ga.numero AS Grado, gu.grupo AS Grupo
+    FROM Alumno as a JOIN Grupo as gu
+    ON a.idGrupo = gu.idGrupo
+    JOIN Grado as ga
+    ON gu.idGrado = ga.idGrado
+    JOIN Turno as t
+    ON ga.idTurno = t.idTurno
+    JOIN Escuela as e
+    ON t.idEscuela = e.idEscuela
+    LEFT JOIN Asesor as ase
+    ON t.idAsesor = ase.idAsesor
+    WHERE ase.idAsesor = :idAsesor
+    ORDER BY Alumno ASC";
+
+    $this->db->query($query);
+
+    $this->db->bind(':idAsesor', $idAsesor);
+
+    return $this->db->resultSet();
 
   }
 

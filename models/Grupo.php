@@ -64,7 +64,7 @@
     }
 
     // Grupo ID
-    public function getGroupId($idEscuela, $turno, $grado, $grupo) {
+    public function getGrupoId($idEscuela, $tipoTurno, $grado, $grupo) {
       $sql = 'SELECT idGrupo
       FROM Grupo grup 
       JOIN Grado grad on grad.idGrado = grup.idGrado 
@@ -72,12 +72,36 @@
       JOIN Asesor a on a.idAsesor = t.idAsesor 
       JOIN Escuela e on e.idEscuela = t.idEscuela
       WHERE e.idEscuela = :idEscuela
-      AND t.descripcion = :descTurno
-      AND grad.numero = :numGrado
+      AND t.tipo = :tipoTurno
+      AND grad.numero = :grado
       AND grup.grupo = :grupo';
 
       $this->db->query($sql);
 
-      
+      $this->db->bind(':idEscuela', $idEscuela);
+      $this->db->bind(':tipoTurno', $tipoTurno);
+      $this->db->bind(':grado', $grado);
+      $this->db->bind(':grupo', $grupo);
+
+      if ($row = $this->db->single()) {
+        print_r($row);
+        return $row['idGrupo'];
+      } else {
+        return null;
+      }
+
+    }
+
+    // @method  SELECT
+    // @desc    GET ALUMNOS de Grupo
+    // @fields  noLista, nombre, apellido 
+    public function getAlumnos($grupoId) {
+      $query = "SELECT noLista, nombre, apellido FROM Alumno WHERE idGrupo = :grupoId";
+
+      $this->db->query($query);
+
+      $this->db->bind(':grupoId', $grupoId);
+
+      return $this->db->resultSet();
     }
   }

@@ -61,7 +61,7 @@ if (isset($_POST['filtrar'])) {
   <br>
   <div class="row justify-content-center">
     <div class="col-md-10">
-        <table id="houdini" class="table table-striped table-dark table-sm table-bordered">
+        <table id="houdini" class="table table-striped table-dark table-sm table-bordered" style="visibility: collapse;">
           <thead>
             <th scope="col">Alumno</th>
             <th scope="col">Escuela</th>
@@ -83,22 +83,7 @@ if (isset($_POST['filtrar'])) {
   </div>
 </div>
   
-<script> 
-  document.getElementById("houdini").style.visibility = "hidden";
-  $(document).ready(function() { 
-      $("#search").on("keyup", function() {
-         var value = $(this).val().toLowerCase();
-         if(value === "") {
-          document.getElementById("houdini").style.visibility = "hidden";
-         } else {
-          document.getElementById("houdini").style.visibility = "visible";
-          $("#filter tr").filter(function() { 
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1) 
-          }); 
-        }
-      }); 
-  }); 
-</script>
+<script src="../js/houdini.js"></script>
 
 <script>
     $(document).ready(function () {

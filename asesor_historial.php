@@ -1,4 +1,10 @@
-<?php include 'asesor_navbar.php';
+<?php 
+session_start();
+if (isset($_SESSION['admin'])) {
+  include 'admin/navbar_admin.php';
+} else {
+  include 'asesor_navbar.php';
+}
 
 require_once 'models/Asesor.php';
 require_once 'models/Asesoria.php';
@@ -8,12 +14,16 @@ $asesoria_model = new Asesoria();
 
 $idAsesor = (int) $_GET['id'];
 
+$asesor = $asesor_model->getAsesorById($idAsesor);
 $asesoriasDeAsesor = $asesoria_model->getAsesoriasDeAsesor($idAsesor);
+
+$mail = $_SESSION['user'];
 
 ?>
 
 <div class="container">
   <h4 class="display-4 text-center">Historial de asesorías</h4>
+  <h3 class="text-center mt-4"><?=$asesor['nombre']?></h3>
   <?php include 'utils/form_filtros.php'; ?>
     <div class="row">
       <h5>ASESORÍAS</h5>

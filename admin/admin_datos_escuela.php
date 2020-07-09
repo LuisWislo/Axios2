@@ -1,38 +1,29 @@
 <?php include 'navbar_admin.php'; 
-$idEscuela = (int)$_GET['idEscuela']
-?>
+$idEscuela = (int)$_GET['idEscuela'];
 
-<?php
+require_once '../models/Escuela.php';
+require_once '../models/Sede.php';
 
-$oldNombre = "";
-$oldNumero = "";
-$oldTurno = "";
-$oldLocalidad = "";
+$turnos_disponibles = array(
+  'M' => 'Matutino',
+  'V' => 'Vespertino',
+  'A' => 'Ambos'
+);
 
-include '../config/Conn.php';
-    $query = "SELECT e.nombre as Nombre, e.numero as Numero,
-    e.turno as Turno, e.idLocalidad as Localidad
-    FROM Escuela as e
-    WHERE e.idEscuela = $idEscuela";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-        $resultado->data_seek(0);
-        $origin = $resultado->fetch_assoc();
 
-        $oldNombre = $origin['Nombre'];
-        $oldNumero = $origin['Numero'];
-        $oldTurno = $origin['Turno'];
-        $oldLocalidad = $origin['Localidad'];
-    } else {
-      $message = "Error: " . $query . "<br>" . $conn->error;
-      echo "<script type='text/javascript'>alert('$message');</script>";
-    }
-    $conn->close();
-?>
+$escuela_model = new Escuela;
+$sede_model = new Sede;
 
-<?php
+$escuela = $escuela_model->getEscuela($idEscuela);
+print_r($escuela);
+$sedes = $sede_model->getSedes();
 
 if (isset($_POST['subir'])) {
+  $oldNombre = $escuela['nombre'];
+  $oldNumero = $escuela['numero'];
+  $oldTurno = $escuela['turno'];
+  $oldLocalidad = $escuela['idLocalidad'];
+  print_r($_POST);
   $nombre = $_POST['nombre'];
   $numero = $_POST['numero'];
   $turno = $_POST['turno'];
@@ -63,37 +54,33 @@ if (isset($_POST['subir'])) {
     $message = "No se realizaron cambios a los datos de la escuela";
     echo "<script type='text/javascript'>alert('$message');</script>";
   } else {
-    include '../config/Conn.php';
-    $query = "UPDATE Escuela SET nombre='" . $nombre . "', numero=" . $numero . ", turno='" . $turno . "', idLocalidad=" . $localidad . " WHERE idEscuela = $idEscuela";
-    if ($conn->query($query) === TRUE) {
+    // Send data to update
+    $modified_data = array(
+      'idEscuela' => $idEscuela,
+      'nombre' => $nombre,
+      'numero' => $numero,
+      'turno' => $turno,
+      'idLocalidad' => $localidad    
+    );
+
+    $updated = $escuela_model->updateEscuela(...array_values($modified_data));
+    if ($updated) {
         $message = "Cambios guardados con éxito";
         echo "<script type='text/javascript'>alert('$message');</script>";
+        echo "<script type='text/javascript'>document.location = 'admin_sedes.php'; </script>";
+
     } else {
       $message = "Error: " . $query . "<br>" . $conn->error;
       echo "<script type='text/javascript'>alert('$message');</script>";
     }
-    $conn->close();
   }
 }
 ?>
 
-  <div class="container">
-  <?php
-    include '../config/Conn.php';
-    $query = "SELECT e.nombre as Nombre, e.numero as Numero,
-    e.turno as Turno, e.idLocalidad as idLocalidad, l.nombre as NLocalidad
-    FROM Escuela as e JOIN Localidad as l
-    ON e.idLocalidad = l.idLocalidad
-    WHERE e.idEscuela = $idEscuela";
-    $resultado = $conn->query($query);
-    if ($resultado) {
-    $resultado->data_seek(0);
-    $origin = $resultado->fetch_assoc();
-    $rNombre = str_replace('"', "&quot;", $origin['Nombre']);
-  ?>
+<div class="container">
   <h4 class="display-4 text-center">Datos de la escuela:</h4>
   <br>
-  <h4 class="text-center"><?php echo $origin['Nombre']; ?></h4>
+  <h4 class="text-center"><?php echo $escuela['nombre']; ?></h4>
     <div class="row justify-content-center">
       <div class="col-md-10">
         <form method="post" action="" id="insertForm" onsubmit="return validateForm()">
@@ -101,38 +88,37 @@ if (isset($_POST['subir'])) {
           <div class="col-sm-2"></div>
           <div class="col-sm-8">
             <label for="input-nombre">Nombre</label>
-            <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $rNombre; ?>">
+            <input type="input-nombre" class="form-control" name="nombre" placeholder="<?php echo $escuela['nombre']; ?>">
+
             <label for="input-numero">Número</label>
-            <input type="input-numero" class="form-control" name="numero" placeholder="<?php echo $origin['Numero']; ?>">
+            <input type="input-numero" class="form-control" name="numero" placeholder="<?php echo $escuela['numero']; ?>">
+
             <label for="input-turno">Turno</label>
-            <input type="input-turno" class="form-control" name="turno" placeholder="<?php echo $origin['Turno']; ?>">
+            <select id="input-turno" class="form-control" name="turno">
+              <option value="" selected>Turno</option>
+              <?php foreach ($turnos_disponibles as $tt => $td): ?>
+                <?php if ($tt == $escuela['turno']): ?>
+                  <option value="<?=$tt?>" selected><?=$td?></option>
+                <?php else: ?>
+                  <option value="<?=$tt?>"><?=$td?></option>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </select>
+
             <label for="input-localidad">Localidad</label>
             <select id="localidad" class="form-control" name="localidad">
-                <option value="" selected="selected"><?php echo $origin['NLocalidad']; ?></option>
-                <?php
-                include '../config/Conn.php';
-                $resultado = $conn->query("SELECT idLocalidad, nombre FROM Localidad");
-                $resultado->data_seek(0);
-                while ($fila = $resultado->fetch_assoc()) {
-                    $localidades = $fila['nombre'];
-                    $idLocalidad = $fila['idLocalidad'];
-                    ?>
-                    <option value="<?php echo $idLocalidad; ?>"><?php echo $localidades; ?></option>
-                    <?php
-                }
-                $conn->close();
-                ?>
+              <option value="" selected>Sede</option>
+              <?php foreach ($sedes as $fila): ?>
+                <?php if ($fila['idLocalidad'] == $escuela['idLocalidad']): ?>
+                  <option value="<?=$fila['idLocalidad'] ?>" selected><?=$fila['nombre'] ?></option>
+                <?php else: ?>
+                  <option value="<?=$fila['idLocalidad'] ?>"><?=$fila['nombre'] ?></option>
+                <?php endif; ?>
+              <?php endforeach; ?>
             </select>
           </div>
         </div>
         </form>
-            <?php
-  } else {
-    $message = "Error: " . $query . "<br>" . $conn->error;
-    echo "<script type='text/javascript'>alert('$message');</script>";
-  }
-              $conn->close();
-              ?>
         <div class="row my-4 justify-content-center">
           <div class="col-sm-3">
             <button class="btn btn-success btn-lg btn-primary btn-block text-uppercase" name="subir" form="insertForm">Aceptar cambios</button>

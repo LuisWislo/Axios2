@@ -200,4 +200,134 @@ class Asesoria {
 
     return $this->db->resultSet();
   }
+
+  // @method    SELECT
+  // @desc      GET Asesorias of alumno 
+  // @tables    Asesoria, Alumno, Motivo, Dinámica
+  // @fields    fecha, motivo, dinamica, observaciones
+  public function getAsesoriasDeAlumno($idAlumno) {
+    $query = "SELECT 
+          Asesoria.idAsesoria AS idAsesoria 
+          , Alumno.idAlumno AS id 
+          , CONCAT(Alumno.nombre,' ',Alumno.apellido) AS Alumno
+          , DATE_FORMAT(Asesoria.fecha, '%d-%m-%Y') AS Fecha 
+          , Motivo.motivo AS Motivo
+          , Integrantes.descripcion AS Dinamica 
+          , Asesoria.observaciones AS Observaciones
+      FROM Asesoria 
+      JOIN Alumno on Alumno.idAlumno = Asesoria.idAlumno 
+      JOIN Asesor on Asesor.idAsesor = Asesoria.idAsesor 
+      JOIN Motivo on Motivo.idMotivo = Asesoria.idMotivo 
+      JOIN Integrantes on Integrantes.idIntegrantes = Asesoria.idIntegrantes
+      WHERE Alumno.idAlumno = :idAlumno
+      ORDER BY Asesoria.fecha DESC";
+    
+    $this->db->query($query);
+
+    $this->db->bind(':idAlumno', $idAlumno);
+
+    return $this->db->resultSet();
+
+  }
+
+  // @method    SELECT
+  // @desc      Get tipos de asesoria
+  // @tables    Tipo
+  // @fields    *.tipoasesoria
+  public function getTipos() {
+
+    $query = "SELECT idTipoAsesoria id, tipoAsesoria tipo FROM TipoAsesoria";
+    
+    $this->db->query($query);
+
+    return $this->db->resultSet();
+
+  }
+
+  // @method    SELECT
+  // @desc      Get motivos de asesoria of a tipo
+  // @tables    Motivo
+  // @fields    *.motivoAsesoria
+  public function getMotivos($idTipoAsesoria) {
+
+    $query = "SELECT 
+    idMotivo AS id, 
+    motivo AS motivo
+    FROM Motivo
+    WHERE idTipoAsesoria = :idTipoAsesoria";
+    
+    $this->db->query($query);
+
+    $this->db->bind(':idTipoAsesoria', $idTipoAsesoria);
+
+    return $this->db->resultSet();
+
+  }
+
+  // @method    SELECT
+  // @desc      Get tipo de asesoria by its id
+  // @tables    Tipo
+  // @fields    *
+  public function getTipo($idTipoAsesoria) {
+
+    $query = "SELECT *
+    FROM TipoAsesoria
+    WHERE idTipoAsesoria = :idTipoAsesoria";
+    
+    $this->db->query($query);
+
+    $this->db->bind(':idTipoAsesoria', $idTipoAsesoria);
+
+    $row = $this->db->single();
+
+    return $row['tipoAsesoria'];
+
+  }
+
+  // @method    SELECT
+  // @desc      Get motivo de asesoria by its id
+  // @tables    Motivo
+  // @fields    *
+  public function getMotivo($idMotivo) {
+
+    $query = "SELECT *
+    FROM Motivo
+    WHERE idMotivo = :idMotivo";
+    
+    $this->db->query($query);
+
+    $this->db->bind(':idMotivo', $idMotivo);
+
+    $row = $this->db->single();
+
+    return $row['motivo'];
+
+  }
+
+  // @method    INSERT
+  // @desc      Insert new asesoria (idAlumno, idMotivo, idAsesor, idIntegrantes, fecha, observaciones)
+  // @tables    Asesoria
+  // @fields    *
+  public function insertAsesoria($idAlumno, $idMotivo, $idAsesor, $idIntegrantes, $fecha, $obs) {
+
+    $query = 'INSERT INTO Asesoria (idAlumno, idMotivo, idAsesor, idIntegrantes, fecha, observaciones)
+      VALUES (:idAlumno, :idMotivo, :idAsesor, :idIntegrantes, :fecha, :obs)';
+    
+    $this->db->query($query);
+
+    $this->db->bind(':idAlumno', $idAlumno);
+    $this->db->bind(':idMotivo', $idMotivo);
+    $this->db->bind(':idAsesor', $idAsesor);
+    $this->db->bind(':idIntegrantes', $idIntegrantes);
+    $this->db->bind(':fecha', $fecha);
+    $this->db->bind(':obs', $obs);
+
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+
 }
